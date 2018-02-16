@@ -1,0 +1,96 @@
+hello:
+  path: 'hello'
+  defaults:
+    _controller: '\Drupal\hello\Controller\HelloController::sayhello'
+  requirements:
+    _permission: 'access content'
+    
+welcome:
+  path: 'welcome'
+  defaults:
+    _controller: '\Drupal\hello\Controller\HelloController::welcome'
+    _title: 'Welcome'
+  requirements:
+    _permission: 'access content'
+    
+hello.form:
+   path: 'hello/form'
+   defaults:
+     _form: '\Drupal\hello\Form\HelloForm'
+     _title: 'Hello Form'
+   requirements:
+     _permission: 'access content'
+     
+hello.form.new:
+   path: 'hello/form/new'
+   defaults:
+     _form: '\Drupal\hello\Form\NewForm'
+     _title: 'New Form'
+   requirements:
+     _permission: 'access content'     
+     
+hello.multistep_one:
+   path: 'hello/multistep'
+   defaults:
+     _form: '\Drupal\hello\Form\Multistep\MultistepOneForm'
+     _title: 'Multi Step Form'
+   requirements:
+     _permission: 'access content'          
+     
+hello.multistep_two:
+   path: 'hello/multistep/two'
+   defaults:
+     _form: '\Drupal\hello\Form\Multistep\MultistepTwoForm'
+     _title: 'Multi Step Form'
+   requirements:
+     _permission: 'access content'      
+     
+hello.form.uploadtest:
+   path: 'hello/form/upload'
+   defaults:
+     _form: '\Drupal\hello\Form\UploadTest'
+     _title: 'Upload test'
+   requirements:
+     _permission: 'access content'     
+     
+hello.form.countryform:
+   path: 'hello/form/country'
+   defaults:
+     _form: '\Drupal\hello\Form\CountryForm'
+     _title: 'Country'
+   requirements:
+     _permission: 'access content'     
+
+hello.form.visatype:
+   path: 'hello/form/visatype'
+   defaults:
+     _form: '\Drupal\hello\Form\VisaType'
+     _title: 'Visa Type'
+   requirements:
+     _permission: 'access content'      
+
+hello.form.countrytypeassoc:
+   path: 'hello/form/countrytypeassoc'
+   defaults:
+     _form: '\Drupal\hello\Form\CountryTypeAssoc'
+     _title: 'Country Type Association'
+   requirements:
+     _permission: 'access content'   
+
+hello.form.priceassignment:
+   path: 'hello/form/priceassignment'
+   defaults:
+     _form: '\Drupal\hello\Form\PriceAssignment'
+     _title: 'Price Assignemnt'
+   requirements:
+     _permission: 'access content'   
+     
+     
+hello.visaautocomplete:     
+   path: 'visa-autocomplete/{field_name}/{count}'
+   defaults:
+     _controller: '\Drupal\hello\Controller\HelloController::handleAutocomplete'
+     _format: json
+   requirements:
+     _permission: 'access content'      
+    

@@ -1,0 +1,171 @@
+evisa:
+  path: 'evisa'
+  defaults:
+    _controller: '\Drupal\evisa\Controller\EvisaController::sayhello'
+  requirements:
+    _permission: 'access content'
+
+evisa.country:
+  path: 'evisa/country'
+  defaults:
+    _controller: '\Drupal\evisa\Controller\EvisaController::country'
+    _title: 'Country'
+  requirements:
+    _permission: 'view country'
+
+evisa.form.countryform:
+   path: 'evisa/country/form'
+   defaults:
+     _form: '\Drupal\evisa\Form\CountryForm'
+     _title: 'Country'
+   requirements:
+     _permission: 'add edit country'    
+
+evisa.nationality:
+  path: 'evisa/nationality'
+  defaults:
+    _controller: '\Drupal\evisa\Controller\EvisaController::nationality'
+    _title: 'Nationality'
+  requirements:
+    _permission: 'view nationality'
+
+evisa.form.nationalform:
+   path: 'evisa/national/form'
+   defaults:
+     _form: '\Drupal\evisa\Form\NationalForm'
+     _title: 'Nationality'
+   requirements:
+     _permission: 'add edit nationality'
+     
+evisa.purpose:
+  path: 'evisa/purpose'
+  defaults:
+    _controller: '\Drupal\evisa\Controller\EvisaController::purpose'
+    _title: 'Purpose of Travel'
+  requirements:
+    _permission: 'view purpose'
+
+evisa.form.purposeform:
+   path: 'evisa/purpose/form'
+   defaults:
+     _form: '\Drupal\evisa\Form\PurposeForm'
+     _title: 'Purpose of Travel'
+   requirements:
+     _permission: 'add edit purpose'
+
+evisa.visatype:
+  path: 'evisa/visatype'
+  defaults:
+    _controller: '\Drupal\evisa\Controller\EvisaController::visaType'
+    _title: 'Type of Visa'
+  requirements:
+    _permission: 'view visatype'
+    
+evisa.form.visatypeform:
+   path: 'evisa/visatype/form'
+   defaults:
+     _form: '\Drupal\evisa\Form\VisaTypeForm'
+     _title: 'Type of Visa'
+   requirements:
+     _permission: 'add edit visatype'    
+
+evisa.countrypurpose:
+  path: 'evisa/countrypurpose'
+  defaults:
+    _controller: '\Drupal\evisa\Controller\EvisaController::countryPurpose'
+    _title: 'Country Purpose of Travel Association'
+  requirements:
+    _permission: 'view countrypurpose'
+    
+evisa.form.countrypurposeform:
+   path: 'evisa/countrypurpose/form'
+   defaults:
+     _form: '\Drupal\evisa\Form\CountryPurposeForm'
+     _title: 'Country Purpose of Travel Association'
+   requirements:
+     _permission: 'add edit countrypurpose'    
+
+evisa.countrypurposevisa:
+  path: 'evisa/countrypurposevisa'
+  defaults:
+    _controller: '\Drupal\evisa\Controller\EvisaController::countryPurposeVisa'
+    _title: 'Country Purpose of Travel Visa Type Association'
+  requirements:
+    _permission: 'view countrypurposevisa'
+    
+evisa.form.countrypurposevisaform:
+   path: 'evisa/countrypurposevisa/form'
+   defaults:
+     _form: '\Drupal\evisa\Form\CountryPurposeVisaForm'
+     _title: 'Country Purpose of Travel Visa Type Association'
+   requirements:
+     _permission: 'add edit countrypurposevisa'    
+
+evisa.priceassignment:
+  path: 'evisa/priceassignment'
+  defaults:
+#    _controller: '\Drupal\evisa\Controller\EvisaController::priceAssignment'
+    _form: '\Drupal\evisa\Form\PriceAssignView'
+    _title: 'Price Assignment for Customer'
+  requirements:
+    _permission: 'view priceassignment'
+    
+evisa.form.priceassignment:
+   path: 'evisa/priceassignment/form'
+   defaults:
+     _form: '\Drupal\evisa\Form\PriceAssignmentForm'
+     _title: 'Price Assignment for Customer'
+   requirements:
+     _permission: 'add priceassignment'    
+     
+evisa.edit.priceassignment:
+   path: 'evisa/priceassignment/edit/{id}'
+   defaults:
+     _form: '\Drupal\evisa\Form\PriceAssignEdit'
+     _title: 'Update Price Assignment for Customer'
+   requirements:
+     _permission: 'edit priceassignment'
+     id: '^[0-9]+'
+
+emailtest:
+  path: 'emailtest'
+  defaults:
+    _controller: '\Drupal\evisa\Controller\EvisaController::emailtest'
+  requirements:
+    _permission: 'access content'
+
+evisa.account:
+  path: 'evisa/account'
+  defaults:
+    #_controller: '\Drupal\evisa\Controller\EvisaController::txn_account'
+    _form: '\Drupal\evisa\Form\AccountTxn'
+    _title: 'Account Transaction'
+  requirements:
+    _permission: 'view account'
+    
+evisa.form.account:
+   path: 'evisa/account/form'
+   defaults:
+     _form: '\Drupal\evisa\Form\AccountForm'
+     _title: 'Add credit for Customer'
+   requirements:
+     _permission: 'add account' 
+ 
+evisa.visa:
+  path: 'evisa/visa'
+  defaults:
+    _form: '\Drupal\evisa\Form\VisaReport'
+    _title: 'Visa Report'
+  requirements:
+    _permission: 'view visa'
+    
+evisa.view.visa:
+   path: 'evisa/visa/view/{vid}'
+   defaults:
+     _controller: '\Drupal\evisa\Controller\EvisaController::viewVisa'
+     _title: 'View Visa'
+   requirements:
+     _permission: 'view visa'
+     id: '^[0-9]+'
+    
+   

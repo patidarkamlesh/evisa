@@ -1,0 +1,72 @@
+## YAML Template.
+'view country':
+  title: 'View Country Master'
+  description: 'View Country Master'
+  restrict access: TRUE
+'add edit country':
+  title: 'Add Edit Country Master'
+  description: 'Add Edit Country Master'
+  restrict access: TRUE
+'view nationality':
+  title: 'View Nationality Master'
+  description: 'View Nationality Master'
+  restrict access: TRUE
+'add edit nationality':
+  title: 'Add Edit Nationality'
+  description: 'Add Edit Nationality'
+  restrict access: TRUE
+'view purpose':
+  title: 'View Purpose of Travel Master'
+  description: 'View Purpose of Travel Master'
+  restrict access: TRUE
+'add edit purpose':
+  title: 'Add Edit Purpose of Travel'
+  description: 'Add Edit Purpose of Travel'
+  restrict access: TRUE
+'view visatype':
+  title: 'View Type of Visa Master'
+  description: 'View Type of Visa Master'
+  restrict access: TRUE  
+'add edit visatype':
+  title: 'Add Edit Type of Visa'
+  description: 'Add Edit Type of Visa'
+  restrict access: TRUE  
+'view countrypurpose':
+  title: 'View Country Purpose Master'
+  description: 'View Country Purpose Master'
+  restrict access: TRUE  
+'add edit countrypurpose':
+  title: 'Add Edit Country Purpose'
+  description: 'Add Edit Country Purpose'
+  restrict access: TRUE  
+'view countrypurposevisa':
+  title: 'View Country Purpose Visa Master'
+  description: 'View Country Purpose Visa Master'
+  restrict access: TRUE  
+'add edit countrypurposevisa':
+  title: 'Add Edit Country Purpose Visa Master'
+  description: 'Add Edit Country Purpose Visa Master'
+  restrict access: TRUE    
+'view priceassignment':
+  title: 'View Price Assignment Master'
+  description: 'View Price Assignment Master'
+  restrict access: TRUE  
+'add priceassignment':
+  title: 'Add Price Assignment'
+  description: 'Add Price Assignment'
+  restrict access: TRUE      
+'edit priceassignment':
+  title: 'Edit Price Assignment'
+  description: 'Edit Price Assignment'
+  restrict access: TRUE        
+'view account':
+  title: 'View Account Master'
+  description: 'View Account'
+'add account':
+  title: 'Add Account'
+  description: 'Add Account'
+  restrict access: TRUE      
+'view visa':
+  title: 'View Visa Report'
+  description: 'View Visa Report'
+  

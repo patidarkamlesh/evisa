@@ -1,0 +1,343 @@
+<?php
+
+use Drupal\user\Entity\User;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+function evisa_hello_world() {
+   return t('Hello Drupal 8 World 123!');
+}
+
+function evisa_welcome() {
+     $user = User::load(\Drupal::currentUser()->id());
+     if ($user->get('uid')->value < 1) {
+         return t('Welcome  Visitor!');
+     } else {
+        return t('Welcome  ' . $user->getUsername() . '!');
+     }
+}
+function evisa_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.evisa':
+      $output = '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The Hello module is used for creating structured, multi-page content, such as site resource guides, manuals, and wikis. It allows you to create content that has chapters, sections, subsections, or any similarly-tiered structure. Enabling the module creates a new content type <em>Book page</em>. For more information, see the <a href=":book">online documentation for the Book module</a>.', [':book' => 'https://www.drupal.org/documentation/modules/book']) . '</p>';
+      $output .= '<h3>' . t('Uses') . '</h3>';
+      $output .= '<dl>';
+      return $output;
+}
+}
+/**
+ * Get Customer Id for Current user
+ */
+function getCustomerId() {
+    $customerId = '';
+    $user = User::load(\Drupal::currentUser()->id());
+    foreach($user->get('field_customer_name') as $custId){
+        $customerId = $custId->target_id;
+    }
+    return $customerId;
+}
+/**
+ * Get Customer name from ID
+ */
+function getCustomerName($custId) {
+   $customerName = \Drupal::database()->select('node_field_data', 'nf')
+                   ->fields('nf', ['title'])
+                   ->condition('nf.nid', $custId)
+                   ->execute()->fetchField();
+   return $customerName;
+}
+/**
+ * Fetch all countries
+ * @return Array Array of cids & country_names
+ */
+function getAllCountry($dropDown = FALSE) {
+$results = []; 
+$query = \Drupal::database()->select('country', 'c')
+         ->fields('c', ['cid','country_name']);
+$records = $query->execute()->fetchAll();
+if($dropDown) {
+foreach($records as $row) {
+            $results[$row->cid] = $row->country_name;
+        }
+        return $results;    
+} else {
+    return $records;
+}
+}
+/**
+ * Fetch a country based on Country ID
+ * @param Numeric $cid Country ID
+ * @return Array Array of cid & country_name
+ */
+function getCountryFromId($cid) {
+    $query = \Drupal::database()->select('country', 'c')
+                   ->fields('c', ['cid', 'country_name'])
+                   ->condition('cid', $cid);
+    $record = $query->execute()->fetchAssoc();
+    return $record;
+}
+/**
+ * Fetch all Nationalities
+ * @return Array Array of naids & nationality_names
+ */
+function getAllNationality($dropDown = FALSE) {
+$results = [];    
+$query = \Drupal::database()->select('nationality', 'n')
+         ->fields('n', ['naid','nationality_name']);
+$records = $query->execute()->fetchAll();    
+if($dropDown) {
+foreach($records as $row) {
+            $results[$row->naid] = $row->nationality_name;
+        }
+        return $results;    
+} else {
+    return $records;
+}
+}
+/**
+ * Fetch a Nationality based on Nationality ID
+ * @param Numeric $naid Nationality ID
+ * @return Array Array of naid & nationality_name
+ */
+function getNationalityFromId($cid) {
+    $query = \Drupal::database()->select('nationality', 'n')
+                   ->fields('n', ['naid', 'nationality_name'])
+                   ->condition('naid', $cid);
+    $record = $query->execute()->fetchAssoc();
+    return $record;
+}
+/**
+ * Fetch all Purposes
+ * @return Array Array of pids & purpose_travels
+ */
+function getAllPurpose() {
+$query = \Drupal::database()->select('purpose_of_travel', 'p')
+         ->fields('p', ['pid','purpose_travel']);
+$records = $query->execute()->fetchAll();    
+return $records;
+}
+/**
+ * Fetch a Purpose based on purpose ID
+ * @param Numeric $pid Purpose of Travel ID
+ * @return Array Array of pid & purpose_travel
+ */
+function getPurposeFromId($cid) {
+    $query = \Drupal::database()->select('purpose_of_travel', 'p')
+                   ->fields('p', ['pid', 'purpose_travel'])
+                   ->condition('pid', $cid);
+    $record = $query->execute()->fetchAssoc();
+    return $record;
+}
+/**
+ * Fetch all Visa types
+ * @return Array Array of vtids & visa_types
+ */
+function getAllVisaType($dropDown = FALSE) {
+$results = [];    
+$query = \Drupal::database()->select('visa_types', 'vt')
+         ->fields('vt', ['vtid','visa_type']);
+$records = $query->execute()->fetchAll();  
+if($dropDown) {
+foreach($records as $row) {
+            $results[$row->vtid] = $row->visa_type;
+        }
+        return $results;    
+} else {
+    return $records;
+}
+
+}
+/**
+ * Fetch a Visa type based on visa type ID
+ * @param Numeric $cid Visa type ID
+ * @return Array Array of vtid & visa_type
+ */
+function getVisaTypeFromId($cid) {
+    $query = \Drupal::database()->select('visa_types', 'vt')
+                   ->fields('vt', ['vtid', 'visa_type'])
+                   ->condition('vtid', $cid);
+    $record = $query->execute()->fetchAssoc();
+    return $record;
+}
+/**
+ * Fetch Country Purpose data
+ */
+function getAllCountryPurposes() {
+    $query = \Drupal::database()->select('country_purpose_assoc', 'cp');
+    $query->join('country', 'c', 'c.cid = cp.acid');
+    $query->join('purpose_of_travel', 'p', 'p.pid = cp.apid');
+    $query->fields('c', ['country_name']);
+    $query->addExpression('GROUP_CONCAT(p.purpose_travel)', 'purpose_travel');
+    $query->groupBy('c.country_name');
+    $record = $query->execute()->fetchAll();
+    return $record;
+}
+/**
+ * Fetch Purpose of travel data based on Country ID
+ */
+function getPurposeBasedCountry($selected,$dropDown) {
+    $results = [];
+    $query = \Drupal::database()->select('country_purpose_assoc', 'cp');
+    $query->join('purpose_of_travel', 'p', 'p.pid = cp.apid');
+    $query->fields('p', ['pid', 'purpose_travel']);
+    $query->condition('cp.acid', $selected);
+    $record = $query->execute()->fetchAll();
+    if($dropDown) {
+        foreach($record as $row) {
+            $results[$row->pid] = $row->purpose_travel;
+        }
+        return $results;
+    } else {
+      return $record;
+    }
+    
+}
+/**
+ * Fetch Country, Purpose of travel & Visa type data
+ */
+function getAllCountryPurposeVisa() {
+    $query = \Drupal::database()->select('country_purpose_visa_assoc', 'cpv');
+    $query->join('country', 'c', 'c.cid = cpv.acid');
+    $query->join('purpose_of_travel', 'p', 'p.pid = cpv.apid');
+    $query->join('visa_types', 'v', 'v.vtid = cpv.avid');
+    $query->fields('c', ['country_name']);
+    $query->fields('p', ['purpose_travel']);
+    $query->addExpression('GROUP_CONCAT(v.visa_type)', 'visa_type');
+    $query->groupBy('c.country_name');
+    $query->groupBy('p.purpose_travel');
+    $record = $query->execute()->fetchAll();
+    return $record;
+}
+/**
+ * Get Visa type based on Country & Purpose of Travel
+ */
+function getVisaBasedCountryPurpose($country_id, $purpose_id, $dropDown) {
+    $results = [];
+    $query = \Drupal::database()->select('country_purpose_visa_assoc', 'cpv');
+    $query->join('visa_types', 'v', 'v.vtid = cpv.avid');
+    $query->fields('v', ['vtid', 'visa_type']);
+    $query->condition('cpv.acid', $country_id);
+    $query->condition('cpv.apid', $purpose_id);
+    $record = $query->execute()->fetchAll();
+    if($dropDown) {
+        foreach($record as $row) {
+            $results[$row->vtid] = $row->visa_type;
+        }
+        return $results;
+    } else {
+      return $record;
+    }   
+}
+/**
+ * Get price Assignment for all customer
+ */
+function getPriceAssignment() {
+    $query = \Drupal::database()->select('price_assignment', 'pa');
+    $query->join('country', 'c', 'c.cid = pa.country_id');
+    $query->join('purpose_of_travel', 'p', 'p.pid = pa.purpose_id');
+    $query->join('visa_types', 'v', 'v.vtid = pa.visa_type_id');
+    $query->join('node_field_data', 'nf', 'nf.nid = pa.customer_id');
+    $query->fields('c', ['country_name']);
+    $query->fields('p', ['purpose_travel']);
+    $query->fields('v', ['visa_type']);
+    $query->fields('pa', ['id', 'price']);
+    $query->addField('nf','title', 'customer_name');
+    $record = $query->execute()->fetchAll();
+    return $record;  
+}
+/**
+ * Get price Assignment for individual customer for edit
+ */
+function getPriceAssigned($id) {
+    $query = \Drupal::database()->select('price_assignment', 'pa');
+    $query->join('country', 'c', 'c.cid = pa.country_id');
+    $query->join('purpose_of_travel', 'p', 'p.pid = pa.purpose_id');
+    $query->join('visa_types', 'v', 'v.vtid = pa.visa_type_id');
+    $query->join('node_field_data', 'nf', 'nf.nid = pa.customer_id');
+    $query->fields('c', ['country_name']);
+    $query->fields('p', ['purpose_travel']);
+    $query->fields('v', ['visa_type']);
+    $query->addField('nf','title', 'customer_name');
+    $query->fields('pa', ['id','customer_id','country_id','purpose_id','visa_type_id','price']);
+    $query->condition('pa.id',$id);
+    $record = $query->execute()->fetchAssoc();
+    return $record;  
+}
+/**
+ * Implements hook_mail
+ */
+function evisa_mail($key, &$message, $params) {
+ switch ($key) {
+   case 'price_assign_update':
+     $message['from'] = \Drupal::config('system.site')->get('mail');
+     $message['subject'] = t('Kamles Test Subject');
+     $message['body'][] = t('Dear Admin, <br /> Visa Price of @customer for @country @purpose @visatype has been updated from @oldprice to @price', array('@customer' => $params['customer_name'], '@country'=>$params['country_name'],'@purpose'=> $params['purpose_type'], '@visatype'=> $params['visa_type'], '@oldprice'=>$params['old_price'], '@price' =>$params['price']));
+     break;
+ }
+}
+/**
+ * Get Cummulative Amount
+ * @param INT $customer_id Customer ID
+ */
+function getCumAmount($customer_id) {
+  $amount = \Drupal::database()->select('account_txn', 'at')
+          ->fields('at', ['cum_amount'])
+          ->condition('at.customer_id', $customer_id)
+          ->orderBy('id','DESC')
+          ->execute()->fetchField();
+  return $amount;
+}
+/**
+ * Get price for online Visa
+ */
+function getVisaPrice($country_id,$purpose_travel,$visa_type,$customerId,$nationality,$urgent_visa) {
+    $price = \Drupal::database()->select('price_assignment', 'pa')
+            ->fields('pa',['price'])
+            ->condition('pa.country_id', $country_id)
+            ->condition('pa.customer_id', $customerId)
+            ->condition('pa.purpose_id', $purpose_travel)
+            ->condition('pa.visa_type_id', $visa_type)
+            ->execute()->fetchField();
+    return $price;
+}
+/**
+ * Download File
+ */
+function evisa_file_download($newfile) {
+    $headers = file_get_content_headers($newfile);
+    return $headers;    
+}
+/**
+ * Get Visa detail based on ID
+ */
+function visaDetail($visa_id) {
+        $query = \Drupal::database()->select('visa_report', 'vr');
+        $query->join('visa', 'v', 'v.id = vr.visa_id');
+        $query->fields('vr', ['id','visa_id','customer_name','destination_name','purpose_name','visa_type_name','nationality','visa_price','urgent','name','passport_no', 'father_name', 'mother_name', 'created', 'status_id']);
+        $query->fields('v', ['pas_photo_id','pas_passport_first_id','pas_passport_last_id','pas_sup_doc_1','pas_sup_doc_2','pas_ticket']);
+        $query->condition('vr.id', $visa_id);
+        $visdet = $query->execute()->fetchAssoc();
+        return $visdet;
+}
+/**
+ * View Visa Template
+ */
+function evisa_theme($existing, $type, $theme, $path) {
+  return [
+    'view_visa' => [
+      'variables' => ['visa_detail' => NULL, 'photo_url' => NULL, 'pass_first' => NULL, 'pass_last' => NULL, 'sup_doc_1' => NULL, 'sup_doc_2' => NULL, 'ticket' => NULL],
+    ],
+  ];
+}
+/**
+ * Get Uploaded file URL from file ID
+ */
+function getUpFileUrl($fileId) {
+   $fileUrl = '';
+   if(!empty($fileId)) {
+        $newfile = \Drupal\file\Entity\File::load($fileId);
+        $uri = $newfile->getFileUri();
+        $fileUrl = Url::fromUri(file_create_url($uri));
+   }
+   return $fileUrl;
+}

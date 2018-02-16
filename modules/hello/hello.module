@@ -1,0 +1,189 @@
+<?php
+use Drupal\user\Entity\User;
+use Drupal\Core\Routing\RouteMatchInterface;
+function hello_hello_world() {
+   return t('Hello Drupal 8 World!');
+}
+
+function hello_welcome() {
+     $user = User::load(\Drupal::currentUser()->id());
+     if ($user->get('uid')->value < 1) {
+         return t('Welcome  Visitor!');
+     } else {
+        return t('Welcome  ' . $user->getUsername() . '!');
+     }
+}
+function hello_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.hello':
+      $output = '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The Hello module is used for creating structured, multi-page content, such as site resource guides, manuals, and wikis. It allows you to create content that has chapters, sections, subsections, or any similarly-tiered structure. Enabling the module creates a new content type <em>Book page</em>. For more information, see the <a href=":book">online documentation for the Book module</a>.', [':book' => 'https://www.drupal.org/documentation/modules/book']) . '</p>';
+      $output .= '<h3>' . t('Uses') . '</h3>';
+      $output .= '<dl>';
+      return $output;
+}
+}
+function hello_views_data() {
+// Define the return array.
+  $data = array();
+
+  // The outermost keys of $data are Views table names, which should usually
+  // be the same as the hook_schema() table names.
+  $data['country'] = array();
+
+  // The value corresponding to key 'table' gives properties of the table
+  // itself.
+  $data['country']['table'] = array();
+
+  // Within 'table', the value of 'group' (translated string) is used as a
+  // prefix in Views UI for this table's fields, filters, etc. When adding
+  // a field, filter, etc. you can also filter by the group.
+  $data['country']['table']['group'] = t('Country table');
+
+  // Within 'table', the value of 'provider' is the module that provides schema
+  // or the entity type that causes the table to exist. Setting this ensures
+  // that views have the correct dependencies. This is automatically set to the
+  // module that implements hook_views_data().
+  $data['country']['table']['provider'] = 'hello';
+
+  // Some tables are "base" tables, meaning that they can be the base tables
+  // for views. Non-base tables can only be brought in via relationships in
+  // views based on other tables. To define a table to be a base table, add
+  // key 'base' to the 'table' array:
+  $data['country']['table']['base'] = array(
+    // Identifier (primary) field in this table for Views.
+    'field' => 'cid',
+    // Label in the UI.
+    'title' => t('Country table'),
+    // Longer description in the UI. Required.
+    'help' => t('Country table contains Country Name.'),
+    'weight' => -10,
+  );
+  
+ $data['country']['cid'] = array(
+    'title' => t('Country Content'),
+    'help' => t('Relate Country content to the User content'),
+
+
+    'field' => array(
+      // ID of field handler plugin to use.
+      'id' => 'numeric',
+    ),
+
+    'sort' => array(
+      // ID of sort handler plugin to use.
+      'id' => 'standard',
+    ),
+
+    'filter' => array(
+      // ID of filter handler plugin to use.
+      'id' => 'numeric',
+    ),
+
+    'argument' => array(
+      // ID of argument handler plugin to use.
+      'id' => 'numeric',
+    ),     
+     
+    'relationship' => array(
+      // Views name of the table to join to for the relationship.
+      'base' => 'users_field_data',
+      // Database field name in the other table to join on.
+      'base field' => 'uid',
+      // ID of relationship handler plugin to use.
+      'id' => 'standard',
+      // Default label for relationship in the UI.
+      'label' => t('Country User'),
+    ),     
+ 
+  ); 
+ 
+$data['country']['country_name'] = array(
+    'title' => t('Country Name'),
+    'help' => t('Country Name.'),
+
+    'field' => array(
+      // ID of field handler plugin to use.
+      'id' => 'standard',
+    ),
+
+    'sort' => array(
+      // ID of sort handler plugin to use.
+      'id' => 'standard',
+    ),
+
+    'filter' => array(
+      // ID of filter handler plugin to use.
+      'id' => 'string',
+    ),
+
+    'argument' => array(
+      // ID of argument handler plugin to use.
+      'id' => 'string',
+    ),
+  ); 
+
+ // Numeric field, exposed as a field, sort, filter, and argument.
+  $data['country']['uid'] = array(
+    'title' => t('User ID'),
+    'help' => t('User created Country.'),
+
+    'field' => array(
+      // ID of field handler plugin to use.
+      'id' => 'numeric',
+    ),
+
+    'sort' => array(
+      // ID of sort handler plugin to use.
+      'id' => 'standard',
+    ),
+
+    'filter' => array(
+      // ID of filter handler plugin to use.
+      'id' => 'numeric',
+    ),
+
+    'argument' => array(
+      // ID of argument handler plugin to use.
+      'id' => 'numeric',
+    ),
+  );
+
+$data['country']['table']['join'] = array(
+    // Within the 'join' section, list one or more tables to automatically
+    // join to. In this example, every time 'node_field_data' is available in
+    // a view, 'example_table' will be too. The array keys here are the array
+    // keys for the other tables, given in their hook_views_data()
+    // implementations. If the table listed here is from another module's
+    // hook_views_data() implementation, make sure your module depends on that
+    // other module.
+    'users_field_data' => array(
+      // Primary key field in users_field_data to use in the join.
+      'left_field' => 'uid',
+      // Foreign key field in country to use in the join.
+      'field' => 'uid',
+      // 'extra' is an array of additional conditions on the join.
+      'extra' => array(
+        0 => array(
+          // Adds AND node_field_data.published = TRUE to the join.
+          'field' => 'status',
+          'value' => 1,
+        ),
+      ),
+    ),
+  );
+
+   return $data;  
+}
+
+function hello_entity_operation(\Drupal\Core\Entity\EntityInterface $entity) {
+    $operations = [];
+  $operations['edit'] = [
+    'title' => t('Translate'),
+    'url' => \Drupal\Core\Url::fromRoute('hello.entity.translate'),
+    'weight' => 50,
+  ];
+  return $operations;
+    
+}
+     

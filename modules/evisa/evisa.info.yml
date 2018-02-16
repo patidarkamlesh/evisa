@@ -1,0 +1,6 @@
+name: Evisa Master
+type: module
+description: 'Evisalink Master'
+package: EvisaLink
+version: 1.0
+core: '8.x'

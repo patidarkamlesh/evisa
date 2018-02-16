@@ -1,0 +1,26 @@
+{# empty Twig template #}
+<p>Customer Name: {{ visa_detail.customer_name }}</p>
+<p>Destination: {{ visa_detail.destination_name }}</p>
+<p>Purpose of Travel: {{ visa_detail.purpose_name }}</p>
+<p>Visa Type: {{ visa_detail.visa_type_name }}</p>
+<p>Nationality: {{ visa_detail.nationality }}</p>
+<p>Visa Price: {{ visa_detail.visa_price }}</p>
+<p>Urgent: {{ visa_detail.urgent ? 'Yes' : 'No' }}</p>
+<p>Passanger Name: {{ visa_detail.name }}</p>
+<p>Passanger Passport No: {{ visa_detail.passport_no }}</p>
+<p>Passanger Father Name: {{ visa_detail.father_name }}</p>
+<p>Passanger Mother Name: {{ visa_detail.mother_name }}</p>
+<a href="{{ photo_url }}" download>Passanger Photo</a>
+<a href="{{ pass_first }}" download>Passport First Page</a>
+<a href="{{ pass_last }}" download>Passport Last Page</a>
+{% if sup_doc_1 %}
+<a href="{{ sup_doc_1 }}" download>Supporting Doc 1</a>
+{% endif %}
+{% if sup_doc_2 %}
+<a href="{{ sup_doc_2 }}" download>Supporting Doc 2</a>
+{% endif %}
+{% if ticket %}
+<a href="{{ ticket }}" download>Ticket</a>
+{% endif %}
+<p><a href="{{ url('evisa.visa') }}">{{ 'Back'|t }}</a></p>
+
