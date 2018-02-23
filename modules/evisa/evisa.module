@@ -28,9 +28,13 @@ function evisa_help($route_name, RouteMatchInterface $route_match) {
 /**
  * Get Customer Id for Current user
  */
-function getCustomerId() {
+function getCustomerId($agent_id=NULL) {
     $customerId = '';
-    $user = User::load(\Drupal::currentUser()->id());
+    if($agent_id){
+        $user = User::load($agent_id);
+    } else {
+        $user = User::load(\Drupal::currentUser()->id());
+    }
     foreach($user->get('field_customer_name') as $custId){
         $customerId = $custId->target_id;
     }
@@ -273,6 +277,16 @@ function evisa_mail($key, &$message, $params) {
      $message['subject'] = t('Kamles Test Subject');
      $message['body'][] = t('Dear Admin, <br /> Visa Price of @customer for @country @purpose @visatype has been updated from @oldprice to @price', array('@customer' => $params['customer_name'], '@country'=>$params['country_name'],'@purpose'=> $params['purpose_type'], '@visatype'=> $params['visa_type'], '@oldprice'=>$params['old_price'], '@price' =>$params['price']));
      break;
+   case 'approved_visa':
+     $message['from'] = \Drupal::config('system.site')->get('mail');
+     $message['subject'] = t('Your Visa has been Approved');
+     $message['body'][] = t('Dear Agent, <br /> Your Visa has been <b>Approved</b> for Passport Number @passsport', array('@passsport' => 'N34434224'));
+     break;
+   case 'rejected_visa':
+     $message['from'] = \Drupal::config('system.site')->get('mail');
+     $message['subject'] = t('Kamles Test Subject');
+     $message['body'][] = t('Dear Agent, <br /> Your Visa has been <b>Rejected</b> by visa authority for Passport Number @passsport', array('@passsport' => 'N34434224'));
+     break;
  }
 }
 /**
@@ -313,8 +327,8 @@ function evisa_file_download($newfile) {
 function visaDetail($visa_id) {
         $query = \Drupal::database()->select('visa_report', 'vr');
         $query->join('visa', 'v', 'v.id = vr.visa_id');
-        $query->fields('vr', ['id','visa_id','customer_name','destination_name','purpose_name','visa_type_name','nationality','visa_price','urgent','name','passport_no', 'father_name', 'mother_name', 'created', 'status_id']);
-        $query->fields('v', ['pas_photo_id','pas_passport_first_id','pas_passport_last_id','pas_sup_doc_1','pas_sup_doc_2','pas_ticket']);
+        $query->fields('vr', ['id','visa_id','customer_name','destination_name','purpose_name','visa_type_name','nationality','visa_price','urgent','name','passport_no', 'father_name', 'mother_name', 'created', 'status_id', 'agent_id']);
+        $query->fields('v', ['pas_photo_id','pas_passport_first_id','pas_passport_last_id','pas_sup_doc_1','pas_sup_doc_2','pas_ticket', 'reference_no', 'reject_reason', 'approved_visa']);
         $query->condition('vr.id', $visa_id);
         $visdet = $query->execute()->fetchAssoc();
         return $visdet;
@@ -327,6 +341,10 @@ function evisa_theme($existing, $type, $theme, $path) {
     'view_visa' => [
       'variables' => ['visa_detail' => NULL, 'photo_url' => NULL, 'pass_first' => NULL, 'pass_last' => NULL, 'sup_doc_1' => NULL, 'sup_doc_2' => NULL, 'ticket' => NULL],
     ],
+    'download_visa' => [
+      'variables' => ['price_detail' => NULL],
+    ],
+      
   ];
 }
 /**
@@ -340,4 +358,63 @@ function getUpFileUrl($fileId) {
         $fileUrl = Url::fromUri(file_create_url($uri));
    }
    return $fileUrl;
+}
+/**
+ * Run Cron to block Customer
+ */
+function evisa_cron() {
+    $today = strtotime(date('Y-m-d'));
+    $customer_id = [];
+    $custVals = \Drupal::database()->select('block_customer', 'bc')
+            ->fields('bc',['customer_id'])
+            ->condition('bc.block', 0)
+            ->condition('bc.block_date', $today)
+            ->execute()->fetchAll();
+    foreach($custVals as $custVal) {
+      $customer_id[] = $custVal->customer_id;  
+    }
+    if(count($customer_id)) {
+       $updateCust = \Drupal::database()->update('block_customer')
+               ->fields([
+                   'block' => 1
+               ])
+               ->condition('customer_id', $customer_id, 'IN')
+               ->execute();
+       \Drupal::logger('evisa')->notice('Blocked @customer', array('@customer' => implode(',', $customer_id)));
+    }
+}
+/**
+ * Get blocked customer 
+ */
+function getBlockedCustomer() {
+    $blocked = \Drupal::database()->select('block_customer', 'bc');
+    $blocked->join('node_field_data', 'nf', 'nf.nid = bc.customer_id');
+    $blocked->addField('nf','title', 'customer_name');
+    $blocked->fields('bc', ['id','block_date']);
+    $blocked->condition('bc.block', 1);
+    $record = $blocked->execute()->fetchAll();
+    return $record;
+}
+/**
+ * Get blocked customer data
+ */
+function getBlockedData($blockId) {
+    $blocked = \Drupal::database()->select('block_customer', 'bc');
+    $blocked->join('node_field_data', 'nf', 'nf.nid = bc.customer_id');
+    $blocked->addField('nf','title', 'customer_name');
+    $blocked->fields('bc', ['id','block_date']);
+    $blocked->condition('bc.id', $blockId);
+    $record = $blocked->execute()->fetchAssoc();
+    return $record;
+}
+/**
+ * Get Customer Status
+ */
+function getBlockedStatus($customerId) {
+    $blocked = \Drupal::database()->select('block_customer', 'bc')
+            ->fields('bc', ['block'])
+            ->condition('bc.customer_id', $customerId)
+            ->execute()->fetchField();
+    return ($blocked) ? TRUE : FALSE;
+    
 }

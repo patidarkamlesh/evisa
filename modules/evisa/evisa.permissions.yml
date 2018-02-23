@@ -1,4 +1,7 @@
 ## YAML Template.
+'access master':
+    title: 'Access Master'
+    restrict access: TRUE
 'view country':
   title: 'View Country Master'
   description: 'View Country Master'
@@ -69,4 +72,14 @@
 'view visa':
   title: 'View Visa Report'
   description: 'View Visa Report'
+'block customer':
+  title: 'Block Customer List'
+  description: 'Block Customer List'
+'add block customer':
+  title: 'To Block Customer'
+  description: 'Add Customer into block list'
+'unblock customer':
+  title: 'To Unblock Customer'
+  description: 'Remove Customer from block list'
+  
   

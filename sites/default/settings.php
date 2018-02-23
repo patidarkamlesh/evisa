@@ -784,7 +784,8 @@ $settings['entity_update_batch_size'] = 50;
    include $app_root . '/' . $site_path . '/settings.local.php';
  }
 $databases['default']['default'] = array (
-  'database' => 'db_drupal8',
+  //'database' => 'db_drupal8',
+  'database' => 'homedrupal8',
   'username' => 'root',
   'password' => '',
   'prefix' => '',

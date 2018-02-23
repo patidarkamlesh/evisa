@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Drupal\Component\Utility\Tags;
 use Drupal\Component\Utility\Unicode;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class EvisaController extends ControllerBase {
 
@@ -296,5 +297,108 @@ class EvisaController extends ControllerBase {
             
     ];
     }
+    /**
+     * Download Visa
+     * @param INT $vid visa ID
+     */
+    public function downloadVisa() {
+        $scheme = 'public';
+        $approvalId = \Drupal::request()->get('vid');
+        $newfile = \Drupal\file\Entity\File::load($approvalId);
+        $uri = $newfile->getFileUri();
+        $newfile->setFilename($newfile->getFilename());
+        $downloadFile = evisa_file_download($newfile);
+        $contentdis = 'attachment';
+        $kam = 1;
+        if ($kam == 1) {
+            return new BinaryFileResponse($uri, 200, $downloadFile, $scheme !== 'private', $contentdis);
+        } else {
+            $price_detail = '';
+            return [
+                '#theme' => 'download_visa',
+                '#price_detail' => $price_detail,
+            ];
+        }
+    }
+    /**
+     * Block Customer List
+     */
+    public function blockCustomerList() {
+        $blockCustomers = getBlockedCustomer();
+        //create table header
+        $header_table = [
+            'customer_name' => t('Customer Name'),
+            'block_date' => t('Block Date'),
+            'opt' => t('Action'),
+        ];
+        $rows = [];
+        foreach ($blockCustomers as $blockCustomer) {
+            $edit = Url::fromUserInput('/evisa/blockCust/unblock/' . $blockCustomer->id, ['attributes' => ['class' => 'button']]);
+            $rows[] = [
+                'customer_name' => $blockCustomer->customer_name,
+                'block_date' => date('d-m-Y', $blockCustomer->block_date),
+                'opt' => Link::fromTextAndUrl('Unblock', $edit)
+            ];
+        }
+        // Add Block Customer Link
+        $blockcustdata['block_customer'] = [
+            '#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/blockCust/form">Block Customer</a></p>',
+        ];
+        //display Visa Type table
+        $blockcustdata['table'] = [
+            '#type' => 'table',
+            '#header' => $header_table,
+            '#rows' => $rows,
+            '#empty' => t('No records found'),
+        ];
+        return $blockcustdata;
+    }
+    /**
+     * Download Visa Report
+     */
+    public function downloadVisaReport() {
+        $visaReportUrl = \Drupal::request()->server->get('HTTP_REFERER');
+        $queryString = parse_url($visaReportUrl);
+        if(!empty($queryString['query'])) {
+         parse_str($queryString['query'], $output);  
+         if(array_key_exists('page', $output)) {
+             unset($output['page']);
+         }
+        }
+        $query = \Drupal::database()->select('visa_report', 'vr');
+        $query->join('visa', 'v', 'v.id = vr.visa_id');
+        $query->fields('vr', ['id','visa_id','customer_name','destination_name','purpose_name','visa_type_name','nationality','visa_price','urgent','name','passport_no', 'father_name', 'mother_name', 'created', 'status_id', 'approved_visa']);
+        if (isset($output['customer_name']) && (!empty($output['customer_name']))){
+          $query->condition('vr.customer_name', '%' . db_like($output['customer_name']) . '%', 'LIKE');
+        }
+        $roles = \Drupal::currentUser()->getRoles();
+        if(in_array('agent', $roles)){
+          $query->condition('v.customer_id', getCustomerId());
+        }
+        $visaReports = $query->execute()->fetchAll();
+        //print_r($visaReports); exit;
 
+$header = array(
+		t('Node ID'),
+		t('Node Title'),
+		t('Node Type'),
+  );  
+$xls_content = '';
+$xls_content_row = '';
+$data =  array();
+		$data[] = 1;
+		$data[] = 'kamlesh Title';
+		$data[] = 'Type';
+		$xls_content_row .= implode("\t", array_values($data)) . "\r\n";
+$xls_content_header = implode("\t", array_values($header)) . "\r";
+  $xls_content .= $xls_content_header . "\n" . $xls_content_row;
+       header("Expires: 0");
+       header("Pragma: public");
+       header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+       header('Content-type: application/ms-excel');
+       header('Content-Disposition: attachment;filename=node_listing.xls');
+       print $xls_content;
+       exit();  
+                
+    }
 }

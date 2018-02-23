@@ -3,7 +3,7 @@ evisa:
   defaults:
     _controller: '\Drupal\evisa\Controller\EvisaController::sayhello'
   requirements:
-    _permission: 'access content'
+    _permission: 'access master'
 
 evisa.country:
   path: 'evisa/country'
@@ -168,4 +168,54 @@ evisa.view.visa:
      _permission: 'view visa'
      id: '^[0-9]+'
     
+evisa.edit.visa:
+   path: 'evisa/visa/edit/{vid}'
+   defaults:
+     _form: '\Drupal\evisa\Form\VisaEdit'
+     _title: 'Edit Visa'
+   requirements:
+     _permission: 'view visa'
+     id: '^[0-9]+'    
+
+evisa.download.visa:
+   path: 'evisa/visa/download/{vid}'
+   defaults:
+     _controller: '\Drupal\evisa\Controller\EvisaController::downloadVisa'
+     _title: 'Download Visa'
+   requirements:
+     _permission: 'view visa'
+     id: '^[0-9]+'    
+
+evisa.block:
+   path: 'evisa/blockCust'
+   defaults:
+     _controller: '\Drupal\evisa\Controller\EvisaController::blockCustomerList'
+     _title: 'Block Customer List'
+   requirements:
+     _permission: 'block customer' 
+ 
+evisa.form.block:
+   path: 'evisa/blockCust/form'
+   defaults:
+     _form: '\Drupal\evisa\Form\BlockCustomer'
+     _title: 'Block Customer'
+   requirements:
+     _permission: 'add block customer'
+     
+evisa.unblock:
+   path: 'evisa/blockCust/unblock/{bid}'
+   defaults:
+     _form: '\Drupal\evisa\Form\UnblockCustomer'
+     _title: 'Unblock Customer'
+   requirements:
+     _permission: 'unblock customer'
+     id: '^[0-9]+'
+     
+evisa.download.excel:     
+   path: 'evisa/visa/download/excel'
+   defaults:
+     _controller: '\Drupal\evisa\Controller\EvisaController::downloadVisaReport'
+     _title: 'Download Visa Report'
+   requirements:
+     _permission: 'view visa'
    
