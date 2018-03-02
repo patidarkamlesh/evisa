@@ -24,7 +24,7 @@ class AccountTxn extends FormBase {
     public function buildForm(array $form, FormStateInterface $form_state) {
         // Add Credit Link
         $form['add_credit'] = [
-            '#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/account/form">Add Credit for customer</a></p>',
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/evisa/account/form'>Add Credit for customer</a></p>",
         ];
         $query = \Drupal::database()->select('account_txn', 'at');
         $query->join('node_field_data', 'nf', 'nf.nid = at.customer_id');

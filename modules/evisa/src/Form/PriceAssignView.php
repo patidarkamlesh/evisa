@@ -25,7 +25,8 @@ class PriceAssignView extends FormBase {
         $custdata = \Drupal::request()->get('customer_name');
         // Add Price Assignment Link
         $form['add_priceassign'] = [
-            '#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/priceassignment/form">Add Price Assignment</a></p>',
+            //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/priceassignment/form">Add Price Assignment</a></p>',
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/evisa/priceassignment/form'>Add Price Assignment</a></p>",
         ];
 
         $form['filter'] = [

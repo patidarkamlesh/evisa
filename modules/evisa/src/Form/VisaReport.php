@@ -27,7 +27,8 @@ class VisaReport extends FormBase {
         $blockStatus = FALSE;
         // Add Visa Link
         $form['add_visa'] = [
-            '#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/demo/multistep-one">Post Visa</a></p>',
+            //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/demo/multistep-one">Post Visa</a></p>',
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/demo/multistep-one'>Post Visa</a></p>",
         ];
 
         $form['filter'] = [

@@ -40,7 +40,8 @@ class EvisaController extends ControllerBase {
         }
         // Add Country Link
         $countrydata['add_country'] = [
-            '#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/country/form">Add Country</a></p>',
+            //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/country/form">Add Country</a></p>',
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/evisa/country/form'>Add Country</a></p>",
         ];
         //display country table
         $countrydata['table'] = [
@@ -73,7 +74,8 @@ class EvisaController extends ControllerBase {
         }
         // Add Nationality Link
         $nationaldata['add_nationality'] = [
-            '#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/national/form">Add Nationality</a></p>',
+            //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/national/form">Add Nationality</a></p>',
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/evisa/national/form'>Add Nationality</a></p>",
         ];
         //display Nationality table
         $nationaldata['table'] = [
@@ -105,7 +107,8 @@ class EvisaController extends ControllerBase {
         }
         // Add Purpose of Travel Link
         $purposedata['add_purpose'] = [
-            '#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/purpose/form">Add Purpose of Travel</a></p>',
+            //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/purpose/form">Add Purpose of Travel</a></p>',
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/evisa/purpose/form'>Add Purpose of Travel</a></p>",
         ];
         //display Purpose of Travel table
         $purposedata['table'] = [
@@ -168,7 +171,8 @@ class EvisaController extends ControllerBase {
         }
         // Add Visa Type Link
         $countrypurposedata['add_countrypurpose'] = [
-            '#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/countrypurpose/form">Add Association of Country & Purpose of Travel</a></p>',
+            //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/countrypurpose/form">Add Association of Country & Purpose of Travel</a></p>',
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/evisa/countrypurpose/form'>Add Association of Country & Purpose of Travel</a></p>",
         ];
         //display Visa Type table
         $countrypurposedata['table'] = [
@@ -201,7 +205,8 @@ class EvisaController extends ControllerBase {
         }
         // Add Visa Type Link
         $countrypurposeVisadata['add_countrypurpose'] = [
-            '#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/countrypurposevisa/form">Add Association</a></p>',
+            //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/countrypurposevisa/form">Add Association</a></p>',
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/evisa/countrypurposevisa/form'>Add Association</a></p>",
         ];
         //display Visa Type table
         $countrypurposeVisadata['table'] = [
@@ -242,7 +247,8 @@ class EvisaController extends ControllerBase {
         }
         // Add Price Assignment Link
         $priceAssigndata['add_priceassign'] = [
-            '#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/priceassignment/form">Add Price Assignment</a></p>',
+            //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/priceassignment/form">Add Price Assignment</a></p>',
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/evisa/priceassignment/form'>Add Price Assignment</a></p>",
         ];
         //display Visa Type table
         $priceAssigndata['table'] = [
@@ -342,7 +348,8 @@ class EvisaController extends ControllerBase {
         }
         // Add Block Customer Link
         $blockcustdata['block_customer'] = [
-            '#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/blockCust/form">Block Customer</a></p>',
+            //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/blockCust/form">Block Customer</a></p>',
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/evisa/blockCust/form'>Block Customer</a></p>",
         ];
         //display Visa Type table
         $blockcustdata['table'] = [
