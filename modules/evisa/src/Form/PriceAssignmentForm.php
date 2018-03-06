@@ -84,6 +84,13 @@ class PriceAssignmentForm extends FormBase {
             '#min' => 0,
             '#required' => TRUE
         ];
+        $form['urgent_price'] = [
+            '#type' => 'number',
+            '#title' => 'Urgent Price',
+            '#description' => 'Enter Urgent Price',
+            '#min' => 0,
+            '#required' => TRUE
+        ];
         $form['actions'] = [
             '#type' => 'actions',
         ];
@@ -140,6 +147,7 @@ class PriceAssignmentForm extends FormBase {
         $purpose_id = $form_state->getValue('purpose_travel');
         $visaTypes = $form_state->getValue('visa_type');
         $price = $form_state->getValue('price');
+        $urgent_price = $form_state->getValue('urgent_price');
         // Insert Price assignment
         $result = \Drupal::database()->insert('price_assignment')
                 ->fields([
@@ -148,6 +156,7 @@ class PriceAssignmentForm extends FormBase {
                     'purpose_id' => $purpose_id,
                     'visa_type_id' => $visaTypes,
                     'price' => $price,
+                    'urgent_price' => $urgent_price,
                     'created_user_id' => \Drupal::currentUser()->id(),
                     'created' => date('Y-m-d H:i:s'),
                     'updated_user_id' => \Drupal::currentUser()->id(),

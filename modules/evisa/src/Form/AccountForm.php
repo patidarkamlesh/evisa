@@ -78,7 +78,7 @@ class AccountForm extends FormBase {
         $result = \Drupal::database()->insert('account_txn')
                 ->fields([
                     'customer_id' => $customer_id,
-                    'amount' => $price,
+                    'credit' => $price,
                     'txn_reason' => $remark,
                     'uid' => \Drupal::currentUser()->id(),
                     'txn_date' => date('Y-m-d H:i:s'),

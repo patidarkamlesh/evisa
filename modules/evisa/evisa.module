@@ -262,7 +262,7 @@ function getPriceAssigned($id) {
     $query->fields('p', ['purpose_travel']);
     $query->fields('v', ['visa_type']);
     $query->addField('nf','title', 'customer_name');
-    $query->fields('pa', ['id','customer_id','country_id','purpose_id','visa_type_id','price']);
+    $query->fields('pa', ['id','customer_id','country_id','purpose_id','visa_type_id','price', 'urgent_price']);
     $query->condition('pa.id',$id);
     $record = $query->execute()->fetchAssoc();
     return $record;  
@@ -271,23 +271,25 @@ function getPriceAssigned($id) {
  * Implements hook_mail
  */
 function evisa_mail($key, &$message, $params) {
- switch ($key) {
-   case 'price_assign_update':
-     $message['from'] = \Drupal::config('system.site')->get('mail');
-     $message['subject'] = t('Kamles Test Subject');
-     $message['body'][] = t('Dear Admin, <br /> Visa Price of @customer for @country @purpose @visatype has been updated from @oldprice to @price', array('@customer' => $params['customer_name'], '@country'=>$params['country_name'],'@purpose'=> $params['purpose_type'], '@visatype'=> $params['visa_type'], '@oldprice'=>$params['old_price'], '@price' =>$params['price']));
-     break;
-   case 'approved_visa':
-     $message['from'] = \Drupal::config('system.site')->get('mail');
-     $message['subject'] = t('Your Visa has been Approved');
-     $message['body'][] = t('Dear Agent, <br /> Your Visa has been <b>Approved</b> for Passport Number @passsport', array('@passsport' => 'N34434224'));
-     break;
-   case 'rejected_visa':
-     $message['from'] = \Drupal::config('system.site')->get('mail');
-     $message['subject'] = t('Kamles Test Subject');
-     $message['body'][] = t('Dear Agent, <br /> Your Visa has been <b>Rejected</b> by visa authority for Passport Number @passsport', array('@passsport' => 'N34434224'));
-     break;
- }
+/*module_load_include('mail.inc', 'evisa');    
+send_email($key, $message, $params);    */
+    switch ($key) {
+        case 'price_assign_update':
+            $message['from'] = \Drupal::config('system.site')->get('mail');
+            $message['subject'] = t('Kamles Test Subject');
+            $message['body'][] = t('Dear Admin, <br /> Visa Price of @customer for @country @purpose @visatype has been updated from @oldprice to @price', array('@customer' => $params['customer_name'], '@country' => $params['country_name'], '@purpose' => $params['purpose_type'], '@visatype' => $params['visa_type'], '@oldprice' => $params['old_price'], '@price' => $params['price']));
+            break;
+        case 'approved_visa':
+            $message['from'] = \Drupal::config('system.site')->get('mail');
+            $message['subject'] = t('Your Visa has been Approved');
+            $message['body'][] = t('Dear Agent, <br /> Your Visa has been <b>Approved</b> for Passport Number @passsport', array('@passsport' => 'N34434224'));
+            break;
+        case 'rejected_visa':
+            $message['from'] = \Drupal::config('system.site')->get('mail');
+            $message['subject'] = t('Kamles Test Subject');
+            $message['body'][] = t('Dear Agent, <br /> Your Visa has been <b>Rejected</b> by visa authority for Passport Number @passsport', array('@passsport' => 'N34434224'));
+            break;
+    }   
 }
 /**
  * Get Cummulative Amount
@@ -306,12 +308,12 @@ function getCumAmount($customer_id) {
  */
 function getVisaPrice($country_id,$purpose_travel,$visa_type,$customerId,$nationality,$urgent_visa) {
     $price = \Drupal::database()->select('price_assignment', 'pa')
-            ->fields('pa',['price'])
+            ->fields('pa',['price', 'urgent_price'])
             ->condition('pa.country_id', $country_id)
             ->condition('pa.customer_id', $customerId)
             ->condition('pa.purpose_id', $purpose_travel)
             ->condition('pa.visa_type_id', $visa_type)
-            ->execute()->fetchField();
+            ->execute()->fetchAssoc();
     return $price;
 }
 /**
@@ -418,3 +420,6 @@ function getBlockedStatus($customerId) {
     return ($blocked) ? TRUE : FALSE;
     
 }
+/**
+ * 
+ */

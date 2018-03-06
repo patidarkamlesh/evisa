@@ -399,11 +399,11 @@ $data =  array();
 		$xls_content_row .= implode("\t", array_values($data)) . "\r\n";
 $xls_content_header = implode("\t", array_values($header)) . "\r";
   $xls_content .= $xls_content_header . "\n" . $xls_content_row;
+       header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+       header('Content-Disposition: attachment;filename=node_listing.xls');
        header("Expires: 0");
        header("Pragma: public");
-       header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-       header('Content-type: application/ms-excel');
-       header('Content-Disposition: attachment;filename=node_listing.xls');
+       header("Cache-Control: must-revalidate, post-check=0, pre-check=0");       
        print $xls_content;
        exit();  
                 

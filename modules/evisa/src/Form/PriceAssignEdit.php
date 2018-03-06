@@ -74,6 +74,14 @@ class PriceAssignEdit extends FormBase {
                 '#required' => TRUE,
                 '#default_value' => $priceAssigned['price'],
             ];
+            $form['urgent_price'] = [
+                '#type' => 'number',
+                '#title' => 'Urgent Price',
+                '#description' => 'Enter Urgent Price',
+                '#min' => 0,
+                '#required' => TRUE,
+                '#default_value' => $priceAssigned['urgent_price'],
+            ];            
             $form['actions'] = [
                 '#type' => 'actions',
             ];
@@ -113,11 +121,15 @@ class PriceAssignEdit extends FormBase {
         $visa_type = $form_state->getValue('visa_type_id');
         $price = $form_state->getValue('price');
         $old_price = $form_state->getValue('old_price');
+        $urgent_price = $form_state->getValue('urgent_price');
+        $old_urgent_price = $form_state->getValue('old_urgent_price');
+        
         $price_assign_id = $form_state->getValue('price_assign_id');
         //Update Price Information
         $updateQuery = \Drupal::database()->update('price_assignment')
                        ->fields([
                            'price' => $price,
+                           'urgent_price' => $urgent_price,
                            'updated_user_id' => \Drupal::currentUser()->id(),
                            'updated' => date('Y-m-d H:i:s'),
                        ])
@@ -134,7 +146,8 @@ class PriceAssignEdit extends FormBase {
  $params['visa_type'] = $visa_type;
  $params['old_price'] = $old_price;
  $params['price'] = $price;
- 
+ $params['urgent_price'] = $urgent_price;
+ $params['old_urgent_price'] = $old_urgent_price;
  $langcode = '';
  $send = true;
  $result = $mailManager->mail($module, $key, $to, $langcode, $params, NULL, $send);

@@ -81,5 +81,8 @@
 'unblock customer':
   title: 'To Unblock Customer'
   description: 'Remove Customer from block list'
+'view mis':
+  title: 'View MIS Report'
+  description: 'View MIS Report'
   
   

@@ -117,7 +117,9 @@ class MultistepOneForm extends MultistepFormBase {
         $nationality = $form_state->getValue('nationality');
         $urgent_visa = $form_state->getValue('urgent_visa');
         $customerId = getCustomerId();
-        $visaPrice = getVisaPrice($country_id, $purpose_travel, $visa_type, $customerId, $nationality, $urgent_visa);
+        $visaPriceInfo = getVisaPrice($country_id, $purpose_travel, $visa_type, $customerId, $nationality, $urgent_visa);
+        $visaPrice = $visaPriceInfo['price'];
+        $urgentPrice = $visaPriceInfo['urgent_price'];
         if ($visaPrice <= 0) {
             drupal_set_message(t('Price not set for your account.'), 'error');
             return $form_state->setRedirect('demo.multistep_one');
@@ -130,6 +132,7 @@ class MultistepOneForm extends MultistepFormBase {
             $this->store->set('nationality', $nationality);
             $this->store->set('urgent_visa', $urgent_visa);
             $this->store->set('visa_price', $visaPrice);
+            $this->store->set('urgent_price', $urgentPrice);
             $this->store->set('customer_id', $customerId);
             $form_state->setRedirect('demo.multistep_two');
         } else {

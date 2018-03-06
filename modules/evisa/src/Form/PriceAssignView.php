@@ -65,7 +65,7 @@ class PriceAssignView extends FormBase {
         $query->fields('c', ['country_name']);
         $query->fields('p', ['purpose_travel']);
         $query->fields('v', ['visa_type']);
-        $query->fields('pa', ['id', 'price']);
+        $query->fields('pa', ['id', 'price', 'urgent_price']);
         $query->addField('nf','title', 'customer_name');
         //if (!empty($form_state->getValue('customer_name'))) {
         if (!empty($custdata)) {
@@ -75,7 +75,8 @@ class PriceAssignView extends FormBase {
         $page = pager_default_initialize($total, $num_per_page);
 
         $offset = $num_per_page * $page;
-        $query->range($offset, $num_per_page);        
+        $query->range($offset, $num_per_page);
+        $query->orderBy('pa.id', 'DESC');
         $priceAssignments = $query->execute()->fetchAll();
         //$count_query = $query->countQuery()->execute()->fetchField();
         //create table header
@@ -85,6 +86,7 @@ class PriceAssignView extends FormBase {
             'purpose' => t('Purpose of Travel'),
             'visa_type' => t('Visa type'),
             'price' => t('Price'),
+            'urgent_price' => t('Urgent Price'),
             'opt' => t('Operation'),
         ];
         $rows = [];
@@ -96,6 +98,7 @@ class PriceAssignView extends FormBase {
                 'purpose' => $priceAssignment->purpose_travel,
                 'visa_type' => $priceAssignment->visa_type,
                 'price' => $priceAssignment->price,
+                'urgent_price' => $priceAssignment->urgent_price,
                 'opt' => Link::fromTextAndUrl('Edit', $edit)
             ];
         }

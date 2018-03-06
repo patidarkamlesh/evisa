@@ -32,6 +32,7 @@ class MultistepTwoForm extends MultistepFormBase {
         $nationality_id = $this->store->get('nationality');
         $urgent_visa = $this->store->get('urgent_visa');
         $visaPrice = $this->store->get('visa_price');
+        $urgentPrice = $this->store->get('urgent_price');
         $customerId = $this->store->get('customer_id');
         if(empty($country_id) || empty($purpose_travel_id) || empty($visa_type_id) || empty($nationality_id) || empty($visaPrice)) {
             drupal_set_message('Not set form Value 1', 'error');
@@ -65,15 +66,29 @@ class MultistepTwoForm extends MultistepFormBase {
             '#title' => $this->t('Nationality'),
             '#markup' => $nationality['nationality_name'],
         ];
+        $form['urgent_visa'] = [
+            '#type' => 'item',
+            '#title' => $this->t('Urgent Visa'),
+            '#markup' => ($urgent_visa == 1) ? 'Yes' : 'No',
+        ];
         $form['visa_price'] = [
             '#type' => 'item',
             '#title' => $this->t('Visa Price'),
             '#markup' => $visaPrice,
         ];
-        $form['urgent_visa'] = [
+        $form['urgent_price'] = [
             '#type' => 'item',
             '#title' => $this->t('Urgent Visa'),
-            '#markup' => ($urgent_visa == 1) ? 'Yes' : 'No',
+            '#markup' => ($urgent_visa == 1) ? $urgentPrice : 0.00,
+        ];
+        $form['total_price'] = [
+            '#type' => 'item',
+            '#title' => $this->t('Total Visa Price'),
+            '#markup' => ($urgent_visa == 1) ? ($urgentPrice + $visaPrice) : $visaPrice,
+        ];
+        $form['final_price'] = [
+            '#type' => 'hidden',
+            '#value' => ($urgent_visa == 1) ? ($urgentPrice + $visaPrice) : $visaPrice,
         ];
         // Form 2 Data
         $form['passanger'] = [
@@ -170,6 +185,7 @@ class MultistepTwoForm extends MultistepFormBase {
      * {@inheritdoc}
      */
     public function submitForm(array &$form, FormStateInterface $form_state) {
+        $this->store->set('final_price', $form_state->getValue('final_price'));
         $this->store->set('name', $form_state->getValue('name'));
         $this->store->set('passport_no', $form_state->getValue('passport_no'));
         $this->store->set('father_name', $form_state->getValue('father_name'));
@@ -182,7 +198,7 @@ class MultistepTwoForm extends MultistepFormBase {
         $this->store->set('ticket', $form_state->getValue('ticket'));
 
         $customerCumAccount = getCumAmount($this->store->get('customer_id'));
-        $visaPrice = $this->store->get('visa_price');
+        $visaPrice = $form_state->getValue('final_price');
         if ($visaPrice <= $customerCumAccount) {
             // Save the data
             parent::saveData();

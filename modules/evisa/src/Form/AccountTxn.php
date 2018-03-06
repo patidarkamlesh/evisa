@@ -28,7 +28,7 @@ class AccountTxn extends FormBase {
         ];
         $query = \Drupal::database()->select('account_txn', 'at');
         $query->join('node_field_data', 'nf', 'nf.nid = at.customer_id');
-        $query->fields('at', ['txn_type', 'amount', 'txn_date', 'txn_reason', 'cum_amount']);
+        $query->fields('at', ['txn_type', 'debit','credit', 'txn_date', 'txn_reason', 'cum_amount']);
         $query->addField('nf','title', 'customer_name');
         $query->orderBy('at.id', 'DESC');
         $accountTxns = $query->execute()->fetchAll();
@@ -36,7 +36,8 @@ class AccountTxn extends FormBase {
         $header_table = [
             'customer_name' => t('Customer Name'),
             'txn_type' => t('Transaction Type'),
-            'amount' => t('Amount'),
+            'debit' => t('Debit'),
+            'credit' => t('Credit'),
             'txn_date' => t('Transaction Date'),
             'txn_reason' => t('Transaction'),
             'cum_amount' => t('Cumulative Total')
@@ -46,7 +47,8 @@ class AccountTxn extends FormBase {
             $rows[] = [
                 'customer_name' => $accountTxn->customer_name,
                 'txn_type' => ($accountTxn->txn_type == 'C' ? 'Credit' : 'Debit'),
-                'amount' => $accountTxn->amount,
+                'debit' => $accountTxn->debit,
+                'credit' => $accountTxn->credit,
                 'txn_date' => $accountTxn->txn_date,
                 'txn_reason' => $accountTxn->txn_reason,
                 'cum_amount' => $accountTxn->cum_amount,

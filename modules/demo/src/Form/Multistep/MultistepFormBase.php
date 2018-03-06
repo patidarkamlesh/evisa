@@ -95,7 +95,7 @@ abstract class MultistepFormBase extends FormBase {
         $visa_type_id = $this->store->get('visa_type');
         $nationality_id = $this->store->get('nationality');
         $urgent_visa = $this->store->get('urgent_visa');
-        $visaPrice = $this->store->get('visa_price');
+        $visaPrice = $this->store->get('final_price');
         $customerId = $this->store->get('customer_id');
         $name = $this->store->get('name');
         $passport_no = $this->store->get('passport_no');
@@ -108,6 +108,7 @@ abstract class MultistepFormBase extends FormBase {
         $support_doc_2 = (!empty($this->store->get('support_doc_2')) ? $this->store->get('support_doc_2') : array(0));
         $ticket = (!empty($this->store->get('ticket')) ? $this->store->get('ticket') : array(0));
         $customerCumAccount = getCumAmount($customerId);
+        $applicationRef = 'EVL'.date('YmdHis').$customerId;
         $visa_id = 0;
         if ($visaPrice <= $customerCumAccount) {
             // Begin Transation
@@ -135,7 +136,8 @@ abstract class MultistepFormBase extends FormBase {
                             'pas_sup_doc_2' => $support_doc_2[0],
                             'pas_ticket' => $ticket[0],
                             'status_id' => 1,
-                            'created_date' => date('Y-m-d H:i:s')
+                            'created_date' => date('Y-m-d H:i:s'),
+                            'app_ref' => $applicationRef
                         ])
                         ->execute();
                 // Upload photo & passport pages
@@ -169,10 +171,10 @@ abstract class MultistepFormBase extends FormBase {
                         ->fields([
                             'customer_id' => $customerId,
                             'txn_type' => 'D',
-                            'amount' => $visaPrice,
+                            'debit' => $visaPrice,
                             'txn_date' => date('Y-m-d H:i:s'),
                             'uid' => \Drupal::currentUser()->id(),
-                            'txn_reason' => 'Invoice for Visa created',
+                            'txn_reason' => 'Visa Posted',
                             'cum_amount' => $newCumAmount,
                             'visa_id' => $visa_id
                         ])
@@ -198,6 +200,7 @@ abstract class MultistepFormBase extends FormBase {
                     ->fields([
                         'visa_id' => $visa_id,
                         'customer_name' => $customerName,
+                        'customer_id' => $customerId,
                         'destination_name' => $destination_name,
                         'purpose_name' => $purpose_name,
                         'visa_type_name' => $type_visa_name,
@@ -211,6 +214,7 @@ abstract class MultistepFormBase extends FormBase {
                         'mother_name' => $mother_name,
                         'created' => date('Y-m-d H:i:s'),
                         'status_id' => 1,
+                        'app_ref' => $applicationRef,
                     ])
                     ->execute();
             //Notify Operation team for New Visa
@@ -222,7 +226,7 @@ abstract class MultistepFormBase extends FormBase {
    * the multistep form.
    */
   protected function deleteStore() {
-    $keys = ['country', 'purpose_travel', 'visa_type', 'nationality', 'visa_price', 'customer_id', 'urgent_visa', 'name', 'passport_no', 'father_name', 'mother_name', 'photo', 'passport_first', 'passport_last', 'support_doc_1', 'support_doc_2', 'ticket', 'destination_name', 'purpose_name', 'nation_name', 'type_visa_name'];
+    $keys = ['country', 'purpose_travel', 'visa_type', 'nationality', 'visa_price', 'customer_id', 'urgent_visa', 'name', 'passport_no', 'father_name', 'mother_name', 'photo', 'passport_first', 'passport_last', 'support_doc_1', 'support_doc_2', 'ticket', 'destination_name', 'purpose_name', 'nation_name', 'type_visa_name', 'final_price', 'urgent_price'];
     foreach ($keys as $key) {
       $this->store->delete($key);
     }
