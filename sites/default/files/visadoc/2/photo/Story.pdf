@@ -1,0 +1,358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0110)http://naiduniaepaper.jagran.com/Article_detail.aspx?id=807&boxid=17305&ed_date=2018-3-01&ed_code=11&ed_page=6 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head id="Head1"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>
+	Story
+</title><link href="./Story_files/main.css" type="text/css" rel="Stylesheet"><link rel="stylesheet" href="./Story_files/default.css" type="text/css">
+    <script async="" src="./Story_files/beacon.js.download"></script><script async="" src="./Story_files/beacon.js.download"></script><script async="" type="text/javascript" src="./Story_files/gpt.js.download"></script><script type="text/javascript" async="" src="./Story_files/ga.js.download"></script><script async="" src="./Story_files/analytics.js.download"></script><script language="javascript" type="text/javascript" src="./Story_files/main.js.download"></script>
+    <script language="javascript" type="text/javascript" src="./Story_files/slider.js.download"></script>
+    
+  	      
+   <!-- Begin New GA --> 
+<script> 
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ 
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), 
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) 
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga'); 
+  ga('create', 'UA-60996559-1', 'auto'); 
+  ga('send', 'pageview'); 
+</script> 
+
+ 
+
+<!-- Begin Old GA --> 
+ <script type="text/javascript"> 
+  var _gaq = _gaq || []; 
+  _gaq.push(['_setAccount', 'UA-24031818-1']); 
+  _gaq.push(['_setDomainName', 'jagran.com']); 
+  _gaq.push(['_trackPageview']); 
+
+  (function() { 
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; 
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; 
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); 
+  })(); 
+</script> 
+ 
+<script type="text/javascript">
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+var gads = document.createElement('script');
+gads.async = true;
+gads.type = 'text/javascript';
+var useSSL = 'https:' == document.location.protocol;
+gads.src = (useSSL ? 'https:' : 'http:') + 
+'//www.googletagservices.com/tag/js/gpt.js';
+var node = document.getElementsByTagName('script')[0];
+node.parentNode.insertBefore(gads, node);
+})();
+</script>
+
+
+<!-- Begin comScore Tag --> 
+<script> 
+  var _comscore = _comscore || []; 
+  _comscore.push({ c1: "2", c2: "13184768" }); 
+  (function() { 
+    var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true; 
+    s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js"; 
+    el.parentNode.insertBefore(s, el); 
+  })(); 
+</script> 
+<noscript> 
+  &lt;img src="http://b.scorecardresearch.com/p?c1=2&amp;c2=13184768&amp;cv=2.0&amp;cj=1" /&gt; 
+</noscript> 
+<!-- End comScore Tag --> 
+  
+
+<script type="text/javascript">
+googletag.cmd.push(function() {
+googletag.defineSlot('/13276288/Nai-Dunia-epaper-Articals_120*600', [120, 600], 'div-gpt-ad-1409746347299-0').addService(googletag.pubads());
+googletag.defineSlot('/13276288/Nai-Dunia-epaper-Articals_120*600_1', [120, 600], 'div-gpt-ad-1409746347299-1').addService(googletag.pubads());
+googletag.defineSlot('/13276288/Nai-Dunia-epaper-Articals_160x600_LHS', [160, 600], 'div-gpt-ad-1409746347299-2').addService(googletag.pubads());
+googletag.defineSlot('/13276288/Nai-Dunia-epaper-Articals_160x600_RHS', [160, 600], 'div-gpt-ad-1409746347299-3').addService(googletag.pubads());
+googletag.defineSlot('/13276288/Nai-Dunia-epaper-Articals_728*90', [728, 90], 'div-gpt-ad-1409746347299-4').addService(googletag.pubads());
+googletag.defineSlot('/13276288/Nai-Dunia-epaper-Articals_728x90_footer', [729, 90], 'div-gpt-ad-1409746347299-5').addService(googletag.pubads());
+googletag.pubads().enableSingleRequest();
+googletag.enableServices();
+});
+</script>
+
+<script type="text/javascript" src="./Story_files/abm_naiduniawebmob.js.download" async=""></script>
+
+    <script language="javascript" type="text/javascript">
+    
+    function changeImageView() {
+    var boxid = document.getElementById("txtboxid").value;
+    var id = document.getElementById("txtparentid").value;
+    var edcode = document.getElementById("txteditioncode").value;
+    var edate = document.getElementById("txtpdfdate").value;
+//     alert ();
+    //document.getElementById("showFlaStory").src = "../flastoryzoom.aspx?id=" + id + "&boxid=" + boxid + "&ed_date=" + edate + "&ed_code=" + edcode;
+    document.getElementById("tview").src = "images/textview.gif";
+    document.getElementById("iview").src = "images/photo-color.gif";
+ document.getElementById("imageContent").style.display = "block";
+    document.getElementById("imageViewMenu").style.display = "block";
+    
+    
+    document.getElementById("getimagesrc").style.display = "block";
+//    document.getElementById("imageViewMenu").style.display = "block";
+        document.getElementById("storyHeading").style.display = "none";
+         document.getElementById("storyText").style.display = "none";
+   
+}
+ 
+function changeTextView() {
+    document.getElementById("tview").src = "images/textview-color.gif";
+    document.getElementById("iview").src = "images/photo.gif";
+//    document.getElementById("storyContent").style.display = "block";
+    document.getElementById("getimagesrc").style.display = "none";
+//    document.getElementById("imageViewMenu").style.display = "block";
+
+            document.getElementById("storyHeading").style.display = "block";
+    document.getElementById("storyText").style.display = "block";
+}
+    
+    </script>
+    
+       
+
+
+  
+
+</head>
+<body onkeypress="closeAllPopup(event);" onload="changeImageView();" style="background-color:White;">
+    <form name="storyform" method="post" action="http://naiduniaepaper.jagran.com/Article_detail.aspx?id=807&amp;boxid=17305&amp;ed_date=2018-3-01&amp;ed_code=11&amp;ed_page=6" id="storyform">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUJMjQ2NTAwODUxD2QWAgIDD2QWAgIVD2QWBgIBDxYCHglpbm5lcmh0bWwFUDxpbWcgc3JjPSIvZXBhcGVyaW1hZ2VzLzAxMDMyMDE4L0luZG9yZS8yOE1ORC1wZzYtMC9kMTczMDUucG5nIiBhbHQ9ImltYWdldmlldyI+ZAIDDxYCHwAFCjxwPuCkgjwvcD5kAgUPFgIfAAUrPGJyIC8+PHAgc3R5bGU9Im1hcmdpbjowcHg7Ij48cD7gpII8L3A+PC9wPmRk+Uk4NRxsqkaWDLM0KTiIncJsV4M=">
+</div>
+
+<script type="text/javascript" src="./Story_files/common.ashx"></script><script type="text/javascript" src="./Story_files/Article_detail,App_Web_article_detail.aspx.cdcab7d2.bffvp3hf.ashx"></script>
+<div>
+
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWCQLShuybBAK/mfLuAwKG85XiDwKY1u7UCQLwrZKUDwLaiYvnDwKi3ayqAQKdlf7kAgLXue72C1p8QN3pQBwb6ltZF/KKYfRiiYGS">
+</div>
+    <!-- Main Story Div -->
+        <div class="main-div">
+            <div class="top-corner-main-div">
+                
+            </div>        	 
+        	<!--- Text View, Image View -->
+            <div class="txtimgClass">
+                
+                <div class="clear"></div>
+            </div>
+            <!--- End Text View, Image View -->
+
+            <!-- Story Content Text Div -->
+            <div class="contentDiv" style="display:none;" id="storyContent">
+              <div class="storyText">
+              <div class="storyWidth">
+               
+                <div class="clear"></div>
+               </div>
+               <div class="storyWidthHr"></div>
+               <div class="storyWidth" style="background-image:url(&#39;images/icon_03.gif&#39;);background-repeat:repeat-x;border-left:1px solid #ffbb15;border-right:1px solid #ffbb15;">
+               <div class="f-left">
+                    <div class="f-left"><img src="./Story_files/textview-color.gif" class="handClass" title="Text View" alt="Text View" onclick="changeTextView();carpeInit();" id="Img1" style="margin-left:10px;" onmouseout="changeOverStoryImage(&#39;images/textview-color.gif&#39;,&#39;Img1&#39;);" onmouseover="changeOverStoryImage(&#39;images/textview-color.gif&#39;,&#39;Img1&#39;);">&nbsp;</div>
+                    <div class="f-left"><img src="./Story_files/photo.gif" class="handClass" title="Image View" alt="Image View" onclick="changeImageView();" id="Img2" onmouseout="changeOverStoryImage(&#39;images/photo.gif&#39;,&#39;Img2&#39;);" onmouseover="changeOverStoryImage(&#39;images/photo-color.gif&#39;,&#39;Img2&#39;);"></div>               
+                    <div class="f-left"><img src="./Story_files/printer.gif" class="handClass" onclick="printStroy();" title="Print Article" onmouseout="changeOverStoryImage(&#39;images/printer.gif&#39;,&#39;prntImg&#39;);" onmouseover="changeOverStoryImage(&#39;images/printer-color.gif&#39;,&#39;prntImg&#39;);" id="prntImg">&nbsp;</div>
+                    <div class="f-left"><img src="./Story_files/mail.gif" class="handClass" title="Post E-Mail" alt="Post E-Mail" onclick="emailStroy();" onmouseout="changeOverStoryImage(&#39;images/mail.gif&#39;,&#39;emailImg&#39;);" onmouseover="changeOverStoryImage(&#39;images/mail-color.gif&#39;,&#39;emailImg&#39;);" id="emailImg">&nbsp;</div>
+                    <div class="f-left"><img src="./Story_files/save.gif" alt="Save" onclick="saveImageAs()" class="handClass" title="Save" onmouseout="changeOverStoryImage(&#39;images/save.gif&#39;,&#39;saveImg&#39;);" onmouseover="changeOverStoryImage(&#39;images/save-color.gif&#39;,&#39;saveImg&#39;);" id="saveImg">&nbsp;</div>
+                    <div class="f-left"><img src="./Story_files/comment.gif" title="Post Comment" alt="Post Comment" onclick="sentComment();" class="handClass" onmouseout="changeOverStoryImage(&#39;images/comment.gif&#39;,&#39;commentImg&#39;);" onmouseover="changeOverStoryImage(&#39;images/comment-color.gif&#39;,&#39;commentImg&#39;);" id="commentImg">&nbsp;</div>
+                    <div class="f-left"><img src="./Story_files/zoom.gif" title="Zoom Page" alt="Zoom Page" onclick="showMouseOverStoryZoom();" class="handClass" onmouseout="changeOverStoryImage(&#39;images/zoom.gif&#39;,&#39;zoomImg&#39;);" onmouseover="changeOverStoryImage(&#39;images/zoom-color.gif&#39;,&#39;zoomImg&#39;);" id="zoomImg">&nbsp;</div>
+                    
+                    <div class="f-left m10">
+                    <div class="f-left starBlock">
+                        <div class="rateStar">
+                            <div class="f-left"><img src="./Story_files/Gry-star.gif" id="str1" alt="1" title="" onclick="inserRateingStroy(&#39;1&#39;)" class="handClass"></div>
+                            <div class="f-left"><img src="./Story_files/Gry-star.gif" id="str2" alt="2" title="" onclick="inserRateingStroy(&#39;2&#39;)" class="handClass"></div>
+                            <div class="f-left"><img src="./Story_files/Gry-star.gif" id="str3" alt="3" title="" onclick="inserRateingStroy(&#39;3&#39;)" class="handClass"></div>
+                            <div class="f-left"><img src="./Story_files/Gry-star.gif" id="str4" alt="4" title="" onclick="inserRateingStroy(&#39;4&#39;)" class="handClass"></div>
+                            <div class="f-left"><img src="./Story_files/Gry-star.gif" id="str5" alt="5" title="" onclick="inserRateingStroy(&#39;5&#39;)" class="handClass"></div>
+                            <div class="clear"></div>
+                        </div>       
+                    </div>  
+                    </div>                  
+                </div>
+                <div class="r-right m10">
+                    <div class="f-left txtSize">Text Size</div>
+                    <div class="carpe_horizontal_slider_track">
+                        <div class="carpe_slider_slit">&nbsp;</div>
+                        <div class="carpe_slider" id="your_slider_id" orientation="horizontal" distance="100" display="your_display_id" style="left: 50px;">&nbsp;</div>
+                    </div>
+
+                    <div class="carpe_slider_display_holder"><input class="carpe_slider_display" id="your_display_id" name="your_var_name" type="text" from="0" to="100" valuecount="101" value="0" typelock="off">
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+                <div class="clear"></div>
+               </div>
+               <div class="storyWidthHr"></div>
+             
+              </div>
+            </div>
+            <!-- End Here -->
+            
+            <!-- Story Content Image Div -->
+            <div class="contentDiv" style="display: block;" id="imageContent">
+            <!--- Image View Operation Button -->
+            <div class="storyWidthHr"></div>
+            <div id="imageViewMenu" style="display: block; background-image: url(&quot;images/icon_03.gif&quot;); background-repeat: repeat-x; border-left: 1px solid rgb(255, 187, 21); border-right: 1px solid rgb(255, 187, 21); margin-left: 10px; height: 30px;">
+                 <!-- feature button div -->
+                 <div class="txtimgClass">
+                    <div class="f-left"><img src="./Story_files/textview.gif" class="handClass" title="Text View" alt="Text View" onclick="changeTextView();carpeInit();" id="tview" style="margin-left:10px;" onmouseout="changeOverStoryImage(&#39;images/textview.gif&#39;,&#39;tview&#39;);" onmouseover="changeOverStoryImage(&#39;images/textview-color.gif&#39;,&#39;tview&#39;);">&nbsp;</div>
+                    <div class="f-left"><img src="./Story_files/photo-color.gif" class="handClass" title="Image View" alt="Image View" onclick="changeImageView();" id="iview" onmouseout="changeOverStoryImage(&#39;images/photo-color.gif&#39;,&#39;iview&#39;);" onmouseover="changeOverStoryImage(&#39;images/photo-color.gif&#39;,&#39;iview&#39;);"></div>
+                    <div class="f-left"><img src="./Story_files/printer.gif" class="handClass" onclick="printImageStroy();" title="Print Article" onmouseout="changeOverStoryImage(&#39;images/printer.gif&#39;,&#39;prntImg1&#39;);" onmouseover="changeOverStoryImage(&#39;images/printer-color.gif&#39;,&#39;prntImg1&#39;);" id="prntImg1">&nbsp;</div>
+                    <div class="f-left"><img id="emailStory" src="./Story_files/mail.gif" class="handClass" title="Post E-Mail" alt="Post E-Mail" onclick="emailStroy();" onmouseout="changeOverStoryImage(&#39;images/mail.gif&#39;,&#39;emailStory&#39;);" onmouseover="changeOverStoryImage(&#39;images/mail-color.gif&#39;,&#39;emailStory&#39;);">&nbsp;</div>
+                    <div class="f-left"><img src="./Story_files/save.gif" alt="save" onclick="saveImageAs()" class="handClass" title="Save" onmouseout="changeOverStoryImage(&#39;images/save.gif&#39;,&#39;saveImg1&#39;);" onmouseover="changeOverStoryImage(&#39;images/save-color.gif&#39;,&#39;saveImg1&#39;);" id="saveImg1">&nbsp;</div>
+                    <div class="f-left"><img src="./Story_files/comment.gif" title="Post Comment" alt="Post Comment" onclick="sentComment();" class="handClass" onmouseout="changeOverStoryImage(&#39;images/comment.gif&#39;,&#39;commentImg1&#39;);" onmouseover="changeOverStoryImage(&#39;images/comment-color.gif&#39;,&#39;commentImg1&#39;);" id="commentImg1">&nbsp;</div>
+                   
+                    <div class="f-left m10">
+                    <div class="f-left starBlock">
+                        <div class="rateStar">
+                            <div class="f-left"><img src="./Story_files/Gry-star.gif" id="str6" alt="1" title="" onclick="inserRateingStroy(&#39;1&#39;)" class="handClass"></div>
+                            <div class="f-left"><img src="./Story_files/Gry-star.gif" id="str7" alt="2" title="" onclick="inserRateingStroy(&#39;2&#39;)" class="handClass"></div>
+                            <div class="f-left"><img src="./Story_files/Gry-star.gif" id="str8" alt="3" title="" onclick="inserRateingStroy(&#39;3&#39;)" class="handClass"></div>
+                            <div class="f-left"><img src="./Story_files/Gry-star.gif" id="str9" alt="4" title="" onclick="inserRateingStroy(&#39;4&#39;)" class="handClass"></div>
+                            <div class="f-left"><img src="./Story_files/Gry-star.gif" id="str10" alt="5" title="" onclick="inserRateingStroy(&#39;5&#39;)" class="handClass"></div>
+                            <div class="clear"></div>
+                        </div>       
+                    </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="storyWidthHr">
+            
+				
+            
+            </div>
+            <!-- end here -->  
+         
+              <div id="storyImage" style="vertical-align :top ">
+        
+        <div style="clear:both;width:100%"></div>
+        <table cellpadding="0" cellspacing="0" width="100%">
+        <tbody><tr><td colspan="3" align="center"> 
+        <!-- Nai-Dunia-epaper-Articals_728*90 Top -->
+<div id="div-gpt-ad-1409746347299-4" style="width:728px; height:90px;">
+<script type="text/javascript">
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1409746347299-4'); });
+</script>
+</div></td></tr>
+        <tr>
+        <td valign="top" align="left">
+        <!-- Nai-Dunia-epaper-Articals_160*600 Top -->
+               
+        <div id="div-gpt-ad-1409746347299-2" style="width:160px; height:600px;">
+<script type="text/javascript">
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1409746347299-2'); });
+</script>
+</div>  
+        </td>
+        <td valign="top">
+       <div id="getimagesrc" style="vertical-align: top; padding: 10px; display: block;"><img src="./Story_files/d17305.png" alt="imageview"></div>  
+       <div id="storyHeading" class="f-left storyHeading" style="display: none;"><p>ं</p></div>
+       <div id="storyText" class="storyWidth" style="font-size: 16px; display: none;"><br><p style="margin:0px;"></p><p>ं</p><p></p></div>
+        </td>
+        <td valign="top" align="left">
+  <!-- naiduniaepaper.jagran_120x600-Art--Dtl_RHS -->
+<!-- Nai-Dunia-epaper-Articals_160x600_RHS -->
+<div id="div-gpt-ad-1409746347299-3" style="width:160px; height:600px;">
+<script type="text/javascript">
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1409746347299-3'); });
+</script>
+</div> 
+</td>
+        </tr>
+        <tr>
+        <td colspan="3" align="center">
+        
+				<!-- Nai-Dunia-epaper-Articals_728*90 -->
+<div id="div-gpt-ad-1409746347299-5" style="width:729px; height:90px;">
+<script type="text/javascript">
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1409746347299-5'); });
+</script>
+</div>
+        </td>
+        
+        </tr>
+        
+        
+        </tbody></table>
+            
+              </div>
+            </div>
+            <!-- End Here -->  
+                      
+            
+        </div>
+    <!-- End Main Story Div -->
+    <!-- Hidden Variable -->
+    <input name="txtChangeOption" type="text" id="txtChangeOption" style="height:1px;width:1px;DISPLAY: none">
+    <input name="txtboxid" type="text" value="17305" id="txtboxid" style="height:1px;width:1px;DISPLAY: none">
+    <input name="txtparentid" type="text" value="807" id="txtparentid" style="height:1px;width:1px;DISPLAY: none">
+    <input name="txtpdfdate" type="text" value="2018-3-01" id="txtpdfdate" style="height:1px;width:1px;DISPLAY: none">
+    <input name="txteditioncode" type="text" value="11" id="txteditioncode" style="height:1px;width:1px;DISPLAY: none">
+    <input name="txtWebUrl" type="text" value="http://jagranepaper.com/jagran/epaperpdf/" id="txtWebUrl" style="height:1px;width:1px;DISPLAY: none">
+    <input name="txtpagenumber" type="text" value="1" id="txtpagenumber" style="height:1px;width:1px;DISPLAY: none">
+	<input name="imagePath" type="text" id="imagePath" style="height:1px;width:1px;DISPLAY: none">
+    <!-- End here -->
+      <script type="text/javascript" language="javascript">
+
+        // Load the Google Transliteration API
+        google.load("elements", "1", {
+            packages: "transliteration"
+        });
+        function onLoad() {
+
+            //alert(lang);
+            var options = {
+                sourceLanguage: 'en', // or google.elements.transliteration.LanguageCode.ENGLISH,
+                destinationLanguage: ['hi'], // or [google.elements.transliteration.LanguageCode.HINDI],
+                shortcutKey: 'ctrl+g',
+                transliterationEnabled: true
+            };
+
+            // Create an instance on TransliterationControl with the required
+            // options.
+            var control = new google.elements.transliteration.TransliterationControl(options);
+
+            // Enable transliteration in the textfields with the given ids.
+            var ids = ["search", "search", ""];
+            control.makeTransliteratable(ids);
+
+            // Show the transliteration control which can be used to toggle between
+            // English and Hindi.
+            control.showControl('translControl');
+        }
+        google.setOnLoadCallback(onLoad);
+        </script>
+        
+        
+        
+<!-- Begin comScore Tag -->
+<script>
+  var _comscore = _comscore || [];
+  _comscore.push({ c1: "2", c2: "13184768" });
+  (function() {
+    var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+    s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+    el.parentNode.insertBefore(s, el);
+  })();
+</script>
+<noscript>
+  &lt;img src="http://b.scorecardresearch.com/p?c1=2&amp;c2=13184768&amp;cv=2.0&amp;cj=1" /&gt;
+</noscript>
+<!-- End comScore Tag -->
+
+<script src="./Story_files/cc_af.js.download"> </script> 
+
+
+    </form>
+    
+
+
+
+<iframe id="LOTCCFrameMon Mar 05 2018 17:45:59 GMT+0530 (India Standard Time)" src="./Story_files/rt=ifr.html" title="empty" tabindex="-1" role="presentation" style="border: 0px; width: 0px; height: 0px; display: block;"></iframe></body></html>
