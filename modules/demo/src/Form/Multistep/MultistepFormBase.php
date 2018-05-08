@@ -107,6 +107,29 @@ abstract class MultistepFormBase extends FormBase {
         $support_doc_1 = (!empty($this->store->get('support_doc_1')) ? $this->store->get('support_doc_1') : array(0));
         $support_doc_2 = (!empty($this->store->get('support_doc_2')) ? $this->store->get('support_doc_2') : array(0));
         $ticket = (!empty($this->store->get('ticket')) ? $this->store->get('ticket') : array(0));
+        $contact = $this->store->get('contact');
+        $dob = $this->store->get('dob');
+        $place_birth = $this->store->get('place_birth');
+        $country_birth = $this->store->get('country_birth');
+        $gender = $this->store->get('gender');
+        $mar_status = $this->store->get('mar_status');
+        $religion = $this->store->get('religion');
+        $spouse = $this->store->get('spouse');
+        $profession = $this->store->get('profession');
+        $passport_issued = $this->store->get('passport_issued');
+        $passport_issued_date = $this->store->get('passport_issued_date');
+        $passport_expired_date = $this->store->get('passport_expired_date');
+        $arrival_from = $this->store->get('arrival_from');
+        $arrival_date = $this->store->get('arrival_date');
+        $departure_to = $this->store->get('departure_to');
+        $departure_date = $this->store->get('departure_date');
+        $address_line_1 = $this->store->get('address_line_1');
+        $address_line_2 = $this->store->get('address_line_2');
+        $city  = $this->store->get('city');
+        $state = $this->store->get('state');
+        $country_add = $this->store->get('country_add');
+        $zip = $this->store->get('zip');
+        
         $customerCumAccount = getCumAmount($customerId);
         $applicationRef = 'EVL'.date('YmdHis').$customerId;
         $visa_id = 0;
@@ -215,6 +238,28 @@ abstract class MultistepFormBase extends FormBase {
                         'created' => date('Y-m-d H:i:s'),
                         'status_id' => 1,
                         'app_ref' => $applicationRef,
+                        'contact' => $contact,
+                        'dob' => $dob,
+                        'place_birth' => $place_birth,
+                        'country_birth' => $country_birth,
+                        'gender' => $gender,
+                        'mar_status' => $mar_status,
+                        'religion' => $religion,
+                        'spouse' => $spouse,
+                        'profession' => $profession,
+                        'passport_issued' => $passport_issued,
+                        'passport_issued_date' => $passport_issued_date,
+                        'passport_expired_date' => $passport_expired_date,
+                        'arrival_from' => $arrival_from,
+                        'arrival_date' => $arrival_date,
+                        'departure_to' => $departure_to,
+                        'departure_date' => $departure_date,
+                        'address_line_1' => $address_line_1,
+                        'address_line_2' => $address_line_2,
+                        'city' => $city,
+                        'state' => $state,
+                        'country' => $country_add,
+                        'zip' => $zip
                     ])
                     ->execute();
             //Notify Operation team for New Visa
@@ -226,7 +271,11 @@ abstract class MultistepFormBase extends FormBase {
    * the multistep form.
    */
   protected function deleteStore() {
-    $keys = ['country', 'purpose_travel', 'visa_type', 'nationality', 'visa_price', 'customer_id', 'urgent_visa', 'name', 'passport_no', 'father_name', 'mother_name', 'photo', 'passport_first', 'passport_last', 'support_doc_1', 'support_doc_2', 'ticket', 'destination_name', 'purpose_name', 'nation_name', 'type_visa_name', 'final_price', 'urgent_price'];
+    $keys = ['country', 'purpose_travel', 'visa_type', 'nationality', 'visa_price', 'customer_id', 'urgent_visa', 'name', 'passport_no', 'father_name', 'mother_name', 'photo', 'passport_first', 'passport_last', 'support_doc_1', 'support_doc_2', 'ticket', 'destination_name', 'purpose_name', 'nation_name', 'type_visa_name', 'final_price', 'urgent_price',
+             'contact','dob','place_birth','country_birth','gender','mar_status','religion','spouse','profession','passport_issued',
+             'passport_issued_date','passport_expired_date','arrival_from','arrival_date','departure_to','departure_date','address_line_1','address_line_2',
+             'city','state','country_add','zip'  
+            ];
     foreach ($keys as $key) {
       $this->store->delete($key);
     }

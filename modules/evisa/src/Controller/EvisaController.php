@@ -396,7 +396,16 @@ $data =  array();
 		$data[] = 1;
 		$data[] = 'kamlesh Title';
 		$data[] = 'Type';
-		$xls_content_row .= implode("\t", array_values($data)) . "\r\n";
+                $data[] = 2;
+		$data[] = 'kamlesh 2 Title';
+		$data[] = 'Type 3';
+                $xls_content_row .= " <table style='border : 2px solid black;'>
+ <tr><th>Column 1</th><th>Column 2</th></tr>
+  <tr><td style=  'font-size:200%'>Answer 1</td><td style='color:#f00'>Answer 2</td></tr>
+  <tr><td colspan= '2' style='font-weight:bold'>Answer 3 with 2 columns</td></tr>
+ </table>";
+                
+		//$xls_content_row .= implode("\t", array_values($data)) . "\r\n";
 $xls_content_header = implode("\t", array_values($header)) . "\r";
   $xls_content .= $xls_content_header . "\n" . $xls_content_row;
        header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -408,4 +417,176 @@ $xls_content_header = implode("\t", array_values($header)) . "\r";
        exit();  
                 
     }
+    
+    /**
+     * Download MIS Report
+     */ 
+    public function downloadMisReport_old() {
+        $roles = \Drupal::currentUser()->getRoles();
+        $misReportUrl = \Drupal::request()->server->get('HTTP_REFERER');
+        $queryString = parse_url($misReportUrl);
+        if(!empty($queryString['query'])) {
+         parse_str($queryString['query'], $output);  
+         if(array_key_exists('page', $output)) {
+             unset($output['page']);
+         }
+        }
+        $query = \Drupal::database()->select('account_txn', 'ac');
+        $query->leftJoin('visa_report', 'vr', 'ac.visa_id = vr.visa_id');
+        $query->join('node_field_data', 'nf', 'nf.nid = ac.customer_id');
+        $query->fields('ac', ['id','visa_id','debit','credit','txn_date','cum_amount', 'txn_reason', 'txn_type']);
+        $query->fields('vr', ['id','visa_id','customer_name','customer_id','destination_name','purpose_name','visa_type_name','nationality','visa_price','urgent','name','passport_no', 'app_ref']);
+        $query->fields('nf', ['title']);
+        if (!empty($output['customer_id'])) {
+            $query->condition('ac.customer_id', $output['customer_id']);
+        }
+        if(in_array('agent', $roles)){
+          $query->condition('ac.customer_id', getCustomerId());
+        }
+        if (!empty($output['fd'])) {
+            $query->condition('ac.txn_date', $output['fd'], '>=');
+        }
+        if (!empty($output['td'])) {
+            $query->condition('ac.txn_date', $output['td'], '<=');
+        }
+        $query->orderBy('ac.id', 'ASC');        
+        $misReports = $query->execute()->fetchAll();
+        $misHeader = [
+            t('Bill Date'),
+            t('Bill No'),
+            t('Application Ref No'),
+            t('Pax Name'),
+            t('Visa Passport'),
+            t('Transaction Remark'),
+            t('Visa Country'),
+            t('Visa Category'),
+            t('Visa Type'),
+            t('Dr'),
+            t('Cr'),
+            t('Balance'),
+        ];
+        $xls_top = '';
+        if(in_array('agent', $roles)){
+            $customer_name = $misReports[0]->title;
+            $reportPeriod = 'For The Period 24 February 2018 To 26 February 2018';
+            $xls_top = "VISA RECO"."\r\n".$reportPeriod."\r\n".$customer_name; 
+        }
+        $xls_top .= "\r\n";
+        $xls_content = '';
+        $xls_content_row = '';
+        foreach($misReports as $misReport) {
+            $misdata = array();
+            $misdata['bill_date'] = date('d-M-Y', strtotime($misReport->txn_date));
+            $misdata['bill_no'] = ($misReport->txn_type == 'D') ? 'VS /'.$misReport->id : '';
+            $misdata['app_ref'] = $misReport->app_ref;
+            $misdata['name'] = $misReport->name;
+            $misdata['passport_no'] = $misReport->passport_no;
+            $misdata['txn_reason'] = $misReport->txn_reason;
+            $misdata['destination_name'] = $misReport->destination_name;
+            $misdata['purpose_name'] = $misReport->purpose_name;
+            $misdata['visa_type_name'] = $misReport->visa_type_name;
+            $misdata['debit'] = !empty($misReport->debit) ? $misReport->debit : '';
+            $misdata['credit'] = !empty($misReport->credit) ? $misReport->credit : '';
+            $misdata['cum_amount'] = $misReport->cum_amount;
+            $xls_content_row .= implode("\t", array_values($misdata)) . "\r\n";
+        }
+        $xls_content_header = implode("\t", array_values($misHeader)) . "\r";
+        $xls_content .= $xls_top. $xls_content_header . "\n" . $xls_content_row;
+        header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        header('Content-Disposition: attachment;filename=mis_report.xls');
+        header("Expires: 0");
+        header("Pragma: public");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        print $xls_content;
+        exit();
+    }
+    /**
+     * Download MIS Report
+     */ 
+    public function downloadMisReport() {
+        $roles = \Drupal::currentUser()->getRoles();
+        $misReportUrl = \Drupal::request()->server->get('HTTP_REFERER');
+        $queryString = parse_url($misReportUrl);
+        if(!empty($queryString['query'])) {
+         parse_str($queryString['query'], $output);  
+         if(array_key_exists('page', $output)) {
+             unset($output['page']);
+         }
+        }
+        $query = \Drupal::database()->select('account_txn', 'ac');
+        $query->leftJoin('visa_report', 'vr', 'ac.visa_id = vr.visa_id');
+        $query->join('node_field_data', 'nf', 'nf.nid = ac.customer_id');
+        $query->fields('ac', ['id','visa_id','debit','credit','txn_date','cum_amount', 'txn_reason', 'txn_type']);
+        $query->fields('vr', ['id','visa_id','customer_name','customer_id','destination_name','purpose_name','visa_type_name','nationality','visa_price','urgent','name','passport_no', 'app_ref']);
+        $query->fields('nf', ['title']);
+        if (!empty($output['customer_id'])) {
+            $query->condition('ac.customer_id', $output['customer_id']);
+        }
+        if(in_array('agent', $roles)){
+          $query->condition('ac.customer_id', getCustomerId());
+        }
+        if (!empty($output['fd'])) {
+            $query->condition('ac.txn_date', $output['fd'], '>=');
+        }
+        if (!empty($output['td'])) {
+            $query->condition('ac.txn_date', $output['td'], '<=');
+        }
+        $query->orderBy('ac.id', 'ASC');        
+        $misReports = $query->execute()->fetchAll();
+        $misHeaders = [
+            t('Bill Date'),
+            t('Bill No'),
+            t('Application Ref No'),
+            t('Pax Name'),
+            t('Visa Passport'),
+            t('Transaction Remark'),
+            t('Visa Country'),
+            t('Visa Category'),
+            t('Visa Type'),
+            t('Dr'),
+            t('Cr'),
+            t('Balance'),
+        ];
+        $reportData  = "";
+        if(in_array('agent', $roles)){
+            $customer_name = $misReports[0]->title;
+            $reportData .= "<div style='text-align:center;'>"."VISA RECO"."</div>"; 
+            $reportData .= "<div style='text-align:center;'>"."For The Period 24 February 2018 To 26 February 2018"."</div>"; 
+            $reportData .= "<div style='text-align:center;'>".$customer_name."</div>"; 
+        }
+        $reportData .= "<table style='border:2px solid black;'>";
+        $reportData .= "<tr>";
+        foreach($misHeaders as $misHeader) {
+           $reportData .= "<th style='border: 1px solid black; background-color:#0083C1;'>".$misHeader."</th>";
+        }
+        $reportData .= "</tr>";
+        foreach($misReports as $misReport) {
+            $reportData .= "<tr>";
+            $reportData .= "<td style='border: 1px solid black;'>".date('d-M-Y', strtotime($misReport->txn_date))."</td>";
+            $bill_no = ($misReport->txn_type == 'D') ? 'VS /'.$misReport->id : '';
+            $reportData .= "<td style='border: 1px solid black;'>".$bill_no."</td>";
+            $reportData .= "<td style='border: 1px solid black;'>".$misReport->app_ref."</td>";
+            $reportData .= "<td style='border: 1px solid black;'>".$misReport->name."</td>";
+            $reportData .= "<td style='border: 1px solid black;'>".$misReport->passport_no."</td>";
+            $reportData .= "<td style='border: 1px solid black;'>".$misReport->txn_reason."</td>";
+            $reportData .= "<td style='border: 1px solid black;'>".$misReport->destination_name."</td>";
+            $reportData .= "<td style='border: 1px solid black;'>".$misReport->purpose_name."</td>";
+            $reportData .= "<td style='border: 1px solid black;'>".$misReport->visa_type_name."</td>";
+            $debit = !empty($misReport->debit) ? $misReport->debit : '';
+            $reportData .= "<td style='border: 1px solid black;'>".$debit."</td>";
+            $credit = !empty($misReport->credit) ? $misReport->credit : '';
+            $reportData .= "<td style='border: 1px solid black;'>".$credit."</td>";
+            $reportData .= "<td style='border: 1px solid black;'>".$misReport->cum_amount."</td>";
+            $reportData .= "</tr>";
+        }
+        $reportData .= "</table>";
+        header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        header('Content-Disposition: attachment;filename=mis_report.xls');
+        header("Expires: 0");
+        header("Pragma: public");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        print $reportData;
+        exit();
+    }
+    
 }

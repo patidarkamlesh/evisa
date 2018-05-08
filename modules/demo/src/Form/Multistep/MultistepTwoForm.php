@@ -100,11 +100,6 @@ class MultistepTwoForm extends MultistepFormBase {
             '#title' => $this->t('Passanger Name'),
             '#required' => TRUE
         ];
-        $form['passanger']['passport_no'] = [
-            '#type' => 'textfield',
-            '#title' => $this->t('Passport No'),
-            '#required' => TRUE
-        ];
         $form['passanger']['father_name'] = [
             '#type' => 'textfield',
             '#title' => $this->t('Father Name'),
@@ -115,7 +110,81 @@ class MultistepTwoForm extends MultistepFormBase {
             '#title' => $this->t('Mother Name'),
             '#required' => TRUE
         ];
-        $form['passanger']['photo'] = [
+        
+        $form['passanger']['contact'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Contact No'),
+            '#required' => TRUE
+        ];
+        $form['passanger']['dob'] = [
+            '#type' => 'date',
+            '#title' => $this->t('Date of Birth'),
+            '#required' => TRUE
+        ];
+        $form['passanger']['place_birth'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Place of Birth'),
+            '#required' => TRUE
+        ];
+        $form['passanger']['country_birth'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Country of Birth'),
+            '#required' => TRUE
+        ];
+        $gender = [1=>'Male', 2=>'Female']; 
+        $form['passanger']['gender'] = [
+            '#type' => 'radios',
+            '#title' => $this->t('Gender'),
+            '#options' => $gender,
+            '#required' => TRUE
+        ];
+        $mar_status = [1=>'Single', 2=>'Married', 3=>'Widowed', 4=>'Divorced']; 
+        $form['passanger']['mar_status'] = [
+            '#type' => 'select',
+            '#title' => $this->t('Marital Status'),
+            '#options' => $mar_status,
+            '#required' => TRUE
+        ];
+        $form['passanger']['religion'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Religion'),
+            '#required' => TRUE
+        ];
+        $form['passanger']['spouse'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Spouse'),
+        ];
+        $form['passanger']['profession'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Profession'),
+            '#required' => TRUE
+        ];
+
+        $form['passport'] = [
+            '#type' => 'fieldset',
+            '#title' => $this->t('Passport Detail')
+        ];
+        $form['passport']['passport_no'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Passport No'),
+            '#required' => TRUE
+        ];
+        $form['passport']['passport_issued'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Issued At'),
+            '#required' => TRUE
+        ];
+        $form['passport']['passport_issued_date'] = [
+            '#type' => 'date',
+            '#title' => $this->t('Date of Issue'),
+            '#required' => TRUE
+        ];
+        $form['passport']['passport_expired_date'] = [
+            '#type' => 'date',
+            '#title' => $this->t('Date of Expiry'),
+            '#required' => TRUE
+        ];
+        $form['passport']['photo'] = [
             '#type' => 'managed_file',
             '#title' => $this->t('Colour Passport Size photograph'),
             '#upload_location' => 'public://visadoc/' . $customerId . '/photo',
@@ -124,7 +193,7 @@ class MultistepTwoForm extends MultistepFormBase {
             '#multiple' => FALSE,
             '#required' => TRUE
         ];
-        $form['passanger']['passport_first'] = [
+        $form['passport']['passport_first'] = [
             '#type' => 'managed_file',
             '#title' => $this->t('Passport First page Coloured Scan Copy'),
             '#upload_location' => 'public://visadoc/' . $customerId . '/passport_first',
@@ -133,7 +202,7 @@ class MultistepTwoForm extends MultistepFormBase {
             '#multiple' => FALSE,
             '#required' => TRUE
         ];
-        $form['passanger']['passport_last'] = [
+        $form['passport']['passport_last'] = [
             '#type' => 'managed_file',
             '#title' => $this->t('Passport Last page Coloured Scan Copy'),
             '#upload_location' => 'public://visadoc/' . $customerId . '/passport_last',
@@ -142,7 +211,7 @@ class MultistepTwoForm extends MultistepFormBase {
             '#multiple' => FALSE,
             '#required' => TRUE
         ];
-        $form['passanger']['support_doc_1'] = [
+        $form['passport']['support_doc_1'] = [
             '#type' => 'managed_file',
             '#title' => $this->t('Supporting Document'),
             '#description' => $this->t('Father Visa/PPT Copy, Mother Visa/PPT Copy, Husband Visa/PPT Copy, Marriage Certificate, Observation Page, NOC'),
@@ -151,23 +220,72 @@ class MultistepTwoForm extends MultistepFormBase {
             //'#size' => 13,
             '#multiple' => FALSE,
         ];
-        $form['passanger']['support_doc_2'] = [
+        $form['passport']['support_doc_2'] = [
             '#type' => 'managed_file',
             '#title' => $this->t('Supporting Document'),
             '#description' => $this->t('Father Visa/PPT Copy, Mother Visa/PPT Copy, Husband Visa/PPT Copy, Marriage Certificate, Observation Page, NOC'),
-            '#upload_location' => 'public://visadoc/' . $customerId . '/support_doc_1',
+            '#upload_location' => 'public://visadoc/' . $customerId . '/support_doc_2',
             //'#upload_validators' => array('file_validate_extensions' => array('pdf doc docx')),
             //'#size' => 13,
             '#multiple' => FALSE,
         ];
-        $form['passanger']['ticket'] = [
+        $form['passport']['ticket'] = [
             '#type' => 'managed_file',
             '#title' => $this->t('Confirm ticket copy for 96 Hrs. Visa'),
             '#upload_location' => 'public://visadoc/' . $customerId . '/ticket',
             //'#upload_validators' => array('file_validate_extensions' => array('pdf doc docx')),
             //'#size' => 13,
             '#multiple' => FALSE,
-        ]; 
+        ];
+        $form['flight'] = [
+            '#type' => 'fieldset',
+            '#title' => $this->t('Flight Detail')
+        ];
+        $form['flight']['arrival_from'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Arrival From'),
+        ];
+        $form['flight']['arrival_date'] = [
+            '#type' => 'date',
+            '#title' => $this->t('Arrival Date'),
+        ];
+        $form['flight']['departure_to'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Departure To'),
+        ];
+        $form['flight']['departure_date'] = [
+            '#type' => 'date',
+            '#title' => $this->t('Departure Date'),
+        ];
+        $form['address'] = [
+            '#type' => 'fieldset',
+            '#title' => $this->t('Address Detail')
+        ];
+        $form['address']['address_line_1'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Address Line 1'),
+        ];
+        $form['address']['address_line_2'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Address Line 2'),
+        ];
+        $form['address']['city'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('City'),
+        ];
+        $form['address']['state'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('State'),
+        ];
+        $form['address']['country_add'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Country'),
+        ];
+        $form['address']['zip'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('ZIP'),
+        ];
+        
         $form['actions']['previous'] = [
             '#type' => 'link',
             '#title' => $this->t('Modify Search'),
@@ -196,6 +314,28 @@ class MultistepTwoForm extends MultistepFormBase {
         $this->store->set('support_doc_1', $form_state->getValue('support_doc_1'));
         $this->store->set('support_doc_2', $form_state->getValue('support_doc_2'));
         $this->store->set('ticket', $form_state->getValue('ticket'));
+        $this->store->set('contact', $form_state->getValue('contact'));
+        $this->store->set('dob', $form_state->getValue('dob'));
+        $this->store->set('place_birth', $form_state->getValue('place_birth'));
+        $this->store->set('country_birth', $form_state->getValue('country_birth'));
+        $this->store->set('gender', $form_state->getValue('gender'));
+        $this->store->set('mar_status', $form_state->getValue('mar_status'));
+        $this->store->set('religion', $form_state->getValue('religion'));
+        $this->store->set('spouse', $form_state->getValue('spouse'));
+        $this->store->set('profession', $form_state->getValue('profession'));
+        $this->store->set('passport_issued', $form_state->getValue('passport_issued'));
+        $this->store->set('passport_issued_date', $form_state->getValue('passport_issued_date'));
+        $this->store->set('passport_expired_date', $form_state->getValue('passport_expired_date'));
+        $this->store->set('arrival_from', $form_state->getValue('arrival_from'));
+        $this->store->set('arrival_date', $form_state->getValue('arrival_date'));
+        $this->store->set('departure_to', $form_state->getValue('departure_to'));
+        $this->store->set('departure_date', $form_state->getValue('departure_date'));
+        $this->store->set('address_line_1', $form_state->getValue('address_line_1'));
+        $this->store->set('address_line_2', $form_state->getValue('address_line_2'));
+        $this->store->set('city', $form_state->getValue('city'));
+        $this->store->set('state', $form_state->getValue('state'));
+        $this->store->set('country_add', $form_state->getValue('country_add'));
+        $this->store->set('zip', $form_state->getValue('zip'));
 
         $customerCumAccount = getCumAmount($this->store->get('customer_id'));
         $visaPrice = $form_state->getValue('final_price');
@@ -207,7 +347,6 @@ class MultistepTwoForm extends MultistepFormBase {
             drupal_set_message(t('Insufficiant balance to post visa. To recharge your account, please contact Finance.'), 'error');
             $form_state->setRedirect('demo.multistep_one');
         }
-
 
         $form_state->setRedirect('demo.multistep_one');
     }

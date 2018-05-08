@@ -31,7 +31,9 @@ class VisaReport extends FormBase {
             //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/demo/multistep-one">Post Visa</a></p>',
             '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/demo/multistep-one'>Post Visa</a></p>",
         ];
-
+        if(in_array('agent', $roles)) {
+            
+        } else {
         $form['filter'] = [
             '#type' => 'fieldset',
             '#collapsible' => TRUE,
@@ -44,9 +46,7 @@ class VisaReport extends FormBase {
           '#size' => 15,
           '#default_value' => (!empty($custdata)) ? $custdata : '', 
         ];*/
-        if(in_array('agent', $roles)) {
-            
-        } else {
+        
         $form['filter']['customer_id'] = [
             '#title' => $this->t('Customer Name'),
             '#type' => 'entity_autocomplete',
@@ -58,7 +58,7 @@ class VisaReport extends FormBase {
             '#default_value' =>(!empty($custdata)) ? \Drupal::entityTypeManager()->getStorage('node')->load($custdata): ''
             
         ];        
-        }
+        
         $form['filter']['submit'] = [
             '#type' => 'submit',
             '#value' => t('Search'),
@@ -71,7 +71,7 @@ class VisaReport extends FormBase {
             ),
             '#url' => Url::fromRoute('evisa.visa'),
         ];
-        
+        }
         $num_per_page = 1;
         $query = \Drupal::database()->select('visa_report', 'vr');
         $query->join('visa', 'v', 'v.id = vr.visa_id');

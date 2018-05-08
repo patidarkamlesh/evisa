@@ -24,6 +24,8 @@ class MisReport extends FormBase {
      */
     public function buildForm(array $form, FormStateInterface $form_state) {
         $custdata = \Drupal::request()->get('customer_id');
+        $fromDate = \Drupal::request()->get('fd');
+        $toDate = \Drupal::request()->get('td');
         $roles = \Drupal::currentUser()->getRoles();
 
         $form['filter'] = [
@@ -32,9 +34,7 @@ class MisReport extends FormBase {
             '#collapsed' => TRUE,
             '#title' => t('Search option')
         ];
-        if(in_array('agent', $roles)) {
-            
-        } else {
+        if(!in_array('agent', $roles)) {
         $form['filter']['customer_id'] = [
             '#title' => $this->t('Customer Name'),
             '#type' => 'entity_autocomplete',
@@ -42,11 +42,20 @@ class MisReport extends FormBase {
             '#selection_settings' => [
               'target_bundles' => ['customer']
             ],
-            '#required' => TRUE,
             '#default_value' =>(!empty($custdata)) ? \Drupal::entityTypeManager()->getStorage('node')->load($custdata): ''
             
-        ];        
+        ];
         }
+        $form['filter']['from_date'] = [
+            '#title' => $this->t('From Date'),
+            '#type' => 'date',
+            '#default_value' => (!empty($fromDate)) ? $fromDate : ''
+        ];
+        $form['filter']['to_date'] = [
+            '#title' => $this->t('To Date'),
+            '#type' => 'date',
+            '#default_value' => (!empty($toDate)) ? $toDate : ''
+        ];
         $form['filter']['submit'] = [
             '#type' => 'submit',
             '#value' => t('Search'),
@@ -70,6 +79,12 @@ class MisReport extends FormBase {
         if (!empty($custdata)) {
             $query->condition('ac.customer_id', $custdata);
         }
+        if (!empty($fromDate)) {
+            $query->condition('ac.txn_date', $fromDate, '>=');
+        }
+        if (!empty($toDate)) {
+            $query->condition('ac.txn_date', $toDate, '<=');
+        }
         
         if(in_array('agent', $roles)){
           $query->condition('ac.customer_id', getCustomerId());
@@ -79,7 +94,8 @@ class MisReport extends FormBase {
 
         $offset = $num_per_page * $page;
         $query->range($offset, $num_per_page);
-        $query->orderBy('ac.id', 'ASC');        
+        $query->orderBy('ac.id', 'ASC');   
+        
         $misReports = $query->execute()->fetchAll();
         //print_r($misReports); exit;
         //create table header
@@ -132,7 +148,7 @@ class MisReport extends FormBase {
             $form['export'] = [
                 '#title' => t('Export'),
                 '#type' => 'link',
-                '#url' => Url::fromRoute('evisa.download.excel'),
+                '#url' => Url::fromRoute('evisa.download.mis'),
                 '#attributes' => [
                     'target' => '_blank',
                     'class' => 'button'
@@ -142,11 +158,22 @@ class MisReport extends FormBase {
         return $form;
     }
     /**
-     * Validate Cisa Report Form
+     * Validate MIS Report Form
      * @param array $form
      * @param FormStateInterface $form_state
      */
     public function validateForm(array &$form, FormStateInterface $form_state) {
+        if((!empty($form_state->getValue('from_date'))) && (!empty($form_state->getValue('to_date')))) {
+            if(strtotime($form_state->getValue('from_date')) > strtotime($form_state->getValue('to_date'))) {
+                $form_state->setErrorByName('to_date', $this->t('Please select proper date range'));
+            }
+            $fromDate = new \DateTime($form_state->getValue('from_date'));
+            $toDate = new \DateTime($form_state->getValue('to_date'));
+            $interval = $fromDate->diff($toDate);
+            if($interval->days > 31) {
+                $form_state->setErrorByName('to_date', $this->t('Please select one month period only'));
+            }
+        }
         parent::validateForm($form, $form_state);
     }
     /**
@@ -156,9 +183,25 @@ class MisReport extends FormBase {
      */
     public function submitForm(array &$form, FormStateInterface $form_state) {
         $customer_id = trim($form_state->getValue('customer_id'));
+        $fromDate = $form_state->getValue('from_date');
+        $toDate =$form_state->getValue('to_date');
         $query = [];
         if (!empty($customer_id)) {
-            $query = ['customer_id' => $customer_id];
+            $query['customer_id'] = $customer_id;
+        }
+        if(!empty($fromDate) && empty($toDate)) {
+            $toDate = new \DateTime($fromDate);
+            $toDate->modify('+30 days');
+            $toDate = $toDate->format('Y-m-d');
+        }
+        if(empty($fromDate) && !empty($toDate)) {
+            $fromDate = new \DateTime($toDate);
+            $fromDate->modify('-30 days');
+            $fromDate = $fromDate->format('Y-m-d');
+        }
+        if (!empty($fromDate) && !empty($toDate)) {
+            $query['fd'] = $fromDate;
+            $query['td'] = $toDate;
         }
         $form_state->setRedirect(
                 'evisa.mis', [], ['query' => $query]

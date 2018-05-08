@@ -227,4 +227,11 @@ evisa.mis:
   requirements:
     _permission: 'view mis'     
      
+evisa.download.mis:     
+   path: 'evisa/visa/download/mis'
+   defaults:
+     _controller: '\Drupal\evisa\Controller\EvisaController::downloadMisReport'
+     _title: 'Download MIS Report'
+   requirements:
+     _permission: 'view mis'
    
