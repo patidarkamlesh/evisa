@@ -329,7 +329,8 @@ function evisa_file_download($newfile) {
 function visaDetail($visa_id) {
         $query = \Drupal::database()->select('visa_report', 'vr');
         $query->join('visa', 'v', 'v.id = vr.visa_id');
-        $query->fields('vr', ['id','visa_id','customer_name','destination_name','purpose_name','visa_type_name','nationality','visa_price','urgent','name','passport_no', 'father_name', 'mother_name', 'created', 'status_id', 'agent_id']);
+        //$query->fields('vr', ['id','visa_id','customer_name','destination_name','purpose_name','visa_type_name','nationality','visa_price','urgent','name','passport_no', 'father_name', 'mother_name', 'created', 'status_id', 'agent_id', 'app_ref', 'contact']);
+        $query->fields('vr');
         $query->fields('v', ['pas_photo_id','pas_passport_first_id','pas_passport_last_id','pas_sup_doc_1','pas_sup_doc_2','pas_ticket', 'reference_no', 'reject_reason', 'approved_visa']);
         $query->condition('vr.id', $visa_id);
         $visdet = $query->execute()->fetchAssoc();
@@ -346,6 +347,9 @@ function evisa_theme($existing, $type, $theme, $path) {
     'download_visa' => [
       'variables' => ['price_detail' => NULL],
     ],
+    'agent' => [
+      'variables' => ['user_name' => NULL, 'price_info' => NULL],
+    ],  
       
   ];
 }
@@ -421,5 +425,107 @@ function getBlockedStatus($customerId) {
     
 }
 /**
- * 
+ * Get Sales report data
  */
+function getSalesReportData() {
+   $user = User::load(\Drupal::currentUser()->id());
+   $roles = $user->getRoles();
+   if(in_array('sales_user', $roles)) {
+       $salesCustomer = getSalesCustomer();
+   } else if(in_array('admin', $roles) || in_array('administrator', $roles)) {
+       $salesCustomer = getAllCustomer();
+   } else {
+       $salesCustomer = array();
+   }
+   //Get Sales Report Data
+   $query = \Drupal::database()->select('visa', 'v');
+   $query->join('node_field_data', 'nf', 'nf.nid = v.customer_id');
+   $query->addField('nf','title', 'customer_name');
+   $query->addExpression('count(v.id)', 'total_visa');
+   $query->addExpression('sum(v.visa_price)', 'total_visa_price');
+   $query->addExpression('max(v.created_date)', 'last_transaction');
+   $query->groupBy('v.customer_id');
+   $query->groupBy('nf.title');
+   $record = $query->execute()->fetchAll();
+   return $record;
+}
+/**
+ * Get Sales User affiliated customer
+ */
+function getSalesCustomer($full = FALSE) {
+   $userId = \Drupal::currentUser()->id();
+   $query = \Drupal::database()->select('node__field_sales_user', 'su')
+      ->fields('su',['entity_id'])      
+      ->condition('bundle', 'customer')
+      ->condition('field_sales_user_target_id', $userId);
+    $custids = $query->execute()->fetchAll();
+    $cids = array();
+    foreach($custids as $custid) {
+      $cids[] = $custid->entity_id;  
+    }
+    if($full) {
+    $query = \Drupal::database()->select('node_field_data', 'n')
+      ->fields('n',['nid', 'title'])      
+      ->condition('type', 'customer')
+      ->condition('nid', $cids, 'IN');
+    $custs = $query->execute()->fetchAll();
+    $cids = array();
+    foreach($custs as $cust) {
+      $cids[$cust->nid] = $cust->title;  
+    }
+    }        
+    return $cids;
+}
+/**
+ * Get All Customer ID for Admin & Administrator
+ */
+function getAllCustomer($full = FALSE) {
+    $cids = \Drupal::entityQuery('node')
+      ->condition('type', 'customer')
+      ->execute();      
+    if($full) {
+    $query = \Drupal::database()->select('node_field_data', 'n')
+      ->fields('n',['nid', 'title'])      
+      ->condition('type', 'customer')
+      ->condition('nid', $cids, 'IN');
+    $custs = $query->execute()->fetchAll();
+    $cids = array();
+    foreach($custs as $cust) {
+      $cids[$cust->nid] = $cust->title;  
+    }
+    }
+    return $cids;
+}
+/**
+ * Get Visa Document List
+ */
+function getVisaDoc($vid = NULL) {
+    $query = \Drupal::database()->select('visa_document', 'vd');
+    $query->join('country', 'c', 'c.cid = vd.country_id');
+    $query->join('purpose_of_travel', 'p', 'p.pid = vd.purpose_id');
+    $query->join('visa_types', 'vt', 'vt.vtid = vd.visa_type_id');
+    $query->addField('c', 'country_name');
+    $query->addField('p', 'purpose_travel');
+    $query->addField('vt', 'visa_type');
+    $query->fields('vd', ['id', 'document', 'country_id', 'purpose_id', 'visa_type_id']);
+    if($vid) {
+      $query->condition('vd.id', $vid);
+      $result = $query->execute()->fetchAssoc();
+    } else {
+      $result = $query->execute()->fetchAll();  
+    }
+    
+    return $result;
+}
+/**
+ * Get Viss document based on country id, purpose id, visa type id
+ */
+function getDocument($country_id, $purpose_travel_id, $visa_type_id) {
+    $document = \Drupal::database()->select('visa_document', 'vd')
+        ->fields('vd', ['document'])
+        ->condition('country_id', $country_id)
+        ->condition('purpose_id', $purpose_travel_id)
+        ->condition('visa_type_id', $visa_type_id)
+        ->execute()->fetchField();
+    return $document;    
+}

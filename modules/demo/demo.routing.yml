@@ -18,13 +18,21 @@ demo.multistep_one:
   path: '/demo/multistep-one'
   defaults:
     _form: '\Drupal\demo\Form\Multistep\MultistepOneForm'
-    _title: 'First form'
+    _title: 'Online Visa Form'
   requirements:
     _permission: 'access content'
 demo.multistep_two:
   path: '/demo/multistep-two'
   defaults:
     _form: '\Drupal\demo\Form\Multistep\MultistepTwoForm'
-    _title: 'Second form'
+    _title: 'Online Visa Form'
+  requirements:
+    _permission: 'access content'
+
+demo.multistep_three:
+  path: '/demo/multistep-three'
+  defaults:
+    _form: '\Drupal\demo\Form\Multistep\MultistepThreeForm'
+    _title: 'Online Visa Form'
   requirements:
     _permission: 'access content'

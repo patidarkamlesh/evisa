@@ -1,0 +1,5 @@
+evisa.lib:
+  version: VERSION
+  css:
+    theme:
+      css/evisa.css: {}

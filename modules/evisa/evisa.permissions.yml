@@ -84,5 +84,8 @@
 'view mis':
   title: 'View MIS Report'
   description: 'View MIS Report'
+'view sales report':
+  title: 'View Sales Report'
+  description: 'View Sales Report Data, it is only for Sales & admin'
   
   

@@ -1,4 +1,4 @@
-{# empty Twig template #}
+<p>Application Reference: {{ visa_detail.app_ref }}</p>
 <p>Customer Name: {{ visa_detail.customer_name }}</p>
 <p>Destination: {{ visa_detail.destination_name }}</p>
 <p>Purpose of Travel: {{ visa_detail.purpose_name }}</p>
@@ -10,6 +10,30 @@
 <p>Passanger Passport No: {{ visa_detail.passport_no }}</p>
 <p>Passanger Father Name: {{ visa_detail.father_name }}</p>
 <p>Passanger Mother Name: {{ visa_detail.mother_name }}</p>
+<p>Passanger Contact No : {{ visa_detail.contact }}</p>
+<p>Passanger DOB: {{ visa_detail.dob|date("d - M - Y") }}</p>
+<p>Passanger Place of Birth: {{ visa_detail.place_birth }}</p>
+<p>Passanger Country of Birth: {{ visa_detail.country_birth }}</p>
+{% set genderset = {1: 'Male', 2: 'Female'} %}
+<p>Passanger Gender: {{ genderset[visa_detail.gender] }}</p>
+{% set mar_status_set = {1:'Single', 2:'Married', 3:'Widowed', 4:'Divorced'} %}
+<p>Passanger Marital Status: {{ mar_status_set[visa_detail.mar_status] }}</p>
+<p>Passanger Religion: {{ visa_detail.religion }}</p>
+<p>Passanger Spouse: {{ visa_detail.spouse }}</p>
+<p>Passanger Profession: {{ visa_detail.profession }}</p>
+<p>Passanger Passport Issued: {{ visa_detail.passport_issued }}</p>
+<p>Passanger Passport Issued Date: {{ visa_detail.passport_issued_date|date("d - M - Y") }}</p>
+<p>Passanger Passport Expired Date: {{ visa_detail.passport_expired_date|date("d - M - Y") }}</p>
+<p>Arrival From: {{ visa_detail.arrival_from }}</p>
+<p>Arrival Date: {{ visa_detail.arrival_date|date("d - M - Y") }}</p>
+<p>Departure To: {{ visa_detail.departure_to }}</p>
+<p>Departure Date: {{ visa_detail.departure_date|date("d - M - Y") }}</p>
+<p>Address Line 1: {{ visa_detail.address_line_1 }}</p>
+<p>Address Line 2: {{ visa_detail.address_line_2 }}</p>
+<p>City: {{ visa_detail.city }}</p>
+<p>State: {{ visa_detail.state }}</p>
+<p>Country: {{ visa_detail.country }}</p>
+<p>Zip: {{ visa_detail.zip }}</p>
 <a href="{{ photo_url }}" download>Passanger Photo</a>
 <a href="{{ pass_first }}" download>Passport First Page</a>
 <a href="{{ pass_last }}" download>Passport Last Page</a>

@@ -211,14 +211,6 @@ evisa.unblock:
      _permission: 'unblock customer'
      id: '^[0-9]+'
      
-evisa.download.excel:     
-   path: 'evisa/visa/download/excel'
-   defaults:
-     _controller: '\Drupal\evisa\Controller\EvisaController::downloadVisaReport'
-     _title: 'Download Visa Report'
-   requirements:
-     _permission: 'view visa'
-
 evisa.mis:
   path: 'evisa/mis'
   defaults:
@@ -228,10 +220,51 @@ evisa.mis:
     _permission: 'view mis'     
      
 evisa.download.mis:     
-   path: 'evisa/visa/download/mis'
+   path: 'evisa/download/mis'
    defaults:
      _controller: '\Drupal\evisa\Controller\EvisaController::downloadMisReport'
      _title: 'Download MIS Report'
    requirements:
      _permission: 'view mis'
+
+evisa.sales.report:     
+   path: 'evisa/salesReport'
+   defaults:
+     _form: '\Drupal\evisa\Form\SalesReport'
+     _title: 'Sales Report'
+   requirements:
+     _permission: 'view sales report'
+
+evisa.download.sales:     
+   path: 'evisa/download/sales'
+   defaults:
+     _controller: '\Drupal\evisa\Controller\EvisaController::downloadSalesReport'
+     _title: 'Download Sales Report'
+   requirements:
+     _permission: 'view sales report'
+     
+evisa.documentvisa:
+  path: 'evisa/documentvisa'
+  defaults:
+    _controller: '\Drupal\evisa\Controller\EvisaController::documentVisa'
+    _title: 'Visa Document Check List'
+  requirements:
+    _permission: 'view visa document'
+    
+evisa.form.documentvisaform:
+   path: 'evisa/documentvisa/form'
+   defaults:
+     _form: '\Drupal\evisa\Form\DocumentVisaForm'
+     _title: 'Visa Document Check List Form'
+   requirements:
+     _permission: 'add edit visa document'      
+
+evisa.edit.documentvisa:
+   path: 'evisa/documentvisa/{vdid}'
+   defaults:
+     _form: '\Drupal\evisa\Form\DocumentVisaEdit'
+     _title: 'Visa Document Check List Form'
+   requirements:
+     _permission: 'add edit visa document'
+     id: '^[0-9]+'    
    

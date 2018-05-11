@@ -283,25 +283,24 @@ class EvisaController extends ControllerBase {
     public function viewVisa() {
         $visa_id = \Drupal::request()->get('vid');
         $visaDetail = visaDetail($visa_id);
-        
+
         $photoUrl = getUpFileUrl($visaDetail['pas_photo_id']);
         $passFirstUrl = getUpFileUrl($visaDetail['pas_passport_first_id']);
         $passLastUrl = getUpFileUrl($visaDetail['pas_passport_last_id']);
         $supDoc1Url = getUpFileUrl($visaDetail['pas_sup_doc_1']);
         $supDoc2Url = getUpFileUrl($visaDetail['pas_sup_doc_2']);
         $ticketUrl = getUpFileUrl($visaDetail['pas_ticket']);
-        
+
         return [
-      '#theme' => 'view_visa',
-      '#visa_detail' => $visaDetail,
-      '#photo_url' => $photoUrl,
-      '#pass_first' => $passFirstUrl,
-      '#pass_last' => $passLastUrl,
-      '#sup_doc_1' => $supDoc1Url,
-      '#sup_doc_2' => $supDoc2Url,
-      '#ticket' => $ticketUrl,
-            
-    ];
+            '#theme' => 'view_visa',
+            '#visa_detail' => $visaDetail,
+            '#photo_url' => $photoUrl,
+            '#pass_first' => $passFirstUrl,
+            '#pass_last' => $passLastUrl,
+            '#sup_doc_1' => $supDoc1Url,
+            '#sup_doc_2' => $supDoc2Url,
+            '#ticket' => $ticketUrl,
+        ];
     }
     /**
      * Download Visa
@@ -342,7 +341,7 @@ class EvisaController extends ControllerBase {
             $edit = Url::fromUserInput('/evisa/blockCust/unblock/' . $blockCustomer->id, ['attributes' => ['class' => 'button']]);
             $rows[] = [
                 'customer_name' => $blockCustomer->customer_name,
-                'block_date' => date('d-m-Y', $blockCustomer->block_date),
+                'block_date' => date('d-m-Y', strtotime($blockCustomer->block_date)),
                 'opt' => Link::fromTextAndUrl('Unblock', $edit)
             ];
         }
@@ -359,146 +358,6 @@ class EvisaController extends ControllerBase {
             '#empty' => t('No records found'),
         ];
         return $blockcustdata;
-    }
-    /**
-     * Download Visa Report
-     */
-    public function downloadVisaReport() {
-        $visaReportUrl = \Drupal::request()->server->get('HTTP_REFERER');
-        $queryString = parse_url($visaReportUrl);
-        if(!empty($queryString['query'])) {
-         parse_str($queryString['query'], $output);  
-         if(array_key_exists('page', $output)) {
-             unset($output['page']);
-         }
-        }
-        $query = \Drupal::database()->select('visa_report', 'vr');
-        $query->join('visa', 'v', 'v.id = vr.visa_id');
-        $query->fields('vr', ['id','visa_id','customer_name','destination_name','purpose_name','visa_type_name','nationality','visa_price','urgent','name','passport_no', 'father_name', 'mother_name', 'created', 'status_id', 'approved_visa']);
-        if (isset($output['customer_name']) && (!empty($output['customer_name']))){
-          $query->condition('vr.customer_name', '%' . db_like($output['customer_name']) . '%', 'LIKE');
-        }
-        $roles = \Drupal::currentUser()->getRoles();
-        if(in_array('agent', $roles)){
-          $query->condition('v.customer_id', getCustomerId());
-        }
-        $visaReports = $query->execute()->fetchAll();
-        //print_r($visaReports); exit;
-
-$header = array(
-		t('Node ID'),
-		t('Node Title'),
-		t('Node Type'),
-  );  
-$xls_content = '';
-$xls_content_row = '';
-$data =  array();
-		$data[] = 1;
-		$data[] = 'kamlesh Title';
-		$data[] = 'Type';
-                $data[] = 2;
-		$data[] = 'kamlesh 2 Title';
-		$data[] = 'Type 3';
-                $xls_content_row .= " <table style='border : 2px solid black;'>
- <tr><th>Column 1</th><th>Column 2</th></tr>
-  <tr><td style=  'font-size:200%'>Answer 1</td><td style='color:#f00'>Answer 2</td></tr>
-  <tr><td colspan= '2' style='font-weight:bold'>Answer 3 with 2 columns</td></tr>
- </table>";
-                
-		//$xls_content_row .= implode("\t", array_values($data)) . "\r\n";
-$xls_content_header = implode("\t", array_values($header)) . "\r";
-  $xls_content .= $xls_content_header . "\n" . $xls_content_row;
-       header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-       header('Content-Disposition: attachment;filename=node_listing.xls');
-       header("Expires: 0");
-       header("Pragma: public");
-       header("Cache-Control: must-revalidate, post-check=0, pre-check=0");       
-       print $xls_content;
-       exit();  
-                
-    }
-    
-    /**
-     * Download MIS Report
-     */ 
-    public function downloadMisReport_old() {
-        $roles = \Drupal::currentUser()->getRoles();
-        $misReportUrl = \Drupal::request()->server->get('HTTP_REFERER');
-        $queryString = parse_url($misReportUrl);
-        if(!empty($queryString['query'])) {
-         parse_str($queryString['query'], $output);  
-         if(array_key_exists('page', $output)) {
-             unset($output['page']);
-         }
-        }
-        $query = \Drupal::database()->select('account_txn', 'ac');
-        $query->leftJoin('visa_report', 'vr', 'ac.visa_id = vr.visa_id');
-        $query->join('node_field_data', 'nf', 'nf.nid = ac.customer_id');
-        $query->fields('ac', ['id','visa_id','debit','credit','txn_date','cum_amount', 'txn_reason', 'txn_type']);
-        $query->fields('vr', ['id','visa_id','customer_name','customer_id','destination_name','purpose_name','visa_type_name','nationality','visa_price','urgent','name','passport_no', 'app_ref']);
-        $query->fields('nf', ['title']);
-        if (!empty($output['customer_id'])) {
-            $query->condition('ac.customer_id', $output['customer_id']);
-        }
-        if(in_array('agent', $roles)){
-          $query->condition('ac.customer_id', getCustomerId());
-        }
-        if (!empty($output['fd'])) {
-            $query->condition('ac.txn_date', $output['fd'], '>=');
-        }
-        if (!empty($output['td'])) {
-            $query->condition('ac.txn_date', $output['td'], '<=');
-        }
-        $query->orderBy('ac.id', 'ASC');        
-        $misReports = $query->execute()->fetchAll();
-        $misHeader = [
-            t('Bill Date'),
-            t('Bill No'),
-            t('Application Ref No'),
-            t('Pax Name'),
-            t('Visa Passport'),
-            t('Transaction Remark'),
-            t('Visa Country'),
-            t('Visa Category'),
-            t('Visa Type'),
-            t('Dr'),
-            t('Cr'),
-            t('Balance'),
-        ];
-        $xls_top = '';
-        if(in_array('agent', $roles)){
-            $customer_name = $misReports[0]->title;
-            $reportPeriod = 'For The Period 24 February 2018 To 26 February 2018';
-            $xls_top = "VISA RECO"."\r\n".$reportPeriod."\r\n".$customer_name; 
-        }
-        $xls_top .= "\r\n";
-        $xls_content = '';
-        $xls_content_row = '';
-        foreach($misReports as $misReport) {
-            $misdata = array();
-            $misdata['bill_date'] = date('d-M-Y', strtotime($misReport->txn_date));
-            $misdata['bill_no'] = ($misReport->txn_type == 'D') ? 'VS /'.$misReport->id : '';
-            $misdata['app_ref'] = $misReport->app_ref;
-            $misdata['name'] = $misReport->name;
-            $misdata['passport_no'] = $misReport->passport_no;
-            $misdata['txn_reason'] = $misReport->txn_reason;
-            $misdata['destination_name'] = $misReport->destination_name;
-            $misdata['purpose_name'] = $misReport->purpose_name;
-            $misdata['visa_type_name'] = $misReport->visa_type_name;
-            $misdata['debit'] = !empty($misReport->debit) ? $misReport->debit : '';
-            $misdata['credit'] = !empty($misReport->credit) ? $misReport->credit : '';
-            $misdata['cum_amount'] = $misReport->cum_amount;
-            $xls_content_row .= implode("\t", array_values($misdata)) . "\r\n";
-        }
-        $xls_content_header = implode("\t", array_values($misHeader)) . "\r";
-        $xls_content .= $xls_top. $xls_content_header . "\n" . $xls_content_row;
-        header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        header('Content-Disposition: attachment;filename=mis_report.xls');
-        header("Expires: 0");
-        header("Pragma: public");
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-        print $xls_content;
-        exit();
     }
     /**
      * Download MIS Report
@@ -587,6 +446,108 @@ $xls_content_header = implode("\t", array_values($header)) . "\r";
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         print $reportData;
         exit();
+    }
+    /**
+     * Download MIS Report
+     */ 
+    public function downloadSalesReport() {
+        $roles = \Drupal::currentUser()->getRoles();
+        $salesReportUrl = \Drupal::request()->server->get('HTTP_REFERER');
+        $queryString = parse_url($salesReportUrl);
+        if(!empty($queryString['query'])) {
+         parse_str($queryString['query'], $output);  
+         if(array_key_exists('page', $output)) {
+             unset($output['page']);
+         }
+        }
+        //Get Sales Report Data
+        $query = \Drupal::database()->select('visa', 'v');
+        $query->join('node_field_data', 'nf', 'nf.nid = v.customer_id');
+        $query->addField('nf','title', 'customer_name');
+        $query->addExpression('count(v.id)', 'total_visa');
+        $query->addExpression('sum(v.visa_price)', 'total_visa_price');
+        $query->addExpression('max(v.created_date)', 'last_transaction');
+        if (!empty($output['customer_id'])) {
+            $query->condition('v.customer_id', $output['customer_id']);
+        }
+        if (!empty($output['fd'])) {
+            $query->condition('v.created_date', $output['fd'], '>=');
+        }
+        if (!empty($output['td'])) {
+            $query->condition('v.created_date', $output['td'], '<=');
+        }        
+        if(in_array('sales_user', $roles)){
+          $query->condition('v.customer_id', getSalesCustomer(), 'IN');
+        }
+        $query->groupBy('v.customer_id');
+        $query->groupBy('nf.title');
+        $salesReports = $query->execute()->fetchAll();
+        $salesHeaders = [
+            t('Key Agent Name'),
+            t('Last Transaction Date'),
+            t('Visa Count'),
+            t('Total Business'),
+        ];
+        $reportData  = "";
+        $reportData .= "<table style='border:2px solid black;'>";
+        $reportData .= "<tr>";
+        foreach($salesHeaders as $salesHeader) {
+           $reportData .= "<th style='border: 1px solid black; background-color:#0083C1;'>".$salesHeader."</th>";
+        }
+        $reportData .= "</tr>";
+        foreach($salesReports as $salesReport) {
+            $reportData .= "<tr>";
+            $reportData .= "<td style='border: 1px solid black;'>".$salesReport->customer_name."</td>";
+            $reportData .= "<td style='border: 1px solid black;'>".date('d-M-Y', strtotime($salesReport->last_transaction))."</td>";
+            $reportData .= "<td style='border: 1px solid black;'>".$salesReport->total_visa."</td>";
+            $reportData .= "<td style='border: 1px solid black;'>".$salesReport->total_visa_price."</td>";
+            $reportData .= "</tr>";
+        }
+        $reportData .= "</table>";
+        header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        header('Content-Disposition: attachment;filename=sales_report.xls');
+        header("Expires: 0");
+        header("Pragma: public");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        print $reportData;
+        exit();
+    }
+    /**
+     * View Document Visa
+     * @return type Array visadocdata
+     */
+    public function documentVisa() {
+        $visaDocs = getVisaDoc();
+        //create table header
+        $header_table = [
+            'country_name' => t('Country Name'),
+            'purpose' => t('Purpose'),
+            'visa_type' => t('Visa Type'),
+            'opt' => t('Action'),
+        ];
+        $rows = [];
+        foreach ($visaDocs as $visaDoc) {
+            $edit = Url::fromUserInput('/evisa/documentvisa/' . $visaDoc->id, ['attributes' => ['class' => 'button']]);
+            $rows[] = [
+                'country_name' => $visaDoc->country_name,
+                'purpose' => $visaDoc->purpose_travel,
+                'visa_type' => $visaDoc->visa_type,
+                'opt' => Link::fromTextAndUrl('Edit', $edit)
+            ];
+        }
+        // Add Visa Document Link
+        $visadocdata['visa_doc'] = [
+            '#markup' => "<p><a href='".$GLOBALS['base_url']."/evisa/documentvisa/form'>Add Document List</a></p>",
+        ];
+        //display Visa Type table
+        $visadocdata['table'] = [
+            '#type' => 'table',
+            '#header' => $header_table,
+            '#rows' => $rows,
+            '#empty' => t('No records found'),
+        ];
+        return $visadocdata;
+        
     }
     
 }

@@ -139,17 +139,6 @@ class VisaReport extends FormBase {
         $form['pager'] = [
             '#type' => 'pager'
         ];
-        if (count($rows)) {
-            $form['export'] = [
-                '#title' => t('Export'),
-                '#type' => 'link',
-                '#url' => Url::fromRoute('evisa.download.excel'),
-                '#attributes' => [
-                    'target' => '_blank',
-                    'class' => 'button'
-                ]
-            ];
-        }
         return $form;
     }
     /**
