@@ -1,0 +1,31 @@
+<div class="form-item js-form-item form-wrapper js-form-wrapper panel panel-default" data-drupal-selector="edit-filter" id="edit-filter">
+
+    <div class="panel-heading">
+        <a aria-controls="edit-filter--content" aria-expanded="false" aria-pressed="false" data-toggle="collapse" role="button" class="panel-title" href="#edit-filter--content">Search option</a>
+    </div>
+    <div id="edit-filter--content" class="panel-body panel-collapse collapse fade">
+        <div class="form-inline form-item js-form-item form-type-entity-autocomplete js-form-type-entity-autocomplete form-item-customer-id js-form-item-customer-id form-group form-autocomplete">
+            <div class="input-group">
+                {{ form.filter.customer_id}}    
+            </div>
+        </div>
+        <div style = "margin-top:10px; float:left;" class="form-inline form-item js-form-item form-type-date js-form-type-date form-item-from-date js-form-item-from-date form-group">
+            {{form.filter.from_date}}
+        </div>
+        <div style="float:left; margin-left:40px; margin-top:10px;" class="form-inline form-item js-form-item form-type-date js-form-type-date form-item-to-date js-form-item-to-date form-group">
+            {{form.filter.to_date}}
+        </div>
+        <div style="float:left;margin-left:40px; margin-top:10px;">
+        <button data-drupal-selector="edit-submit" class="button js-form-submit form-submit btn-primary btn icon-before" type="submit" id="edit-submit" name="op" value="Search"><span class="icon glyphicon glyphicon-search" aria-hidden="true"></span>
+            Search</button>
+
+        <a href="/evisatheme/evisa/evisa/mis" class="btn btn-primary" data-drupal-selector="edit-reset" id="edit-reset">Reset</a>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+{{ form| without('filter') }}

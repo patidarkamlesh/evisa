@@ -65,7 +65,7 @@ class SalesReport extends FormBase {
             '#type' => 'link',
             '#title' => $this->t('Reset'),
             '#attributes' => array(
-                'class' => array('button'),
+                'class' => array('btn btn-primary'),
             ),
             '#url' => Url::fromRoute('evisa.sales.report'),
         ];
@@ -134,7 +134,7 @@ class SalesReport extends FormBase {
                 '#url' => Url::fromRoute('evisa.download.sales'),
                 '#attributes' => [
                     'target' => '_blank',
-                    'class' => 'button'
+                    'class' => 'btn btn-primary'
                 ]
             ];
         }

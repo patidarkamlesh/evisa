@@ -3,9 +3,41 @@
 use Drupal\user\Entity\User;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
+use Drupal\Core\Form\FormStateInterface;
 function evisa_hello_world() {
    return t('Hello Drupal 8 World 123!');
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function evisa_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    // Alter login form and add own custom submit handler.
+    case 'user_login_form':
+      $form['#submit'][] = '_evisa_user_login_form_submit';
+      break;
+  }
+}
+
+/**
+ * Custom submit handler for login form.
+ */
+function _evisa_user_login_form_submit($form, FormStateInterface $form_state) {
+    $roles = \Drupal::currentUser()->getRoles();
+    if(in_array('agent', $roles)){
+      $form_state->setRedirect('evisa.agent.home');  
+    } else if(in_array('sales_user', $roles)) {
+      $form_state->setRedirect('evisa.sales.report');  
+    } else if(in_array('finance_user', $roles)) {
+      $form_state->setRedirect('evisa.visa');  
+    } else if(in_array('operation_user', $roles)) {
+      $form_state->setRedirect('evisa.visa');  
+    } else {
+      $form_state->setRedirect('evisa.visa');  
+    }
+    
+}    
 
 function evisa_welcome() {
      $user = User::load(\Drupal::currentUser()->id());
@@ -348,9 +380,20 @@ function evisa_theme($existing, $type, $theme, $path) {
       'variables' => ['price_detail' => NULL],
     ],
     'agent' => [
-      'variables' => ['user_name' => NULL, 'price_info' => NULL],
+      'variables' => ['user_name' => NULL, 'price_info' => NULL, 'login' => NULL],
     ],  
-      
+    'visa_edit_form' => [
+      'render element' => 'form',
+    ],  
+    'mis_report' => [
+      'render element' => 'form',
+    ],
+    'multistep_form_two' => [
+      'render element' => 'form',
+    ],
+    'multistep_form_three' => [
+      'render element' => 'form',
+    ],  
   ];
 }
 /**
@@ -528,4 +571,24 @@ function getDocument($country_id, $purpose_travel_id, $visa_type_id) {
         ->condition('visa_type_id', $visa_type_id)
         ->execute()->fetchField();
     return $document;    
+}
+/**
+ * Get last five visa status
+ */
+function getLatestVisa() {
+    $roles = \Drupal::currentUser()->getRoles();
+    $result = [];
+    if(in_array('agent', $roles)){
+        $query = \Drupal::database()->select('visa_report', 'vr');
+        $query->fields('vr', ['destination_name','purpose_name','visa_type_name','name','passport_no','status_id', 'app_ref']);
+        $query->condition('vr.customer_id', getCustomerId());
+        $query->orderBy('id','DESC');
+        $query->range(0,5);
+        $result = $query->execute()->fetchAll();
+        return $result;        
+    } else {
+        return $result;
+    }
+    
+    
 }

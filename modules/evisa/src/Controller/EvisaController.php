@@ -41,7 +41,7 @@ class EvisaController extends ControllerBase {
         // Add Country Link
         $countrydata['add_country'] = [
             //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/country/form">Add Country</a></p>',
-            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/evisa/country/form'>Add Country</a></p>",
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='" . $GLOBALS['base_url'] . "/evisa/country/form'>Add Country</a></p>",
         ];
         //display country table
         $countrydata['table'] = [
@@ -75,7 +75,7 @@ class EvisaController extends ControllerBase {
         // Add Nationality Link
         $nationaldata['add_nationality'] = [
             //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/national/form">Add Nationality</a></p>',
-            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/evisa/national/form'>Add Nationality</a></p>",
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='" . $GLOBALS['base_url'] . "/evisa/national/form'>Add Nationality</a></p>",
         ];
         //display Nationality table
         $nationaldata['table'] = [
@@ -86,6 +86,7 @@ class EvisaController extends ControllerBase {
         ];
         return $nationaldata;
     }
+
     /**
      * Display list of Purpose of Travel with Add & Edit button
      */
@@ -108,7 +109,7 @@ class EvisaController extends ControllerBase {
         // Add Purpose of Travel Link
         $purposedata['add_purpose'] = [
             //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/purpose/form">Add Purpose of Travel</a></p>',
-            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/evisa/purpose/form'>Add Purpose of Travel</a></p>",
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='" . $GLOBALS['base_url'] . "/evisa/purpose/form'>Add Purpose of Travel</a></p>",
         ];
         //display Purpose of Travel table
         $purposedata['table'] = [
@@ -119,6 +120,7 @@ class EvisaController extends ControllerBase {
         ];
         return $purposedata;
     }
+
     /**
      * Display list of Type of Visa with Add & Edit button
      */
@@ -151,6 +153,7 @@ class EvisaController extends ControllerBase {
         ];
         return $visatypedata;
     }
+
     /**
      * Display Association of Country & Purpose of Travel
      */
@@ -172,7 +175,7 @@ class EvisaController extends ControllerBase {
         // Add Visa Type Link
         $countrypurposedata['add_countrypurpose'] = [
             //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/countrypurpose/form">Add Association of Country & Purpose of Travel</a></p>',
-            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/evisa/countrypurpose/form'>Add Association of Country & Purpose of Travel</a></p>",
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='" . $GLOBALS['base_url'] . "/evisa/countrypurpose/form'>Add Association of Country & Purpose of Travel</a></p>",
         ];
         //display Visa Type table
         $countrypurposedata['table'] = [
@@ -183,6 +186,7 @@ class EvisaController extends ControllerBase {
         ];
         return $countrypurposedata;
     }
+
     /**
      * Display Association of Country & Purpose of Travel
      */
@@ -206,7 +210,7 @@ class EvisaController extends ControllerBase {
         // Add Visa Type Link
         $countrypurposeVisadata['add_countrypurpose'] = [
             //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/countrypurposevisa/form">Add Association</a></p>',
-            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/evisa/countrypurposevisa/form'>Add Association</a></p>",
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='" . $GLOBALS['base_url'] . "/evisa/countrypurposevisa/form'>Add Association</a></p>",
         ];
         //display Visa Type table
         $countrypurposeVisadata['table'] = [
@@ -216,8 +220,8 @@ class EvisaController extends ControllerBase {
             '#empty' => t('No records found'),
         ];
         return $countrypurposeVisadata;
-        
     }
+
     /**
      * Display Association of Country & Purpose of Travel
      */
@@ -248,7 +252,7 @@ class EvisaController extends ControllerBase {
         // Add Price Assignment Link
         $priceAssigndata['add_priceassign'] = [
             //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/priceassignment/form">Add Price Assignment</a></p>',
-            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/evisa/priceassignment/form'>Add Price Assignment</a></p>",
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='" . $GLOBALS['base_url'] . "/evisa/priceassignment/form'>Add Price Assignment</a></p>",
         ];
         //display Visa Type table
         $priceAssigndata['table'] = [
@@ -259,6 +263,7 @@ class EvisaController extends ControllerBase {
         ];
         return $priceAssigndata;
     }
+
     /**
      * Send Email test
      */
@@ -277,6 +282,7 @@ class EvisaController extends ControllerBase {
             drupal_set_message(t('Your message has been sent.'));
         }
     }
+
     /**
      * Account Page for all
      */
@@ -302,6 +308,7 @@ class EvisaController extends ControllerBase {
             '#ticket' => $ticketUrl,
         ];
     }
+
     /**
      * Download Visa
      * @param INT $vid visa ID
@@ -325,6 +332,7 @@ class EvisaController extends ControllerBase {
             ];
         }
     }
+
     /**
      * Block Customer List
      */
@@ -348,7 +356,7 @@ class EvisaController extends ControllerBase {
         // Add Block Customer Link
         $blockcustdata['block_customer'] = [
             //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/blockCust/form">Block Customer</a></p>',
-            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/evisa/blockCust/form'>Block Customer</a></p>",
+            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='" . $GLOBALS['base_url'] . "/evisa/blockCust/form'>Block Customer</a></p>",
         ];
         //display Visa Type table
         $blockcustdata['table'] = [
@@ -359,30 +367,31 @@ class EvisaController extends ControllerBase {
         ];
         return $blockcustdata;
     }
+
     /**
      * Download MIS Report
-     */ 
+     */
     public function downloadMisReport() {
         $roles = \Drupal::currentUser()->getRoles();
         $misReportUrl = \Drupal::request()->server->get('HTTP_REFERER');
         $queryString = parse_url($misReportUrl);
-        if(!empty($queryString['query'])) {
-         parse_str($queryString['query'], $output);  
-         if(array_key_exists('page', $output)) {
-             unset($output['page']);
-         }
+        if (!empty($queryString['query'])) {
+            parse_str($queryString['query'], $output);
+            if (array_key_exists('page', $output)) {
+                unset($output['page']);
+            }
         }
         $query = \Drupal::database()->select('account_txn', 'ac');
         $query->leftJoin('visa_report', 'vr', 'ac.visa_id = vr.visa_id');
         $query->join('node_field_data', 'nf', 'nf.nid = ac.customer_id');
-        $query->fields('ac', ['id','visa_id','debit','credit','txn_date','cum_amount', 'txn_reason', 'txn_type']);
-        $query->fields('vr', ['id','visa_id','customer_name','customer_id','destination_name','purpose_name','visa_type_name','nationality','visa_price','urgent','name','passport_no', 'app_ref']);
+        $query->fields('ac', ['id', 'visa_id', 'debit', 'credit', 'txn_date', 'cum_amount', 'txn_reason', 'txn_type']);
+        $query->fields('vr', ['id', 'visa_id', 'customer_name', 'customer_id', 'destination_name', 'purpose_name', 'visa_type_name', 'nationality', 'visa_price', 'urgent', 'name', 'passport_no', 'app_ref']);
         $query->fields('nf', ['title']);
         if (!empty($output['customer_id'])) {
             $query->condition('ac.customer_id', $output['customer_id']);
         }
-        if(in_array('agent', $roles)){
-          $query->condition('ac.customer_id', getCustomerId());
+        if (in_array('agent', $roles)) {
+            $query->condition('ac.customer_id', getCustomerId());
         }
         if (!empty($output['fd'])) {
             $query->condition('ac.txn_date', $output['fd'], '>=');
@@ -390,7 +399,7 @@ class EvisaController extends ControllerBase {
         if (!empty($output['td'])) {
             $query->condition('ac.txn_date', $output['td'], '<=');
         }
-        $query->orderBy('ac.id', 'ASC');        
+        $query->orderBy('ac.id', 'ASC');
         $misReports = $query->execute()->fetchAll();
         $misHeaders = [
             t('Bill Date'),
@@ -406,36 +415,36 @@ class EvisaController extends ControllerBase {
             t('Cr'),
             t('Balance'),
         ];
-        $reportData  = "";
-        if(in_array('agent', $roles)){
+        $reportData = "";
+        if (in_array('agent', $roles)) {
             $customer_name = $misReports[0]->title;
-            $reportData .= "<div style='text-align:center;'>"."VISA RECO"."</div>"; 
-            $reportData .= "<div style='text-align:center;'>"."For The Period 24 February 2018 To 26 February 2018"."</div>"; 
-            $reportData .= "<div style='text-align:center;'>".$customer_name."</div>"; 
+            $reportData .= "<div style='text-align:center;'>" . "VISA RECO" . "</div>";
+            $reportData .= "<div style='text-align:center;'>" . "For The Period 24 February 2018 To 26 February 2018" . "</div>";
+            $reportData .= "<div style='text-align:center;'>" . $customer_name . "</div>";
         }
         $reportData .= "<table style='border:2px solid black;'>";
         $reportData .= "<tr>";
-        foreach($misHeaders as $misHeader) {
-           $reportData .= "<th style='border: 1px solid black; background-color:#0083C1;'>".$misHeader."</th>";
+        foreach ($misHeaders as $misHeader) {
+            $reportData .= "<th style='border: 1px solid black; background-color:#0083C1;'>" . $misHeader . "</th>";
         }
         $reportData .= "</tr>";
-        foreach($misReports as $misReport) {
+        foreach ($misReports as $misReport) {
             $reportData .= "<tr>";
-            $reportData .= "<td style='border: 1px solid black;'>".date('d-M-Y', strtotime($misReport->txn_date))."</td>";
-            $bill_no = ($misReport->txn_type == 'D') ? 'VS /'.$misReport->id : '';
-            $reportData .= "<td style='border: 1px solid black;'>".$bill_no."</td>";
-            $reportData .= "<td style='border: 1px solid black;'>".$misReport->app_ref."</td>";
-            $reportData .= "<td style='border: 1px solid black;'>".$misReport->name."</td>";
-            $reportData .= "<td style='border: 1px solid black;'>".$misReport->passport_no."</td>";
-            $reportData .= "<td style='border: 1px solid black;'>".$misReport->txn_reason."</td>";
-            $reportData .= "<td style='border: 1px solid black;'>".$misReport->destination_name."</td>";
-            $reportData .= "<td style='border: 1px solid black;'>".$misReport->purpose_name."</td>";
-            $reportData .= "<td style='border: 1px solid black;'>".$misReport->visa_type_name."</td>";
+            $reportData .= "<td style='border: 1px solid black;'>" . date('d-M-Y', strtotime($misReport->txn_date)) . "</td>";
+            $bill_no = ($misReport->txn_type == 'D') ? 'VS /' . $misReport->id : '';
+            $reportData .= "<td style='border: 1px solid black;'>" . $bill_no . "</td>";
+            $reportData .= "<td style='border: 1px solid black;'>" . $misReport->app_ref . "</td>";
+            $reportData .= "<td style='border: 1px solid black;'>" . $misReport->name . "</td>";
+            $reportData .= "<td style='border: 1px solid black;'>" . $misReport->passport_no . "</td>";
+            $reportData .= "<td style='border: 1px solid black;'>" . $misReport->txn_reason . "</td>";
+            $reportData .= "<td style='border: 1px solid black;'>" . $misReport->destination_name . "</td>";
+            $reportData .= "<td style='border: 1px solid black;'>" . $misReport->purpose_name . "</td>";
+            $reportData .= "<td style='border: 1px solid black;'>" . $misReport->visa_type_name . "</td>";
             $debit = !empty($misReport->debit) ? $misReport->debit : '';
-            $reportData .= "<td style='border: 1px solid black;'>".$debit."</td>";
+            $reportData .= "<td style='border: 1px solid black;'>" . $debit . "</td>";
             $credit = !empty($misReport->credit) ? $misReport->credit : '';
-            $reportData .= "<td style='border: 1px solid black;'>".$credit."</td>";
-            $reportData .= "<td style='border: 1px solid black;'>".$misReport->cum_amount."</td>";
+            $reportData .= "<td style='border: 1px solid black;'>" . $credit . "</td>";
+            $reportData .= "<td style='border: 1px solid black;'>" . $misReport->cum_amount . "</td>";
             $reportData .= "</tr>";
         }
         $reportData .= "</table>";
@@ -447,23 +456,24 @@ class EvisaController extends ControllerBase {
         print $reportData;
         exit();
     }
+
     /**
      * Download MIS Report
-     */ 
+     */
     public function downloadSalesReport() {
         $roles = \Drupal::currentUser()->getRoles();
         $salesReportUrl = \Drupal::request()->server->get('HTTP_REFERER');
         $queryString = parse_url($salesReportUrl);
-        if(!empty($queryString['query'])) {
-         parse_str($queryString['query'], $output);  
-         if(array_key_exists('page', $output)) {
-             unset($output['page']);
-         }
+        if (!empty($queryString['query'])) {
+            parse_str($queryString['query'], $output);
+            if (array_key_exists('page', $output)) {
+                unset($output['page']);
+            }
         }
         //Get Sales Report Data
         $query = \Drupal::database()->select('visa', 'v');
         $query->join('node_field_data', 'nf', 'nf.nid = v.customer_id');
-        $query->addField('nf','title', 'customer_name');
+        $query->addField('nf', 'title', 'customer_name');
         $query->addExpression('count(v.id)', 'total_visa');
         $query->addExpression('sum(v.visa_price)', 'total_visa_price');
         $query->addExpression('max(v.created_date)', 'last_transaction');
@@ -475,9 +485,9 @@ class EvisaController extends ControllerBase {
         }
         if (!empty($output['td'])) {
             $query->condition('v.created_date', $output['td'], '<=');
-        }        
-        if(in_array('sales_user', $roles)){
-          $query->condition('v.customer_id', getSalesCustomer(), 'IN');
+        }
+        if (in_array('sales_user', $roles)) {
+            $query->condition('v.customer_id', getSalesCustomer(), 'IN');
         }
         $query->groupBy('v.customer_id');
         $query->groupBy('nf.title');
@@ -488,19 +498,19 @@ class EvisaController extends ControllerBase {
             t('Visa Count'),
             t('Total Business'),
         ];
-        $reportData  = "";
+        $reportData = "";
         $reportData .= "<table style='border:2px solid black;'>";
         $reportData .= "<tr>";
-        foreach($salesHeaders as $salesHeader) {
-           $reportData .= "<th style='border: 1px solid black; background-color:#0083C1;'>".$salesHeader."</th>";
+        foreach ($salesHeaders as $salesHeader) {
+            $reportData .= "<th style='border: 1px solid black; background-color:#0083C1;'>" . $salesHeader . "</th>";
         }
         $reportData .= "</tr>";
-        foreach($salesReports as $salesReport) {
+        foreach ($salesReports as $salesReport) {
             $reportData .= "<tr>";
-            $reportData .= "<td style='border: 1px solid black;'>".$salesReport->customer_name."</td>";
-            $reportData .= "<td style='border: 1px solid black;'>".date('d-M-Y', strtotime($salesReport->last_transaction))."</td>";
-            $reportData .= "<td style='border: 1px solid black;'>".$salesReport->total_visa."</td>";
-            $reportData .= "<td style='border: 1px solid black;'>".$salesReport->total_visa_price."</td>";
+            $reportData .= "<td style='border: 1px solid black;'>" . $salesReport->customer_name . "</td>";
+            $reportData .= "<td style='border: 1px solid black;'>" . date('d-M-Y', strtotime($salesReport->last_transaction)) . "</td>";
+            $reportData .= "<td style='border: 1px solid black;'>" . $salesReport->total_visa . "</td>";
+            $reportData .= "<td style='border: 1px solid black;'>" . $salesReport->total_visa_price . "</td>";
             $reportData .= "</tr>";
         }
         $reportData .= "</table>";
@@ -512,6 +522,7 @@ class EvisaController extends ControllerBase {
         print $reportData;
         exit();
     }
+
     /**
      * View Document Visa
      * @return type Array visadocdata
@@ -537,7 +548,7 @@ class EvisaController extends ControllerBase {
         }
         // Add Visa Document Link
         $visadocdata['visa_doc'] = [
-            '#markup' => "<p><a href='".$GLOBALS['base_url']."/evisa/documentvisa/form'>Add Document List</a></p>",
+            '#markup' => "<p><a href='" . $GLOBALS['base_url'] . "/evisa/documentvisa/form'>Add Document List</a></p>",
         ];
         //display Visa Type table
         $visadocdata['table'] = [
@@ -547,7 +558,49 @@ class EvisaController extends ControllerBase {
             '#empty' => t('No records found'),
         ];
         return $visadocdata;
+    }
+
+    /**
+     * Agent Home Page to track last five visa
+     */
+    public function agentHome() {
+        $latestVisas = getLatestVisa();
+        //create table header
+        $header_table = [
+            //'app_ref' => t('Application Ref'),
+            'country_name' => t('Country Name'),
+            'purpose_of_travel' => t('Purpose of Travel'),
+            'visa_type' => t('Visa Type'),
+            'passport_no' => t('Passport No'),
+            'name' => t('Pax name'),
+            'status_id' => t('Status'),
+        ];
+        $rows = [];
+        $status = [1 => 'Open', 2=>'In Progress', 3=>'Approved', 4=> 'Rejected'];
+        foreach ($latestVisas as $latestVisa) {
+            $rows[] = [
+                //'app_ref' => $latestVisa->app_ref,
+                'country_name' => $latestVisa->destination_name,
+                'purpose_of_travel' => $latestVisa->purpose_name,
+                'visa_type' => $latestVisa->visa_type_name,
+                'passport_no' => $latestVisa->passport_no,
+                'name' => $latestVisa->name,
+                'status_id' => $status[$latestVisa->status_id],
+            ];
+        }
+        //display Visa Type table
+        $latestvisadata['table'] = [
+            '#type' => 'table',
+            '#header' => $header_table,
+            '#rows' => $rows,
+            '#empty' => t('No records found'),
+        ];
+        // Add Visa Document Link
+        $latestvisadata['track_visa'] = [
+            '#markup' => "<a class='btn btn-primary' href='" . $GLOBALS['base_url'] . "/evisa/visa'>More Info</a>",
+        ];
+        return $latestvisadata;
         
     }
-    
+
 }

@@ -33,8 +33,13 @@ class VisaEdit extends FormBase {
             ];
             $form['customer_name'] = [
                 '#type' => 'item',
-                '#title' => $this->t('Customer Name'),
+                '#title' => $this->t('Customer Name:'),
                 '#markup' => $visaData['customer_name'],
+            ];
+            $form['app_ref'] = [
+                '#type' => 'item',
+                '#title' => $this->t('Application Reference:'),
+                '#markup' => $visaData['app_ref'],
             ];
             $form['country'] = [
                 '#type' => 'item',
@@ -76,7 +81,7 @@ class VisaEdit extends FormBase {
                 '#title' => $this->t('Passport No'),
                 '#markup' => $visaData['passport_no'],
             ];
-            $status = [1 => 'Open', 2=>'In Progress', 3=>'Approved', 4=> 'Rejected'];            
+            $status = [1 => 'Open', 2=>'In Progress', 3=>'Approved', 4=> 'Rejected', 5=> 'Cancelled'];            
             $form['status_id'] = [
                 '#type' => 'select',
                 '#title' => 'Status',
@@ -97,6 +102,9 @@ class VisaEdit extends FormBase {
                         ':input[name="status_id"]' => ['value'=> 2 ]
                     ]                
                 ],
+                '#attributes' => [
+                    'class' => ['form-control']  
+                ],
             ];
             $form['approved_visa'] = [
                 '#type' => 'managed_file',
@@ -111,6 +119,7 @@ class VisaEdit extends FormBase {
                         ':input[name="status_id"]' => ['value'=> 3 ]
                     ]                
                 ],
+                
             ];
             $form['reject_reason'] = [
                 '#type' => 'textfield',
@@ -123,6 +132,9 @@ class VisaEdit extends FormBase {
                     'required' => [
                         ':input[name="status_id"]' => ['value'=> 4 ]
                     ]                
+                ],
+                '#attributes' => [
+                    'class' => ['form-control']  
                 ],
             ];            
             $form['actions'] = [
@@ -140,7 +152,8 @@ class VisaEdit extends FormBase {
                 '#markup' => $this->t('System didn\'t found any Visa data. Please contact system adminstrator.'),
             ];
         }
-
+        $form['#theme'] = 'visa_edit_form';
+        $form['#attributes']['class'][] = 'form-horizontal';
         return $form;
     }
 
@@ -217,6 +230,9 @@ class VisaEdit extends FormBase {
             } catch (Exception $e) {
                 watchdog_exception('visa', $e);
             }
+        }
+        if ($status_id == 5) {
+            //Update Account information to credit for cancelled Visa
         }
         drupal_set_message(t('Visa has been updated successfully.'));
         //Redirect to Visa Page

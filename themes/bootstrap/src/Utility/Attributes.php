@@ -60,7 +60,8 @@ class Attributes extends ArrayObject {
    */
   public function &getClasses() {
     $classes = &$this->offsetGet('class', []);
-    $classes = array_unique($classes);
+    //$classes = array_unique($classes);
+    $classes = array_unique((array) $classes);
     return $classes;
   }
 

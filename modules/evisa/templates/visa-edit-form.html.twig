@@ -1,0 +1,70 @@
+{# empty Twig template #}
+{{ form.form_build_id }}
+{{ form.form_token }}
+{{ form.form_id }}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-4">{{ form.app_ref }}</div>
+        <div class="col-sm-8">{{ form.customer_name }}</div>
+    </div>
+</div>
+<br />
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Visa Information</b></div>
+    <div class="panel-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-4">{{ form.name }}</div>
+                <div class="col-sm-4">{{ form.passport }}</div>
+                <div class="col-sm-4">{{ form.country }}</div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-4">{{ form.purpose_travel }}</div>
+                <div class="col-sm-4">{{ form.visa_type }}</div>
+                <div class="col-sm-4">{{ form.nationality }}</div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-4">{{ form.price }}</div>
+                <div class="col-sm-4">{{ form.urgent }}</div>
+            </div>
+        </div>  
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Action</b></div>
+    <div class="panel-body">
+        <div class="container-fluid">        
+            <div class="row">
+                <div class="col-xs-2">
+                    {{ form.status_id }}
+                </div>
+                <div class="col-xs-3">
+                    {{ form.reference_no }}
+                </div>
+                <div class="col-xs-4">
+                    {{ form.approved_visa }}
+                </div>
+                <div class="col-xs-5">
+                    {{ form.reject_reason }}
+                </div>
+            </div>
+        </div>
+                
+    </div>
+</div>
+<div class="panel-footer row">
+    <div class="col-xs-6 text-left">
+        <div class="previous">
+          {{ form.actions }}
+        </div>
+    </div>
+    <div class="col-xs-6 text-right">   
+        <div class="next">
+          <a href="{{ url('evisa.visa') }}" class="btn btn-primary" role="button">{{ 'Back'|t }}</a>
+        </div>
+    </div>
+</div>                
+                
+{{ form |without('app_ref', 'customer_name', 'name', 'passport', 'country','purpose_travel', 'visa_type', 'nationality', 'price', 'urgent', 'status_id', 'reference_no', 'approved_visa', 'reject_reason', 'actions') }}

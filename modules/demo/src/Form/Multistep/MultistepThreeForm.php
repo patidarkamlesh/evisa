@@ -93,6 +93,8 @@ class MultistepThreeForm extends MultistepFormBase {
         // Form 2 Data
         $form['passanger'] = [
             '#type' => 'fieldset',
+            '#collapsible' => TRUE,
+            '#collapsed' => TRUE,
             '#title' => $this->t('Passanger Detail')
         ];
         $form['passanger']['name'] = [
@@ -136,7 +138,7 @@ class MultistepThreeForm extends MultistepFormBase {
             '#type' => 'radios',
             '#title' => $this->t('Gender'),
             '#options' => $gender,
-            '#required' => TRUE
+            '#required' => TRUE,
         ];
         $mar_status = [1=>'Single', 2=>'Married', 3=>'Widowed', 4=>'Divorced']; 
         $form['passanger']['mar_status'] = [
@@ -162,6 +164,8 @@ class MultistepThreeForm extends MultistepFormBase {
 
         $form['passport'] = [
             '#type' => 'fieldset',
+            '#collapsible' => TRUE,
+            '#collapsed' => TRUE,
             '#title' => $this->t('Passport Detail')
         ];
         $form['passport']['passport_no'] = [
@@ -239,6 +243,8 @@ class MultistepThreeForm extends MultistepFormBase {
         ];
         $form['flight'] = [
             '#type' => 'fieldset',
+            '#collapsible' => TRUE,
+            '#collapsed' => TRUE,
             '#title' => $this->t('Flight Detail')
         ];
         $form['flight']['arrival_from'] = [
@@ -259,6 +265,8 @@ class MultistepThreeForm extends MultistepFormBase {
         ];
         $form['address'] = [
             '#type' => 'fieldset',
+            '#collapsible' => TRUE,
+            '#collapsed' => TRUE,
             '#title' => $this->t('Address Detail')
         ];
         $form['address']['address_line_1'] = [
@@ -290,12 +298,12 @@ class MultistepThreeForm extends MultistepFormBase {
             '#type' => 'link',
             '#title' => $this->t('Modify Search'),
             '#attributes' => array(
-                'class' => array('button'),
+                'class' => array('btn btn-primary'),
             ),
             '#weight' => 0,
             '#url' => Url::fromRoute('demo.multistep_one'),
         ];
-
+        $form['#theme'] = 'multistep_form_three'; 
         return $form;
     }
 

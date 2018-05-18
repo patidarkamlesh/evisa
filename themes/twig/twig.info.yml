@@ -1,7 +1,0 @@
-name: Twig
-type: theme
-core: 8.x
-description: Twig template my first template
-version: 1.0
-base theme: false
-package: Custom

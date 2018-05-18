@@ -1,0 +1,180 @@
+{# empty Twig template #}
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Visa Information</b></div>
+    <div class="panel-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-4">{{ form.country_name }}</div>
+                <div class="col-sm-4">{{ form.purpose_travel }}</div>
+                <div class="col-sm-4">{{ form.visa_type }}</div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-4">{{ form.nationality }}</div>
+                <div class="col-sm-4">{{ form.urgent_visa }}</div>
+                <div class="col-sm-4">{{ form.total_price }}</div>
+            </div>
+        </div>  
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Passanger Detail Form</b></div>
+    <div class="panel-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-3">
+                    {{ form.passanger.name }}
+                </div>
+                <div class="col-xs-4">
+                    {{ form.passanger.father_name }}
+                </div>
+                <div class="col-xs-5">
+                    {{ form.passanger.mother_name }}
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-xs-3">
+                    {{ form.passanger.dob }}
+                </div>
+                <div class="col-xs-4">
+                    {{ form.passanger.place_birth }}
+                </div>
+                <div class="col-xs-5">
+                    {{ form.passanger.country_birth }}
+                </div>
+            </div>
+            <br /> 
+            <div class="row">
+                <div class="col-xs-3">
+                    {{ form.passanger.gender }}
+                </div>
+                <div class="col-xs-4">
+                    {{ form.passanger.mar_status }}
+                </div>
+                <div class="col-xs-5">
+                    {{ form.passanger.contact }}
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-xs-3">
+                    {{ form.passanger.religion }}
+                </div>
+                <div class="col-xs-4">
+                    {{ form.passanger.spouse }}
+                </div>
+                <div class="col-xs-5">
+                    {{ form.passanger.profession }}
+                </div>
+            </div>
+
+        </div>  
+    </div>
+</div>            
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Passport Detail Form</b></div>
+    <div class="panel-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-3">
+                    {{ form.passport.passport_no }}
+                </div>
+                <div class="col-xs-4" style="margin-top:20px;">
+                    {{ form.passport.passport_issued_date }}
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-xs-3">
+                    {{ form.passport.passport_issued }}
+                </div>
+                <div class="col-xs-4" style="margin-top:20px;">
+                    {{ form.passport.passport_expired_date }}
+                </div>
+            </div>
+            <br />    
+            <div class="row">
+                <div class="col-xs-3">
+                    {{ form.passport.photo }}
+                </div>
+                <div class="col-xs-4">
+                    {{ form.passport.passport_first }}
+                </div>
+                <div class="col-xs-5">
+                    {{ form.passport.passport_last }}
+                </div>
+            </div>
+            <br /> 
+            <div class="row">
+                <div class="col-xs-3">
+                    {{ form.passport.support_doc_1 }}
+                </div>
+                <div class="col-xs-4">
+                    {{ form.passport.support_doc_2 }}
+                </div>
+                <div class="col-xs-5">
+                    {{ form.passport.ticket }}
+                </div>
+            </div>
+
+        </div>  
+    </div>
+</div>            
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Flight Detail Form</b></div>
+    <div class="panel-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-3">
+                    {{ form.flight.arrival_from }}
+                </div>
+                <div class="col-xs-4" style="margin-top:20px;">
+                    {{ form.flight.arrival_date }}
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-xs-3">
+                    {{ form.flight.departure_to }}
+                </div>
+                <div class="col-xs-4" style="margin-top:20px;">
+                    {{ form.flight.departure_date }}
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>            
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Address Detail Form</b></div>
+    <div class="panel-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-3">
+                    {{ form.address.address_line_1 }}
+                </div>
+                <div class="col-xs-4">
+                    {{ form.address.address_line_2 }}
+                </div>
+                <div class="col-xs-5">
+                    {{ form.address.city }}
+                </div>
+            </div>
+            <br /> 
+            <div class="row">
+                <div class="col-xs-3">
+                    {{ form.address.state }}
+                </div>
+                <div class="col-xs-4">
+                    {{ form.address.country_add }}
+                </div>
+                <div class="col-xs-5">
+                    {{ form.address.zip }}
+                </div>
+            </div>
+
+        </div>  
+    </div>
+</div>            
+
+{{ form | without('country_name', 'purpose_travel', 'visa_type', 'nationality', 'urgent_visa', 'visa_price', 'urgent_price', 'total_price', 'passanger', 'passport', 'flight', 'address') }}

@@ -1,6 +1,0 @@
-<?php
-
-function twig_preprocess_html(&$variables) {
- //print_r($variables); exit;
-
-}

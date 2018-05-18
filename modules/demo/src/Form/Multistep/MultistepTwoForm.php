@@ -74,34 +74,34 @@ class MultistepTwoForm extends MultistepFormBase {
         ];
         $form['visa_price'] = [
             '#type' => 'item',
-            '#title' => $this->t('Visa Price'),
+            //'#title' => $this->t('Visa Price'),
             '#markup' => $visaPrice,
         ];
         $form['urgent_price'] = [
             '#type' => 'item',
-            '#title' => $this->t('Urgent Visa'),
+            //'#title' => $this->t('Urgent Visa'),
             '#markup' => ($urgent_visa == 1) ? $urgentPrice : 0.00,
         ];
         $form['total_price'] = [
             '#type' => 'item',
-            '#title' => $this->t('Total Visa Price'),
+            //'#title' => $this->t('Total Visa Price'),
             '#markup' => ($urgent_visa == 1) ? ($urgentPrice + $visaPrice) : $visaPrice,
         ];
         $form['document'] = [
            '#type' => 'item',
-           '#title' => $this->t('Document Check List'),
+           //'#title' => $this->t('Document Check List'),
            '#markup' => $document, 
         ];        
         $form['actions']['previous'] = [
             '#type' => 'link',
             '#title' => $this->t('Modify Search'),
             '#attributes' => array(
-                'class' => array('button'),
+                'class' => array('btn btn-primary'),
             ),
             '#weight' => 0,
             '#url' => Url::fromRoute('demo.multistep_one'),
         ];
-
+        $form['#theme'] = 'multistep_form_two'; 
         return $form;
     }
 

@@ -29,7 +29,9 @@ class VisaReport extends FormBase {
         // Add Visa Link
         $form['add_visa'] = [
             //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/demo/multistep-one">Post Visa</a></p>',
-            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='".$GLOBALS['base_url']."/demo/multistep-one'>Post Visa</a></p>",
+            '#prefix' => '<div class="addvisa">',
+            '#suffix' => '</div>', 
+            '#markup' => "<a class='use-ajax btn btn-primary' data-dialog-type='modal' href='".$GLOBALS['base_url']."/demo/multistep-one'>Post Visa</a>",
         ];
         if(in_array('agent', $roles)) {
             
@@ -66,9 +68,9 @@ class VisaReport extends FormBase {
         $form['filter']['reset'] = [
             '#type' => 'link',
             '#title' => $this->t('Reset'),
-            '#attributes' => array(
-                'class' => array('button'),
-            ),
+            '#attributes' => [
+                'class' => ['btn btn-primary']
+            ],
             '#url' => Url::fromRoute('evisa.visa'),
         ];
         }
@@ -106,6 +108,9 @@ class VisaReport extends FormBase {
             'download' => t('Approved Visa'),
             'opt' => t('View'),
         ];
+        if(!(\Drupal::currentUser()->hasPermission('edit visa'))) {
+            unset($header_table['edit']);
+        }
         $rows = [];
         $status = [1 => 'Open', 2=>'In Progress', 3=>'Approved', 4=> 'Rejected'];
         
@@ -114,19 +119,34 @@ class VisaReport extends FormBase {
             $edit = Url::fromUserInput('/evisa/visa/edit/' . $visaReport->id);
             $visaStatus = $status[$visaReport->status_id];
             $download = Url::fromUserInput('/evisa/visa/download/' . $visaReport->approved_visa, ['attributes' => ['target' => '_blank', 'class' => 'button']]);
-            $rows[] = [
-                'edit' => Link::fromTextAndUrl('Edit', $edit),
-                'customer_name' => $visaReport->customer_name,
-                'country_name' => $visaReport->destination_name,
-                'purpose' => $visaReport->purpose_name,
-                'visa_type' => $visaReport->visa_type_name,
-                'national' => $visaReport->nationality,
-                'passport' => $visaReport->passport_no,
-                'price' => $visaReport->visa_price,
-                'status' => $visaStatus,
-                'download' => ($blockStatus || $visaReport->status_id != 3) ? 'NA' : Link::fromTextAndUrl('Download', $download),
-                'opt' => Link::fromTextAndUrl('View', $view),
-            ];
+            if((\Drupal::currentUser()->hasPermission('edit visa'))) {
+                $rows[] = [
+                    'edit' => Link::fromTextAndUrl('Edit', $edit),
+                    'customer_name' => $visaReport->customer_name,
+                    'country_name' => $visaReport->destination_name,
+                    'purpose' => $visaReport->purpose_name,
+                    'visa_type' => $visaReport->visa_type_name,
+                    'national' => $visaReport->nationality,
+                    'passport' => $visaReport->passport_no,
+                    'price' => $visaReport->visa_price,
+                    'status' => $visaStatus,
+                    'download' => ($blockStatus || $visaReport->status_id != 3) ? 'NA' : Link::fromTextAndUrl('Download', $download),
+                    'opt' => Link::fromTextAndUrl('View', $view),
+                ];
+            } else {
+                $rows[] = [
+                    'customer_name' => $visaReport->customer_name,
+                    'country_name' => $visaReport->destination_name,
+                    'purpose' => $visaReport->purpose_name,
+                    'visa_type' => $visaReport->visa_type_name,
+                    'national' => $visaReport->nationality,
+                    'passport' => $visaReport->passport_no,
+                    'price' => $visaReport->visa_price,
+                    'status' => $visaStatus,
+                    'download' => ($blockStatus || $visaReport->status_id != 3) ? 'NA' : Link::fromTextAndUrl('Download', $download),
+                    'opt' => Link::fromTextAndUrl('View', $view),
+                ];
+            }
         }
         //display Visa Type table
         $form['table'] = [

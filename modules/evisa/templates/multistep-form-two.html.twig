@@ -1,0 +1,52 @@
+{# empty Twig template #}
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Visa Information</b></div>
+    <div class="panel-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-4">{{ form.country_name }}</div>
+                <div class="col-sm-4">{{ form.purpose_travel }}</div>
+                <div class="col-sm-4">{{ form.visa_type }}</div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-4">{{ form.nationality }}</div>
+                <div class="col-sm-4">{{ form.urgent_visa }}</div>
+            </div>
+        </div>  
+    </div>
+    <div class="panel-heading"><b>Document</b></div>
+    <div class="panel-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">{{ form.document }}</div>
+            </div>
+        </div>  
+    </div>
+    <div class="panel-heading"><b>Visa Price</b></div>
+    <div class="panel-body">
+        <div class="container-fluid">
+            <div class="row">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Visa Fee</th>
+                            <th>Urgent Visa Fee</th>
+                            <th>Total Visa Fee</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="success">
+                            <td>{{ form.visa_price }}</td>
+                            <td>{{ form.urgent_price }}</td>
+                            <td style="font-weight:bold;">{{ form.total_price }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>  
+    </div>
+
+</div>
+
+{{ form | without('country_name', 'purpose_travel', 'visa_type', 'nationality', 'urgent_visa', 'document', 'visa_price', 'urgent_price', 'total_price') }}

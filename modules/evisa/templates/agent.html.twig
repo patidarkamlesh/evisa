@@ -1,1 +1,7 @@
-<p style="float:right;margin-top:15px;color:white;">Welcome {{ user_name }} {{ price_info }}</p>
+<div style="float:right;margin-top:15px;font-weight:bold;">
+    Welcome <a href="{{ user_name.profile }}">{{ user_name.name }} </a>
+    {% if price_info is not empty %}
+    <span style="background-color:#059BDC;color:#FFFFFF;padding:17px 5px;">{{ price_info }}</span> 
+    {% endif %}
+    <a href="{{ login.path }}">{{ login.title }}</a>
+</div>

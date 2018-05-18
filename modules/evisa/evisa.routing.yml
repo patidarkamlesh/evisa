@@ -163,7 +163,7 @@ evisa.view.visa:
    path: 'evisa/visa/view/{vid}'
    defaults:
      _controller: '\Drupal\evisa\Controller\EvisaController::viewVisa'
-     _title: 'View Visa'
+     _title: 'Visa Detail'
    requirements:
      _permission: 'view visa'
      id: '^[0-9]+'
@@ -174,7 +174,7 @@ evisa.edit.visa:
      _form: '\Drupal\evisa\Form\VisaEdit'
      _title: 'Edit Visa'
    requirements:
-     _permission: 'view visa'
+     _permission: 'edit visa'
      id: '^[0-9]+'    
 
 evisa.download.visa:
@@ -267,4 +267,11 @@ evisa.edit.documentvisa:
    requirements:
      _permission: 'add edit visa document'
      id: '^[0-9]+'    
-   
+
+evisa.agent.home:
+  path: 'agent/home'
+  defaults:
+    _controller: '\Drupal\evisa\Controller\EvisaController::agentHome'
+    _title: 'Dashboard'
+  requirements:
+    _permission: 'view visa'   

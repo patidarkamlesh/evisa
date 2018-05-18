@@ -87,5 +87,9 @@
 'view sales report':
   title: 'View Sales Report'
   description: 'View Sales Report Data, it is only for Sales & admin'
+'edit visa':
+  title: 'Edit Visa'
+  description: 'Edit Visa to change status of Visa'
+  restrict access: TRUE   
   
   

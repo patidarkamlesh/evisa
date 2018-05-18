@@ -39,11 +39,11 @@ class MisReport extends FormBase {
             '#title' => $this->t('Customer Name'),
             '#type' => 'entity_autocomplete',
             '#target_type' => 'node',
+            '#size' => '72',
             '#selection_settings' => [
               'target_bundles' => ['customer']
             ],
-            '#default_value' =>(!empty($custdata)) ? \Drupal::entityTypeManager()->getStorage('node')->load($custdata): ''
-            
+            '#default_value' =>(!empty($custdata)) ? \Drupal::entityTypeManager()->getStorage('node')->load($custdata): '',
         ];
         }
         $form['filter']['from_date'] = [
@@ -64,7 +64,7 @@ class MisReport extends FormBase {
             '#type' => 'link',
             '#title' => $this->t('Reset'),
             '#attributes' => array(
-                'class' => array('button'),
+                'class' => array('btn btn-primary'),
             ),
             '#url' => Url::fromRoute('evisa.mis'),
         ];
@@ -151,10 +151,12 @@ class MisReport extends FormBase {
                 '#url' => Url::fromRoute('evisa.download.mis'),
                 '#attributes' => [
                     'target' => '_blank',
-                    'class' => 'button'
+                    'class' => 'btn btn-primary'
                 ]
             ];
         }
+        $form['#theme'] = 'mis_report';
+        $form['#attributes']['class'][] = 'form-horizontal';
         return $form;
     }
     /**

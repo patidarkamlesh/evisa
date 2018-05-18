@@ -785,7 +785,7 @@ $settings['entity_update_batch_size'] = 50;
  }
 $databases['default']['default'] = array (
   //'database' => 'db_drupal8',
-  'database' => 'homedrupal8',
+  'database' => 'evisatheme',
   'username' => 'root',
   'password' => '',
   'prefix' => '',
