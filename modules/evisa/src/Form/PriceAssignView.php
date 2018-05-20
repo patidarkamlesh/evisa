@@ -56,7 +56,7 @@ class PriceAssignView extends FormBase {
         
         //Get Country Purpose of Travel Visa type data 
         //$priceAssignments = getPriceAssignment();
-        $num_per_page = 1;
+        $num_per_page = \Drupal::config('evisa.adminsettings')->get('limit');
         $query = \Drupal::database()->select('price_assignment', 'pa');
         $query->join('country', 'c', 'c.cid = pa.country_id');
         $query->join('purpose_of_travel', 'p', 'p.pid = pa.purpose_id');

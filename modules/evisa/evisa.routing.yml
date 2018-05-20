@@ -274,4 +274,12 @@ evisa.agent.home:
     _controller: '\Drupal\evisa\Controller\EvisaController::agentHome'
     _title: 'Dashboard'
   requirements:
-    _permission: 'view visa'   
+    _permission: 'view visa' 
+    
+evisa.config:
+  path: '/admin/config/evisa/config'
+  defaults:
+    _form: '\Drupal\evisa\Form\EvisaConfigForm'
+    _title: 'Evisa Configuration'
+  requirements:
+    _permission: 'administer site configuration'    

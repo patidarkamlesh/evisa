@@ -26,15 +26,14 @@ class VisaReport extends FormBase {
         $custdata = \Drupal::request()->get('customer_id');
         $blockStatus = FALSE;
         $roles = \Drupal::currentUser()->getRoles();
+        if(in_array('agent', $roles)) {
         // Add Visa Link
         $form['add_visa'] = [
             //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/demo/multistep-one">Post Visa</a></p>',
             '#prefix' => '<div class="addvisa">',
             '#suffix' => '</div>', 
             '#markup' => "<a class='use-ajax btn btn-primary' data-dialog-type='modal' href='".$GLOBALS['base_url']."/demo/multistep-one'>Post Visa</a>",
-        ];
-        if(in_array('agent', $roles)) {
-            
+        ];            
         } else {
         $form['filter'] = [
             '#type' => 'fieldset',
@@ -74,7 +73,7 @@ class VisaReport extends FormBase {
             '#url' => Url::fromRoute('evisa.visa'),
         ];
         }
-        $num_per_page = 1;
+        $num_per_page = \Drupal::config('evisa.adminsettings')->get('limit');
         $query = \Drupal::database()->select('visa_report', 'vr');
         $query->join('visa', 'v', 'v.id = vr.visa_id');
         $query->fields('vr', ['id','visa_id','customer_name','customer_id','destination_name','purpose_name','visa_type_name','nationality','visa_price','urgent','name','passport_no', 'father_name', 'mother_name', 'created', 'status_id', 'approved_visa']);
@@ -112,7 +111,7 @@ class VisaReport extends FormBase {
             unset($header_table['edit']);
         }
         $rows = [];
-        $status = [1 => 'Open', 2=>'In Progress', 3=>'Approved', 4=> 'Rejected'];
+        $status = [1 => 'Open', 2=>'In Progress', 3=>'Approved', 4=> 'Rejected', 5=> 'Cancelled'];
         
         foreach ($visaReports as $visaReport) {
             $view = Url::fromUserInput('/evisa/visa/view/' . $visaReport->id);

@@ -318,7 +318,7 @@ send_email($key, $message, $params);    */
             break;
         case 'rejected_visa':
             $message['from'] = \Drupal::config('system.site')->get('mail');
-            $message['subject'] = t('Kamles Test Subject');
+            $message['subject'] = t('Your Visa has been rejected');
             $message['body'][] = t('Dear Agent, <br /> Your Visa has been <b>Rejected</b> by visa authority for Passport Number @passsport', array('@passsport' => 'N34434224'));
             break;
     }   

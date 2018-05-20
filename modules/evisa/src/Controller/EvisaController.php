@@ -315,21 +315,26 @@ class EvisaController extends ControllerBase {
      */
     public function downloadVisa() {
         $scheme = 'public';
+        $roles = \Drupal::currentUser()->getRoles();
         $approvalId = \Drupal::request()->get('vid');
         $newfile = \Drupal\file\Entity\File::load($approvalId);
         $uri = $newfile->getFileUri();
         $newfile->setFilename($newfile->getFilename());
         $downloadFile = evisa_file_download($newfile);
         $contentdis = 'attachment';
-        $kam = 1;
-        if ($kam == 1) {
-            return new BinaryFileResponse($uri, 200, $downloadFile, $scheme !== 'private', $contentdis);
+        if(in_array('agent', $roles)){
+          $blockStatus = getBlockedStatus(getCustomerId());
         } else {
+          $blockStatus = FALSE;  
+        }
+        if ($blockStatus) {
             $price_detail = '';
             return [
                 '#theme' => 'download_visa',
                 '#price_detail' => $price_detail,
             ];
+        } else {
+            return new BinaryFileResponse($uri, 200, $downloadFile, $scheme !== 'private', $contentdis);
         }
     }
 
@@ -356,7 +361,7 @@ class EvisaController extends ControllerBase {
         // Add Block Customer Link
         $blockcustdata['block_customer'] = [
             //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/blockCust/form">Block Customer</a></p>',
-            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='" . $GLOBALS['base_url'] . "/evisa/blockCust/form'>Block Customer</a></p>",
+            '#markup' => "<a class='btn btn-primary' href='" . $GLOBALS['base_url'] . "/evisa/blockCust/form'>Block Customer</a>",
         ];
         //display Visa Type table
         $blockcustdata['table'] = [
@@ -576,7 +581,7 @@ class EvisaController extends ControllerBase {
             'status_id' => t('Status'),
         ];
         $rows = [];
-        $status = [1 => 'Open', 2=>'In Progress', 3=>'Approved', 4=> 'Rejected'];
+        $status = [1 => 'Open', 2=>'In Progress', 3=>'Approved', 4=> 'Rejected', 5=> 'Cancelled'];
         foreach ($latestVisas as $latestVisa) {
             $rows[] = [
                 //'app_ref' => $latestVisa->app_ref,

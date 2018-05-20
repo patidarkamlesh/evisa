@@ -69,7 +69,7 @@ class MisReport extends FormBase {
             '#url' => Url::fromRoute('evisa.mis'),
         ];
         
-        $num_per_page = 10;
+        $num_per_page = \Drupal::config('evisa.adminsettings')->get('limit');
         $query = \Drupal::database()->select('account_txn', 'ac');
         $query->leftJoin('visa_report', 'vr', 'ac.visa_id = vr.visa_id');
         $query->join('node_field_data', 'nf', 'nf.nid = ac.customer_id');

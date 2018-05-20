@@ -70,7 +70,7 @@ class SalesReport extends FormBase {
             '#url' => Url::fromRoute('evisa.sales.report'),
         ];
         
-        $num_per_page = 10;
+        $num_per_page = \Drupal::config('evisa.adminsettings')->get('limit');
         //Get Sales Report Data
         $query = \Drupal::database()->select('visa', 'v');
         $query->join('node_field_data', 'nf', 'nf.nid = v.customer_id');

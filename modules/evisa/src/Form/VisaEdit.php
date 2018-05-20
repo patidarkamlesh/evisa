@@ -4,10 +4,11 @@ namespace Drupal\evisa\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\user\Entity\User;
 
 class VisaEdit extends FormBase {
     /**
-     * Country Purpose Visa Form ID
+     * Visa Edit ID
      * @return string
      */
     public function getFormId() {
@@ -31,10 +32,22 @@ class VisaEdit extends FormBase {
                 '#type' => 'hidden',
                 '#value' => $visaData['visa_id'],
             ];
+            $form['agent_id'] = [
+                '#type' => 'hidden',
+                '#value' => $visaData['agent_id'],
+            ];            
+            $form['old_status_id'] = [
+                '#type' => 'hidden',
+                '#value' => $visaData['status_id'],
+            ];            
             $form['customer_name'] = [
                 '#type' => 'item',
                 '#title' => $this->t('Customer Name:'),
                 '#markup' => $visaData['customer_name'],
+            ];
+            $form['customer_id'] = [
+                '#type' => 'hidden',
+                '#value' => $visaData['customer_id'],
             ];
             $form['app_ref'] = [
                 '#type' => 'item',
@@ -66,6 +79,10 @@ class VisaEdit extends FormBase {
                 '#title' => $this->t('Visa Price'),
                 '#markup' => $visaData['visa_price'],
             ];
+            $form['price_paid'] = [
+                '#type' => 'hidden',
+                '#value' => $visaData['visa_price'],
+            ];            
             $form['urgent'] = [
                 '#type' => 'item',
                 '#title' => $this->t('Urgent'),
@@ -109,6 +126,7 @@ class VisaEdit extends FormBase {
             $form['approved_visa'] = [
                 '#type' => 'managed_file',
                 '#title' => 'Approved Visa',
+                '#description' => 'To upload approved Visa',
                 '#upload_location' => 'public://visadoc/' . $customerId . '/approved/'.date('Y-m-d'),
                 '#upload_validators' => array('file_validate_extensions' => array('pdf')),
                 '#states' => [
@@ -163,7 +181,15 @@ class VisaEdit extends FormBase {
      * @param FormStateInterface $form_state
      */
     public function validateForm(array &$form, FormStateInterface $form_state) {
-        parent::validateForm($form, $form_state);
+        //parent::validateForm($form, $form_state);
+        if(($form_state->getValue('status_id') == 5)) {
+           if($form_state->getValue('old_status_id') != 1) {
+               $form_state->setErrorByName('status_id', $this->t('Visa can be cancelled only if it is open status'));
+           }
+        }
+        if(($form_state->getValue('old_status_id') == 3) || ($form_state->getValue('old_status_id') == 4) || ($form_state->getValue('old_status_id') == 5)) {
+            $form_state->setErrorByName('status_id', $this->t('Visa once approved, rejected or cancelled can not be proceed further'));
+        }
     }
     /**
      * Insert / update Country Purpose of Travel Association into database 
@@ -177,6 +203,12 @@ class VisaEdit extends FormBase {
         $reject_reason = $form_state->getValue('reject_reason');
         $report_id = $form_state->getValue('report_id');
         $visa_id = $form_state->getValue('visa_id');
+        $visa_price_paid = $form_state->getValue('price_paid');
+        $customer_id = $form_state->getValue('customer_id');
+        $agent_id = $form_state->getValue('agent_id');
+        $agentAccount = User::load($agent_id);
+        $agentEmail = $agentAccount->get('mail')->value;
+
         //Update Visa Information
         $updateVisa = \Drupal::database()->update('visa')
                 ->fields([
@@ -202,11 +234,17 @@ class VisaEdit extends FormBase {
             $approvedVisa = \Drupal\file\Entity\File::load($approved_visa[0]);
             $approvedVisa->setPermanent();
             $approvedVisa->save();
+            //Get Agent Email Address
+            $agentAccount = User::load($agent_id);
+            $agentEmail = $agentAccount->get('mail')->value;
+            if(empty($agentEmail)) {
+               $agentEmail = 'mail.kamleshpatidar@gmail.com'; 
+            }
             //Send Email for Approval
             $mailManager = \Drupal::service('plugin.manager.mail');
             $module = 'evisa';
             $key = 'approved_visa';
-            $to = 'mail.kamleshpatidar@gmail.com';
+            $to = $agentEmail;
             $params['report_id'] = $report_id;
             $langcode = '';
             $send = true;
@@ -217,11 +255,17 @@ class VisaEdit extends FormBase {
             }
         }
         if ($status_id == 4) {
+            // Get Agent Email Address
+            $agentAccount = User::load($agent_id);
+            $agentEmail = $agentAccount->get('mail')->value;
+            if(empty($agentEmail)) {
+               $agentEmail = 'mail.kamleshpatidar@gmail.com'; 
+            }            
             //Send Email for Rejection
             $mailManager = \Drupal::service('plugin.manager.mail');
             $module = 'evisa';
             $key = 'rejected_visa';
-            $to = 'mail.kamleshpatidar@gmail.com';
+            $to = $agentEmail;
             $params['report_id'] = $report_id;
             $langcode = '';
             $send = true;
@@ -233,6 +277,23 @@ class VisaEdit extends FormBase {
         }
         if ($status_id == 5) {
             //Update Account information to credit for cancelled Visa
+        
+        $remark = "Visa Cancelled";
+        $cumAmount = getCumAmount($customer_id);
+        $cumAmount += $visa_price_paid;
+        // Insert Credit
+        $result = \Drupal::database()->insert('account_txn')
+                ->fields([
+                    'customer_id' => $customer_id,
+                    'credit' => $visa_price_paid,
+                    'txn_reason' => $remark,
+                    'uid' => \Drupal::currentUser()->id(),
+                    'txn_date' => date('Y-m-d H:i:s'),
+                    'txn_type' => 'C',
+                    'cum_amount' => $cumAmount,
+                    'visa_id' => $visa_id
+                ])
+                ->execute();
         }
         drupal_set_message(t('Visa has been updated successfully.'));
         //Redirect to Visa Page
