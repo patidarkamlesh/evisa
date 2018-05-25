@@ -78,17 +78,15 @@ class PriceAssignmentForm extends FormBase {
             '#empty_option' => $this->t('Select'),
         ];
         $form['price'] = [
-            '#type' => 'number',
+            '#type' => 'textfield',
             '#title' => 'Price',
-            '#description' => 'Enter Price',
-            '#min' => 0,
+            '#description' => 'Enter Price in country currency',
             '#required' => TRUE
         ];
         $form['urgent_price'] = [
-            '#type' => 'number',
+            '#type' => 'textfield',
             '#title' => 'Urgent Price',
-            '#description' => 'Enter Urgent Price',
-            '#min' => 0,
+            '#description' => 'Enter Urgent Price in country currency',
             '#required' => TRUE
         ];
         $form['actions'] = [
@@ -98,7 +96,7 @@ class PriceAssignmentForm extends FormBase {
         $form['actions']['submit'] = [
             '#type' => 'submit',
             '#value' => $this->t('Submit'),
-            '#description' => $this->t('Submit, #type = submit'),
+            '#description' => $this->t('Submit'),
         ];
         
         return $form;
@@ -125,6 +123,15 @@ class PriceAssignmentForm extends FormBase {
         $country_id  = $form_state->getValue('country');
         $purpose_id  = $form_state->getValue('purpose_travel');
         $visaTypes   = $form_state->getValue('visa_type');
+        $price       = $form_state->getValue('price');
+        $urgent_price   = $form_state->getValue('urgent_price');
+        if (!is_numeric($price)) {
+            $form_state->setErrorByName('price', 'Price should be numeric value');
+        }
+        if (!is_numeric($urgent_price)) {
+            $form_state->setErrorByName('urgent_price', 'Urgent Price should be numeric value');
+        }
+        
         $query = \Drupal::database()->select('price_assignment', 'pa')
                    ->fields('pa', ['id', 'price'])
                    ->condition('customer_id', $customer_id)
@@ -134,6 +141,15 @@ class PriceAssignmentForm extends FormBase {
         $record = $query->execute()->fetchAssoc();
         if(!empty($record)) {
             $form_state->setErrorByName('customer_id', $this->t('Price Already set for this customer'));
+        }
+        if(!empty($country_id)) {
+            $rid = \Drupal::database()->select('rate_exchange', 're')
+                            ->fields('re', ['rid'])
+                            ->condition('cid', $country_id)
+                            ->execute()->fetchField();
+            if (empty($rid)) {
+                $form_state->setErrorByName('country', $this->t('Rate of Exchange not set for this country. Please ask finance dept to set Rate of exchange.'));
+            }            
         }
     }
     /**

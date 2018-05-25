@@ -1,12 +1,12 @@
 evisa:
-  path: 'evisa'
+  path: '/eadmin'
   defaults:
-    _controller: '\Drupal\evisa\Controller\EvisaController::sayhello'
+    _controller: '\Drupal\evisa\Controller\EvisaController::masterPage'
   requirements:
     _permission: 'access master'
 
 evisa.country:
-  path: 'evisa/country'
+  path: 'eadmin/country'
   defaults:
     _controller: '\Drupal\evisa\Controller\EvisaController::country'
     _title: 'Country'
@@ -14,7 +14,7 @@ evisa.country:
     _permission: 'view country'
 
 evisa.form.countryform:
-   path: 'evisa/country/form'
+   path: 'eadmin/country/form'
    defaults:
      _form: '\Drupal\evisa\Form\CountryForm'
      _title: 'Country'
@@ -22,7 +22,7 @@ evisa.form.countryform:
      _permission: 'add edit country'    
 
 evisa.nationality:
-  path: 'evisa/nationality'
+  path: 'eadmin/nationality'
   defaults:
     _controller: '\Drupal\evisa\Controller\EvisaController::nationality'
     _title: 'Nationality'
@@ -30,7 +30,7 @@ evisa.nationality:
     _permission: 'view nationality'
 
 evisa.form.nationalform:
-   path: 'evisa/national/form'
+   path: 'eadmin/national/form'
    defaults:
      _form: '\Drupal\evisa\Form\NationalForm'
      _title: 'Nationality'
@@ -38,7 +38,7 @@ evisa.form.nationalform:
      _permission: 'add edit nationality'
      
 evisa.purpose:
-  path: 'evisa/purpose'
+  path: 'eadmin/purpose'
   defaults:
     _controller: '\Drupal\evisa\Controller\EvisaController::purpose'
     _title: 'Purpose of Travel'
@@ -46,7 +46,7 @@ evisa.purpose:
     _permission: 'view purpose'
 
 evisa.form.purposeform:
-   path: 'evisa/purpose/form'
+   path: 'eadmin/purpose/form'
    defaults:
      _form: '\Drupal\evisa\Form\PurposeForm'
      _title: 'Purpose of Travel'
@@ -54,7 +54,7 @@ evisa.form.purposeform:
      _permission: 'add edit purpose'
 
 evisa.visatype:
-  path: 'evisa/visatype'
+  path: 'eadmin/visatype'
   defaults:
     _controller: '\Drupal\evisa\Controller\EvisaController::visaType'
     _title: 'Type of Visa'
@@ -62,7 +62,7 @@ evisa.visatype:
     _permission: 'view visatype'
     
 evisa.form.visatypeform:
-   path: 'evisa/visatype/form'
+   path: 'eadmin/visatype/form'
    defaults:
      _form: '\Drupal\evisa\Form\VisaTypeForm'
      _title: 'Type of Visa'
@@ -70,7 +70,7 @@ evisa.form.visatypeform:
      _permission: 'add edit visatype'    
 
 evisa.countrypurpose:
-  path: 'evisa/countrypurpose'
+  path: 'eadmin/countrypurpose'
   defaults:
     _controller: '\Drupal\evisa\Controller\EvisaController::countryPurpose'
     _title: 'Country Purpose of Travel Association'
@@ -78,7 +78,7 @@ evisa.countrypurpose:
     _permission: 'view countrypurpose'
     
 evisa.form.countrypurposeform:
-   path: 'evisa/countrypurpose/form'
+   path: 'eadmin/countrypurpose/form'
    defaults:
      _form: '\Drupal\evisa\Form\CountryPurposeForm'
      _title: 'Country Purpose of Travel Association'
@@ -86,7 +86,7 @@ evisa.form.countrypurposeform:
      _permission: 'add edit countrypurpose'    
 
 evisa.countrypurposevisa:
-  path: 'evisa/countrypurposevisa'
+  path: 'eadmin/countrypurposevisa'
   defaults:
     _controller: '\Drupal\evisa\Controller\EvisaController::countryPurposeVisa'
     _title: 'Country Purpose of Travel Visa Type Association'
@@ -94,7 +94,7 @@ evisa.countrypurposevisa:
     _permission: 'view countrypurposevisa'
     
 evisa.form.countrypurposevisaform:
-   path: 'evisa/countrypurposevisa/form'
+   path: 'eadmin/countrypurposevisa/form'
    defaults:
      _form: '\Drupal\evisa\Form\CountryPurposeVisaForm'
      _title: 'Country Purpose of Travel Visa Type Association'
@@ -102,7 +102,7 @@ evisa.form.countrypurposevisaform:
      _permission: 'add edit countrypurposevisa'    
 
 evisa.priceassignment:
-  path: 'evisa/priceassignment'
+  path: 'eadmin/priceassignment'
   defaults:
 #    _controller: '\Drupal\evisa\Controller\EvisaController::priceAssignment'
     _form: '\Drupal\evisa\Form\PriceAssignView'
@@ -111,7 +111,7 @@ evisa.priceassignment:
     _permission: 'view priceassignment'
     
 evisa.form.priceassignment:
-   path: 'evisa/priceassignment/form'
+   path: 'eadmin/priceassignment/form'
    defaults:
      _form: '\Drupal\evisa\Form\PriceAssignmentForm'
      _title: 'Price Assignment for Customer'
@@ -119,7 +119,7 @@ evisa.form.priceassignment:
      _permission: 'add priceassignment'    
      
 evisa.edit.priceassignment:
-   path: 'evisa/priceassignment/edit/{id}'
+   path: 'eadmin/priceassignment/edit/{id}'
    defaults:
      _form: '\Drupal\evisa\Form\PriceAssignEdit'
      _title: 'Update Price Assignment for Customer'
@@ -135,7 +135,7 @@ emailtest:
     _permission: 'access content'
 
 evisa.account:
-  path: 'evisa/account'
+  path: 'eadmin/account'
   defaults:
     #_controller: '\Drupal\evisa\Controller\EvisaController::txn_account'
     _form: '\Drupal\evisa\Form\AccountTxn'
@@ -144,7 +144,7 @@ evisa.account:
     _permission: 'view account'
     
 evisa.form.account:
-   path: 'evisa/account/form'
+   path: 'eadmin/account/form'
    defaults:
      _form: '\Drupal\evisa\Form\AccountForm'
      _title: 'Add credit for Customer'
@@ -187,7 +187,7 @@ evisa.download.visa:
      id: '^[0-9]+'    
 
 evisa.block:
-   path: 'evisa/blockCust'
+   path: 'eadmin/blockCust'
    defaults:
      _controller: '\Drupal\evisa\Controller\EvisaController::blockCustomerList'
      _title: 'Block Customer List'
@@ -195,7 +195,7 @@ evisa.block:
      _permission: 'block customer' 
  
 evisa.form.block:
-   path: 'evisa/blockCust/form'
+   path: 'eadmin/blockCust/form'
    defaults:
      _form: '\Drupal\evisa\Form\BlockCustomer'
      _title: 'Block Customer'
@@ -203,7 +203,7 @@ evisa.form.block:
      _permission: 'add block customer'
      
 evisa.unblock:
-   path: 'evisa/blockCust/unblock/{bid}'
+   path: 'eadmin/blockCust/unblock/{bid}'
    defaults:
      _form: '\Drupal\evisa\Form\UnblockCustomer'
      _title: 'Unblock Customer'
@@ -244,7 +244,7 @@ evisa.download.sales:
      _permission: 'view sales report'
      
 evisa.documentvisa:
-  path: 'evisa/documentvisa'
+  path: 'eadmin/documentvisa'
   defaults:
     _controller: '\Drupal\evisa\Controller\EvisaController::documentVisa'
     _title: 'Visa Document Check List'
@@ -252,7 +252,7 @@ evisa.documentvisa:
     _permission: 'view visa document'
     
 evisa.form.documentvisaform:
-   path: 'evisa/documentvisa/form'
+   path: 'eadmin/documentvisa/form'
    defaults:
      _form: '\Drupal\evisa\Form\DocumentVisaForm'
      _title: 'Visa Document Check List Form'
@@ -260,7 +260,7 @@ evisa.form.documentvisaform:
      _permission: 'add edit visa document'      
 
 evisa.edit.documentvisa:
-   path: 'evisa/documentvisa/{vdid}'
+   path: 'eadmin/documentvisa/{vdid}'
    defaults:
      _form: '\Drupal\evisa\Form\DocumentVisaEdit'
      _title: 'Visa Document Check List Form'
@@ -282,4 +282,20 @@ evisa.config:
     _form: '\Drupal\evisa\Form\EvisaConfigForm'
     _title: 'Evisa Configuration'
   requirements:
-    _permission: 'administer site configuration'    
+    _permission: 'administer site configuration'
+    
+evisa.roe:
+  path: 'eadmin/roe'
+  defaults:
+    _controller: '\Drupal\evisa\Controller\EvisaController::roe'
+    _title: 'Rate of Exchange'
+  requirements:
+    _permission: 'view roe'      
+
+evisa.roe.form:
+  path: 'eadmin/roe/form'
+  defaults:
+    _form: '\Drupal\evisa\Form\RoeForm'
+    _title: 'Rate of exchange Form'
+  requirements:
+    _permission: 'add edit roe'      

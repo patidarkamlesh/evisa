@@ -69,18 +69,16 @@ class PriceAssignEdit extends FormBase {
                 '#value' => $priceAssigned['price'],
             ];
             $form['price'] = [
-                '#type' => 'number',
+                '#type' => 'textfield',
                 '#title' => 'Price',
-                '#description' => 'Enter Price',
-                '#min' => 0,
+                '#description' => 'Enter Price in country currency',
                 '#required' => TRUE,
                 '#default_value' => $priceAssigned['price'],
             ];
             $form['urgent_price'] = [
-                '#type' => 'number',
+                '#type' => 'textfield',
                 '#title' => 'Urgent Price',
-                '#description' => 'Enter Urgent Price',
-                '#min' => 0,
+                '#description' => 'Enter Urgent Price in country currency',
                 '#required' => TRUE,
                 '#default_value' => $priceAssigned['urgent_price'],
             ];
@@ -91,7 +89,7 @@ class PriceAssignEdit extends FormBase {
             $form['actions']['submit'] = [
                 '#type' => 'submit',
                 '#value' => $this->t('Submit'),
-                '#description' => $this->t('Submit, #type = submit'),
+                '#description' => $this->t('Submit'),
             ];
         } else {
             $form['no_data_found'] = [
@@ -109,7 +107,16 @@ class PriceAssignEdit extends FormBase {
      * @param FormStateInterface $form_state
      */
     public function validateForm(array &$form, FormStateInterface $form_state) {
-        parent::validateForm($form, $form_state);
+        //parent::validateForm($form, $form_state);
+        $price       = $form_state->getValue('price');
+        $urgent_price   = $form_state->getValue('urgent_price');
+        if (!is_numeric($price)) {
+            $form_state->setErrorByName('price', 'Price should be numeric value');
+        }
+        if (!is_numeric($urgent_price)) {
+            $form_state->setErrorByName('urgent_price', 'Urgent Price should be numeric value');
+        }
+      
     }
 
     /**
@@ -126,7 +133,6 @@ class PriceAssignEdit extends FormBase {
         $old_price = $form_state->getValue('old_price');
         $urgent_price = $form_state->getValue('urgent_price');
         $old_urgent_price = $form_state->getValue('old_urgent_price');
-
         $price_assign_id = $form_state->getValue('price_assign_id');
         //Update Price Information
         $updateQuery = \Drupal::database()->update('price_assignment')

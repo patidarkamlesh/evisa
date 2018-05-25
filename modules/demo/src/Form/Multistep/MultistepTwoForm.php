@@ -36,7 +36,7 @@ class MultistepTwoForm extends MultistepFormBase {
         $customerId = $this->store->get('customer_id');
         if(empty($country_id) || empty($purpose_travel_id) || empty($visa_type_id) || empty($nationality_id) || empty($visaPrice)) {
             drupal_set_message('Not set form Value 1', 'error');
-            return new RedirectResponse('/drupal8.4/demo/multistep-one');
+            return new RedirectResponse('/demo/multistep-one');
         }
         $country_name = getCountryFromId($country_id);
         $nationality = getNationalityFromId($nationality_id);
@@ -109,7 +109,6 @@ class MultistepTwoForm extends MultistepFormBase {
      * {@inheritdoc}
      */
     public function submitForm(array &$form, FormStateInterface $form_state) {
-            $this->store->set('final_price', $form_state->getValue('final_price'));
             $form_state->setRedirect('demo.multistep_three');
     }
 

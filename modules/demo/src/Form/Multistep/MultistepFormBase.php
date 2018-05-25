@@ -129,6 +129,9 @@ abstract class MultistepFormBase extends FormBase {
         $state = $this->store->get('state');
         $country_add = $this->store->get('country_add');
         $zip = $this->store->get('zip');
+        $roe = $this->store->get('roe');
+        $visa_fee = $this->store->get('visa_fee');
+        $urgent_fee = $this->store->get('urgent_fee');
         
         $customerCumAccount = getCumAmount($customerId);
         $applicationRef = 'EVL'.date('YmdHis').$customerId;
@@ -230,6 +233,9 @@ abstract class MultistepFormBase extends FormBase {
                         'nationality' => $nation_name,
                         'visa_price' => $visaPrice,
                         'urgent' => $urgent_visa,
+                        'visa_fee' => $visa_fee,
+                        'urgent_fee' => $urgent_fee,
+                        'roe' => $roe,
                         'agent_id' => \Drupal::currentUser()->id(),
                         'name' => $name,
                         'passport_no' => $passport_no,
@@ -274,7 +280,7 @@ abstract class MultistepFormBase extends FormBase {
     $keys = ['country', 'purpose_travel', 'visa_type', 'nationality', 'visa_price', 'customer_id', 'urgent_visa', 'name', 'passport_no', 'father_name', 'mother_name', 'photo', 'passport_first', 'passport_last', 'support_doc_1', 'support_doc_2', 'ticket', 'destination_name', 'purpose_name', 'nation_name', 'type_visa_name', 'final_price', 'urgent_price',
              'contact','dob','place_birth','country_birth','gender','mar_status','religion','spouse','profession','passport_issued',
              'passport_issued_date','passport_expired_date','arrival_from','arrival_date','departure_to','departure_date','address_line_1','address_line_2',
-             'city','state','country_add','zip'  
+             'city','state','country_add','zip','urgent_fee', 'visa_fee', 'roe'  
             ];
     foreach ($keys as $key) {
       $this->store->delete($key);

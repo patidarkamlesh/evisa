@@ -120,7 +120,7 @@ class VisaReport extends FormBase {
             $download = Url::fromUserInput('/evisa/visa/download/' . $visaReport->approved_visa, ['attributes' => ['target' => '_blank', 'class' => 'button']]);
             if((\Drupal::currentUser()->hasPermission('edit visa'))) {
                 $rows[] = [
-                    'edit' => Link::fromTextAndUrl('Edit', $edit),
+                    'edit' => ($visaReport->status_id == 1 || $visaReport->status_id == 2) ? Link::fromTextAndUrl('Edit', $edit): '--',
                     'customer_name' => $visaReport->customer_name,
                     'country_name' => $visaReport->destination_name,
                     'purpose' => $visaReport->purpose_name,

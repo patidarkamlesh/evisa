@@ -34,37 +34,34 @@ class MultistepThreeForm extends MultistepFormBase {
         $visaPrice = $this->store->get('visa_price');
         $urgentPrice = $this->store->get('urgent_price');
         $customerId = $this->store->get('customer_id');
+        $destination_name = $this->store->get('destination_name');
+        $purpose_name = $this->store->get('purpose_name');
+        $type_visa_name = $this->store->get('type_visa_name');
+        $nation_name = $this->store->get('nation_name');
+        
         if(empty($country_id) || empty($purpose_travel_id) || empty($visa_type_id) || empty($nationality_id) || empty($visaPrice)) {
             drupal_set_message('Not set form Value 1', 'error');
-            return new RedirectResponse('/drupal8.4/demo/multistep-one');
+            return new RedirectResponse('/demo/multistep-one');
         }
-        $country_name = getCountryFromId($country_id);
-        $nationality = getNationalityFromId($nationality_id);
-        $purpose_travel = getPurposeFromId($purpose_travel_id);
-        $visa_type = getVisaTypeFromId($visa_type_id);
-        $this->store->set('destination_name', $country_name['country_name']);
-        $this->store->set('purpose_name', $purpose_travel['purpose_travel']);
-        $this->store->set('nation_name', $nationality['nationality_name']);
-        $this->store->set('type_visa_name', $visa_type['visa_type']);
         $form['country_name'] = [
             '#type' => 'item',
             '#title' => $this->t('Destination'),
-            '#markup' => $country_name['country_name'],
+            '#markup' => $destination_name,
         ];
         $form['purpose_travel'] = [
             '#type' => 'item',
             '#title' => $this->t('Purpose of Travel'),
-            '#markup' => $purpose_travel['purpose_travel'],
+            '#markup' => $purpose_name,
         ];
         $form['visa_type'] = [
             '#type' => 'item',
             '#title' => $this->t('Type of Visa'),
-            '#markup' => $visa_type['visa_type'],
+            '#markup' => $type_visa_name,
         ];
         $form['nationality'] = [
             '#type' => 'item',
             '#title' => $this->t('Nationality'),
-            '#markup' => $nationality['nationality_name'],
+            '#markup' => $nation_name,
         ];
         $form['urgent_visa'] = [
             '#type' => 'item',
@@ -192,7 +189,10 @@ class MultistepThreeForm extends MultistepFormBase {
             '#type' => 'managed_file',
             '#title' => $this->t('Colour Passport Size photograph'),
             '#upload_location' => 'public://visadoc/' . $customerId . '/photo',
-            '#upload_validators' => array('file_validate_extensions' => array('pdf')),
+            '#upload_validators' => [
+                'file_validate_extensions' => array('pdf'),
+                //'file_validate_size' => array(),
+            ],
             //'#size' => 13,
             '#multiple' => FALSE,
             '#required' => TRUE

@@ -118,8 +118,15 @@ class MultistepOneForm extends MultistepFormBase {
         $urgent_visa = $form_state->getValue('urgent_visa');
         $customerId = getCustomerId();
         $visaPriceInfo = getVisaPrice($country_id, $purpose_travel, $visa_type, $customerId, $nationality, $urgent_visa);
-        $visaPrice = $visaPriceInfo['price'];
-        $urgentPrice = $visaPriceInfo['urgent_price'];
+        $roe = getRoeFromCountry($country_id);
+        $visaFee = $visaPriceInfo['price'];
+        $urgentVisaFee = $visaPriceInfo['urgent_price'];
+        $visaPrice = $visaPriceInfo['price']*$roe;
+        $urgentPrice = $visaPriceInfo['urgent_price']*$roe;
+        if($roe <=0) {
+            drupal_set_message(t('Rate of Exchange is not define.'), 'error');
+            return $form_state->setRedirect('demo.multistep_one');
+        }
         if ($visaPrice <= 0) {
             drupal_set_message(t('Price not set for your account.'), 'error');
             return $form_state->setRedirect('demo.multistep_one');
@@ -134,6 +141,9 @@ class MultistepOneForm extends MultistepFormBase {
             $this->store->set('visa_price', $visaPrice);
             $this->store->set('urgent_price', $urgentPrice);
             $this->store->set('customer_id', $customerId);
+            $this->store->set('roe', $roe);
+            $this->store->set('visa_fee', $visaFee);
+            $this->store->set('urgent_fee', $urgentVisaFee);
             $form_state->setRedirect('demo.multistep_two');
         } else {
             drupal_set_message(t('Insufficiant balance to post visa. To recharge your account, please contact Finance.'), 'error');

@@ -90,6 +90,13 @@
 'edit visa':
   title: 'Edit Visa'
   description: 'Edit Visa to change status of Visa'
-  restrict access: TRUE   
-  
+  restrict access: TRUE
+'view roe':
+  title: 'View Rate of Exchange'
+  description: 'User can view rate of exchange'
+  restrict access: TRUE
+'add edit roe':
+  title: 'Add Edit Rate of Exchange'
+  description: 'User can Add/Edit rate of exchange'
+  restrict access: TRUE
   

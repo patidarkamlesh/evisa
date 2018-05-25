@@ -4,10 +4,6 @@ use Drupal\user\Entity\User;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Form\FormStateInterface;
-function evisa_hello_world() {
-   return t('Hello Drupal 8 World 123!');
-}
-
 /**
  * Implements hook_form_FORM_ID_alter().
  */
@@ -314,12 +310,14 @@ send_email($key, $message, $params);    */
         case 'approved_visa':
             $message['from'] = \Drupal::config('system.site')->get('mail');
             $message['subject'] = t('Your Visa has been Approved');
-            $message['body'][] = t('Dear Agent, <br /> Your Visa has been <b>Approved</b> for Passport Number @passsport', array('@passsport' => 'N34434224'));
+            $visaDetail = visaDetail($params['$report_id']);
+            $message['body'][] = t('Dear Agent, <br /> Your Visa has been <b>Approved</b> for Passport Number @passsport', array('@passsport' => $visaDetail['passport_no']));
             break;
         case 'rejected_visa':
             $message['from'] = \Drupal::config('system.site')->get('mail');
             $message['subject'] = t('Your Visa has been rejected');
-            $message['body'][] = t('Dear Agent, <br /> Your Visa has been <b>Rejected</b> by visa authority for Passport Number @passsport', array('@passsport' => 'N34434224'));
+            $visaDetail = visaDetail($params['$report_id']);
+            $message['body'][] = t('Dear Agent, <br /> Your Visa has been <b>Rejected</b> by visa authority for Passport Number @passsport', array('@passsport' => $visaDetail['passport_no']));
             break;
     }   
 }
@@ -393,7 +391,10 @@ function evisa_theme($existing, $type, $theme, $path) {
     ],
     'multistep_form_three' => [
       'render element' => 'form',
-    ],  
+    ],
+    'master_page' => [
+      'variables' => ['menuItems' => NULL],
+    ],
   ];
 }
 /**
@@ -589,6 +590,28 @@ function getLatestVisa() {
     } else {
         return $result;
     }
+}
+function getRoe() {
     
-    
+  $query = \Drupal::database()->select('rate_exchange', 're');
+  $query->join('country', 'c', 'c.cid = re.cid');
+  $query->addField('c', 'country_name');
+  $query->fields('re');
+  $roes = $query->execute()->fetchAll();
+  return $roes;
+}
+
+function getRoeFromId($id) {
+  $result = \Drupal::database()->select('rate_exchange', 're')
+         ->fields('re') 
+         ->condition('re.rid', $id)
+         ->execute()->fetchAssoc();
+  return $result;       
+}
+function getRoeFromCountry($cid) {
+  $result = \Drupal::database()->select('rate_exchange', 're')
+         ->fields('re', ['roe']) 
+         ->condition('re.cid', $cid)
+         ->execute()->fetchField();
+  return $result;       
 }

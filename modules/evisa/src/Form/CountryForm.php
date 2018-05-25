@@ -48,7 +48,7 @@ class CountryForm extends FormBase {
         $form['actions']['submit'] = [
             '#type' => 'submit',
             '#value' => $this->t('Submit'),
-            '#description' => $this->t('Submit, #type = submit'),
+            '#description' => $this->t('Submit'),
         ];
         
         return $form;

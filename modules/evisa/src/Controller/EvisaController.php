@@ -13,10 +13,68 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class EvisaController extends ControllerBase {
 
-    public function sayhello() {
-        return array(
-            '#markup' => evisa_hello_world(),
-        );
+    public function masterPage() {
+        $menuItems = [];
+        if(\Drupal::currentUser()->hasPermission('view country')) {
+            $menuItem['url'] = 'eadmin/country';
+            $menuItem['title'] = 'Country';
+            array_push($menuItems,$menuItem);
+        }
+        
+        if(\Drupal::currentUser()->hasPermission('view nationality')) {
+            $menuItem['url'] = 'eadmin/nationality';
+            $menuItem['title'] = 'Nationality';
+            array_push($menuItems,$menuItem);
+        }
+        if(\Drupal::currentUser()->hasPermission('view purpose')) {
+            $menuItem['url'] = 'eadmin/purpose';
+            $menuItem['title'] = 'Purpose of Travel';
+            array_push($menuItems,$menuItem);
+        }
+        if(\Drupal::currentUser()->hasPermission('view visatype')) {
+            $menuItem['url'] = 'eadmin/visatype';
+            $menuItem['title'] = 'Type of Visa';
+            array_push($menuItems,$menuItem);
+        }
+        if(\Drupal::currentUser()->hasPermission('view countrypurpose')) {
+            $menuItem['url'] = 'eadmin/countrypurpose';
+            $menuItem['title'] = 'Country Purpose of Travel Association';
+            array_push($menuItems,$menuItem);
+        }
+        if(\Drupal::currentUser()->hasPermission('view countrypurposevisa')) {
+            $menuItem['url'] = 'eadmin/countrypurposevisa';
+            $menuItem['title'] = 'Country Purpose of Travel Visa Type Association';
+            array_push($menuItems,$menuItem);
+        }
+        if(\Drupal::currentUser()->hasPermission('view priceassignment')) {
+            $menuItem['url'] = 'eadmin/priceassignment';
+            $menuItem['title'] = 'Price Assignment for Customer';
+            array_push($menuItems,$menuItem);
+        }
+        if(\Drupal::currentUser()->hasPermission('view account')) {
+            $menuItem['url'] = 'eadmin/account';
+            $menuItem['title'] = 'Account Transaction';
+            array_push($menuItems,$menuItem);
+        }
+        if(\Drupal::currentUser()->hasPermission('block customer')) {
+            $menuItem['url'] = 'eadmin/blockCust';
+            $menuItem['title'] = 'Block Customer';
+            array_push($menuItems,$menuItem);
+        }
+        if(\Drupal::currentUser()->hasPermission('view visa document')) {
+            $menuItem['url'] = 'eadmin/documentvisa';
+            $menuItem['title'] = 'Visa Document';
+            array_push($menuItems,$menuItem);
+        }
+        if(\Drupal::currentUser()->hasPermission('view roe')) {
+            $menuItem['url'] = 'eadmin/roe';
+            $menuItem['title'] = 'Rate of Exchange';
+            array_push($menuItems,$menuItem);
+        }
+        return [
+          '#theme' => 'master_page',
+          '#menuItems' => $menuItems  
+        ];
     }
 
     /**
@@ -605,7 +663,40 @@ class EvisaController extends ControllerBase {
             '#markup' => "<a class='btn btn-primary' href='" . $GLOBALS['base_url'] . "/evisa/visa'>More Info</a>",
         ];
         return $latestvisadata;
-        
+    }
+    /**
+     * Rate of Exchange Table
+     */
+    public function roe() {
+        $roes = getRoe();
+        // Add Rate of Exchange
+        $roedata['add_roe'] = [
+            '#markup' => "<a class='btn btn-primary' href='" . $GLOBALS['base_url'] . "/evisa/roe/form'>Add Rate of Exchange</a>",
+        ];
+        //create table header
+        $header_table = [
+            //'app_ref' => t('Application Ref'),
+            'country_name' => t('Country Name'),
+            'roe' => t('Rate of Exchange'),
+            'opt' => t('Action'),
+        ];
+        $rows = [];
+        foreach ($roes as $roe) {
+            $edit = Url::fromUserInput('/evisa/roe/form?rid=' . $roe->rid);
+            $rows[] = [
+                'country_name' => $roe->country_name,
+                'roe' => $roe->roe,
+                'opt' => Link::fromTextAndUrl('Update', $edit)
+            ];
+        }
+        //display Rate of Exchange table
+        $roedata['table'] = [
+            '#type' => 'table',
+            '#header' => $header_table,
+            '#rows' => $rows,
+            '#empty' => t('No records found'),
+        ];
+        return $roedata;
     }
 
 }
