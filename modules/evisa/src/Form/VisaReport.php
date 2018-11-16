@@ -167,7 +167,7 @@ class VisaReport extends FormBase {
                     'visa_type' => $visaReport->visa_type_name,
                     'national' => $visaReport->nationality,
                     'passport' => $visaReport->passport_no,
-                    'price' => $visaReport->visa_price,
+                    'price' => number_format($visaReport->visa_price, 2),
                     'status' => $visaStatus,
                     'download' => ($blockStatus || $visaReport->status_id != 3) ? 'NA' : Link::fromTextAndUrl('Download', $download),
                     'opt' => Link::fromTextAndUrl('View', $view),

@@ -74,15 +74,15 @@ class MultistepTwoForm extends MultistepFormBase {
         ];
         $form['visa_price'] = [
             '#type' => 'item',
-            '#markup' => $visaPrice,
+            '#markup' => number_format($visaPrice, 2),
         ];
         $form['urgent_price'] = [
             '#type' => 'item',
-            '#markup' => ($urgent_visa == 1) ? $urgentPrice : 0.00,
+            '#markup' => ($urgent_visa == 1) ? number_format($urgentPrice,2) : 0.00,
         ];
         $form['total_price'] = [
             '#type' => 'item',
-            '#markup' => ($urgent_visa == 1) ? ($urgentPrice + $visaPrice) : $visaPrice,
+            '#markup' => ($urgent_visa == 1) ? number_format(($urgentPrice + $visaPrice), 2) : number_format($visaPrice,2),
         ];
         $form['document'] = [
            '#type' => 'item',

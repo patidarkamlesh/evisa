@@ -115,7 +115,7 @@ class MultistepFourForm extends MultistepFormBase {
         $form['total_price'] = [
             '#type' => 'item',
             '#title' => $this->t('Total Visa Price'),
-            '#markup' => ($urgent_visa == 1) ? ($urgentPrice + $visaPrice) : $visaPrice,
+            '#markup' => ($urgent_visa == 1) ? number_format(($urgentPrice + $visaPrice), 2) : number_format($visaPrice, 2),
         ];
         $form['final_price'] = [
             '#type' => 'hidden',
