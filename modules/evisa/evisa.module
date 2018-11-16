@@ -374,6 +374,9 @@ function evisa_theme($existing, $type, $theme, $path) {
     'view_visa' => [
       'variables' => ['visa_detail' => NULL, 'photo_url' => NULL, 'pass_first' => NULL, 'pass_last' => NULL, 'sup_doc_1' => NULL, 'sup_doc_2' => NULL, 'ticket' => NULL],
     ],
+    'view_visa_operation' => [
+      'render element' => 'form',
+    ],
     'download_visa' => [
       'variables' => ['price_detail' => NULL],
     ],
@@ -390,6 +393,9 @@ function evisa_theme($existing, $type, $theme, $path) {
       'render element' => 'form',
     ],
     'multistep_form_three' => [
+      'render element' => 'form',
+    ],
+    'multistep_form_four' => [
       'render element' => 'form',
     ],
     'master_page' => [

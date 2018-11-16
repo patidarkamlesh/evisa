@@ -97,6 +97,7 @@ abstract class MultistepFormBase extends FormBase {
         $urgent_visa = $this->store->get('urgent_visa');
         $visaPrice = $this->store->get('final_price');
         $customerId = $this->store->get('customer_id');
+        $title = $this->store->get('title');
         $name = $this->store->get('name');
         $passport_no = $this->store->get('passport_no');
         $father_name = $this->store->get('father_name');
@@ -237,6 +238,7 @@ abstract class MultistepFormBase extends FormBase {
                         'urgent_fee' => $urgent_fee,
                         'roe' => $roe,
                         'agent_id' => \Drupal::currentUser()->id(),
+                        'title' => $title,
                         'name' => $name,
                         'passport_no' => $passport_no,
                         'father_name' => $father_name,
@@ -257,9 +259,9 @@ abstract class MultistepFormBase extends FormBase {
                         'passport_issued_date' => $passport_issued_date,
                         'passport_expired_date' => $passport_expired_date,
                         'arrival_from' => $arrival_from,
-                        'arrival_date' => $arrival_date,
+                        'arrival_date' => !empty($arrival_date) ? $arrival_date : NULL,
                         'departure_to' => $departure_to,
-                        'departure_date' => $departure_date,
+                        'departure_date' => !empty($departure_date) ? $departure_date : NULL,
                         'address_line_1' => $address_line_1,
                         'address_line_2' => $address_line_2,
                         'city' => $city,
@@ -277,7 +279,7 @@ abstract class MultistepFormBase extends FormBase {
    * the multistep form.
    */
   protected function deleteStore() {
-    $keys = ['country', 'purpose_travel', 'visa_type', 'nationality', 'visa_price', 'customer_id', 'urgent_visa', 'name', 'passport_no', 'father_name', 'mother_name', 'photo', 'passport_first', 'passport_last', 'support_doc_1', 'support_doc_2', 'ticket', 'destination_name', 'purpose_name', 'nation_name', 'type_visa_name', 'final_price', 'urgent_price',
+    $keys = ['country', 'purpose_travel', 'visa_type', 'nationality', 'visa_price', 'customer_id', 'urgent_visa', 'title', 'name', 'passport_no', 'father_name', 'mother_name', 'photo', 'passport_first', 'passport_last', 'support_doc_1', 'support_doc_2', 'ticket', 'destination_name', 'purpose_name', 'nation_name', 'type_visa_name', 'final_price', 'urgent_price',
              'contact','dob','place_birth','country_birth','gender','mar_status','religion','spouse','profession','passport_issued',
              'passport_issued_date','passport_expired_date','arrival_from','arrival_date','departure_to','departure_date','address_line_1','address_line_2',
              'city','state','country_add','zip','urgent_fee', 'visa_fee', 'roe'  

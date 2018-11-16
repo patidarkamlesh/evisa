@@ -35,6 +35,19 @@ class EvisaConfigForm extends ConfigFormBase {
             '#required' => TRUE,
             '#default_value' => $config->get('limit')
         ];
+        $form['def_urgent_indian_price'] = [
+            '#type' => 'textfield',
+            '#title' => t('Default Urgent Fees for Indian Citizen (In AED)'),
+            '#required' => TRUE,
+            '#default_value' => $config->get('def_urgent_indian_price')
+        ];
+        $form['def_urgent_non_indian_price'] = [
+            '#type' => 'textfield',
+            '#title' => t('Default Urgent Fees for Non Indian Citizen (In AED)'),
+            '#required' => TRUE,
+            '#default_value' => $config->get('def_urgent_non_indian_price')
+        ];
+        
         return parent::buildForm($form, $form_state);
     }
     /**
@@ -51,6 +64,8 @@ class EvisaConfigForm extends ConfigFormBase {
         //Save COnfiguration data
         $config = $this->config('evisa.adminsettings');
         $config->set('limit', $form_state->getValue('limit'));
+        $config->set('def_urgent_indian_price', $form_state->getValue('def_urgent_indian_price'));
+        $config->set('def_urgent_non_indian_price', $form_state->getValue('def_urgent_non_indian_price'));
         $config->save(); 
         return parent::submitForm($form, $form_state);
     }

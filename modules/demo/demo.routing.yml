@@ -20,14 +20,14 @@ demo.multistep_one:
     _form: '\Drupal\demo\Form\Multistep\MultistepOneForm'
     _title: 'Online Visa Form'
   requirements:
-    _permission: 'access content'
+    _permission: 'post visa'
 demo.multistep_two:
   path: '/demo/multistep-two'
   defaults:
     _form: '\Drupal\demo\Form\Multistep\MultistepTwoForm'
     _title: 'Online Visa Form'
   requirements:
-    _permission: 'access content'
+    _permission: 'post visa'
 
 demo.multistep_three:
   path: '/demo/multistep-three'
@@ -35,4 +35,12 @@ demo.multistep_three:
     _form: '\Drupal\demo\Form\Multistep\MultistepThreeForm'
     _title: 'Online Visa Form'
   requirements:
-    _permission: 'access content'
+    _permission: 'post visa'
+
+demo.multistep_four:
+  path: '/demo/multistep-four'
+  defaults:
+    _form: '\Drupal\demo\Form\Multistep\MultistepFourForm'
+    _title: 'Online Visa Form Confirmation'
+  requirements:
+    _permission: 'post visa'

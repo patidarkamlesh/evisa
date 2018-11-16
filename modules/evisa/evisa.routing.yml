@@ -167,6 +167,15 @@ evisa.view.visa:
    requirements:
      _permission: 'view visa'
      id: '^[0-9]+'
+
+evisa.view.operationvisa:
+   path: 'evisa/visa/opview/{vid}'
+   defaults:
+     _form: '\Drupal\evisa\Form\OperationVisa'
+     _title: 'Visa Detail'
+   requirements:
+     _permission: 'view visa'
+     id: '^[0-9]+'
     
 evisa.edit.visa:
    path: 'evisa/visa/edit/{vid}'

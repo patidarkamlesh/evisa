@@ -22,15 +22,12 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-3">
-                    {{ form.passanger.title }}
-                </div>
-                <div class="col-xs-3">
                     {{ form.passanger.name }}
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-4">
                     {{ form.passanger.father_name }}
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-5">
                     {{ form.passanger.mother_name }}
                 </div>
             </div>
@@ -82,16 +79,13 @@
                 <div class="col-xs-3">
                     {{ form.passport.passport_no }}
                 </div>
-                <div class="col-xs-4" style="margin-top:20px;">
+                <div class="col-xs-3">
                     {{ form.passport.passport_issued_date }}
                 </div>
-            </div>
-            <br />
-            <div class="row">
                 <div class="col-xs-3">
                     {{ form.passport.passport_issued }}
                 </div>
-                <div class="col-xs-4" style="margin-top:20px;">
+                <div class="col-xs-3">
                     {{ form.passport.passport_expired_date }}
                 </div>
             </div>
@@ -107,22 +101,6 @@
                     {{ form.passport.passport_last }}
                 </div>
             </div>
-            <br /> 
-            <div class="row">
-                <div class="col-xs-3">
-                    {{ form.passport.support_doc_1 }}
-                    <small class="text-muted">Father Visa/PPT Copy, Mother Visa/PPT Copy, Husband Visa/PPT Copy, Marriage Certificate, Observation Page, NOC</small>
-                </div>
-                <div class="col-xs-4">
-                    {{ form.passport.support_doc_2 }}
-                    <small class="text-muted">Father Visa/PPT Copy, Mother Visa/PPT Copy, Husband Visa/PPT Copy, Marriage Certificate, Observation Page, NOC</small>
-                </div>
-                <div class="col-xs-5">
-                    {{ form.passport.ticket }}
-                    <small class="text-muted">Confirm ticket copy for 96 Hrs. Visa</small>
-                </div>
-            </div>
-
         </div>  
     </div>
 </div>            
@@ -131,19 +109,19 @@
     <div class="panel-body">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xs-3">
+                <div class="col-xs-6">
                     {{ form.flight.arrival_from }}
                 </div>
-                <div class="col-xs-4" style="margin-top:20px;">
+                <div class="col-xs-6">
                     {{ form.flight.arrival_date }}
                 </div>
             </div>
             <br />
             <div class="row">
-                <div class="col-xs-3">
+                <div class="col-xs-6">
                     {{ form.flight.departure_to }}
                 </div>
-                <div class="col-xs-4" style="margin-top:20px;">
+                <div class="col-xs-6">
                     {{ form.flight.departure_date }}
                 </div>
             </div>
