@@ -24,6 +24,10 @@ class VisaReport extends FormBase {
      */
     public function buildForm(array $form, FormStateInterface $form_state) {
         $custdata = \Drupal::request()->get('customer_id');
+        $passport_no = \Drupal::request()->get('passport_no');
+        $app_ref = \Drupal::request()->get('app_ref');
+        $app_from = \Drupal::request()->get('app_from');
+        $app_to = \Drupal::request()->get('app_to');
         $blockStatus = FALSE;
         $roles = \Drupal::currentUser()->getRoles();
         if(in_array('agent', $roles)) {
@@ -53,13 +57,31 @@ class VisaReport extends FormBase {
             '#type' => 'entity_autocomplete',
             '#target_type' => 'node',
             '#selection_settings' => [
-              'target_bundles' => ['customer']
+              'target_bundles' => ['customer'],
             ],
-            '#required' => TRUE,
             '#default_value' =>(!empty($custdata)) ? \Drupal::entityTypeManager()->getStorage('node')->load($custdata): ''
             
         ];        
-        
+        $form['filter']['passport_no'] = [
+            '#title' => $this->t('Passport No'),
+            '#type' => 'textfield',
+            '#default_value' => (!empty($passport_no)) ? $passport_no : '',
+        ];        
+        $form['filter']['app_ref'] = [
+            '#title' => $this->t('Application Reference'),
+            '#type' => 'textfield',
+            '#default_value' => (!empty($app_ref)) ? $app_ref : '',
+        ];        
+        $form['filter']['app_from'] = [
+            '#title' => $this->t('Application From'),
+            '#type' => 'date',
+            '#default_value' => (!empty($app_from)) ? $app_from : '',
+        ];        
+        $form['filter']['app_to'] = [
+            '#title' => $this->t('Application To'),
+            '#type' => 'date',
+            '#default_value' => (!empty($app_to)) ? $app_to : '',
+        ];        
         $form['filter']['submit'] = [
             '#type' => 'submit',
             '#value' => t('Search'),
@@ -81,7 +103,20 @@ class VisaReport extends FormBase {
           //$query->condition('vr.customer_name', '%' . db_like($custdata) . '%', 'LIKE');
             $query->condition('vr.customer_id', $custdata);
         }
-        
+        if (!empty($passport_no)) {
+            $query->condition('vr.passport_no', '%' . db_like($passport_no) . '%', 'LIKE');
+        }        
+        if (!empty($app_ref)) {
+            $query->condition('vr.app_ref', '%' . db_like($app_ref) . '%', 'LIKE');
+        }        
+        if (!empty($app_from)) {
+            $app_from = date('Y-m-d', strtotime($app_from));
+            $query->condition('vr.created', $app_from , '>=');
+        }        
+        if (!empty($app_to)) {
+            $app_to = date('Y-m-d', strtotime($app_to));
+            $query->condition('vr.created', $app_to , '<=');
+        }        
         if(in_array('agent', $roles)){
           $query->condition('v.customer_id', getCustomerId());
           $blockStatus = getBlockedStatus(getCustomerId());
@@ -113,8 +148,13 @@ class VisaReport extends FormBase {
         $rows = [];
         $status = [1 => 'Open', 2=>'In Progress', 3=>'Approved', 4=> 'Rejected', 5=> 'Cancelled'];
         
+        if(in_array('operation_user', $roles)){
+            $viewLink = '/evisa/visa/opview/';
+        } else {
+            $viewLink = '/evisa/visa/view/';
+        }
         foreach ($visaReports as $visaReport) {
-            $view = Url::fromUserInput('/evisa/visa/view/' . $visaReport->id);
+            $view = Url::fromUserInput($viewLink . $visaReport->id);
             $edit = Url::fromUserInput('/evisa/visa/edit/' . $visaReport->id);
             $visaStatus = $status[$visaReport->status_id];
             $download = Url::fromUserInput('/evisa/visa/download/' . $visaReport->approved_visa, ['attributes' => ['target' => '_blank', 'class' => 'button']]);
@@ -127,7 +167,7 @@ class VisaReport extends FormBase {
                     'visa_type' => $visaReport->visa_type_name,
                     'national' => $visaReport->nationality,
                     'passport' => $visaReport->passport_no,
-                    'price' => $visaReport->visa_price,
+                    'price' => number_format($visaReport->visa_price, 2),
                     'status' => $visaStatus,
                     'download' => ($blockStatus || $visaReport->status_id != 3) ? 'NA' : Link::fromTextAndUrl('Download', $download),
                     'opt' => Link::fromTextAndUrl('View', $view),
@@ -175,9 +215,25 @@ class VisaReport extends FormBase {
      */
     public function submitForm(array &$form, FormStateInterface $form_state) {
         $customer_id = trim($form_state->getValue('customer_id'));
+        $passport_no = trim($form_state->getValue('passport_no'));
+        $app_ref = trim($form_state->getValue('app_ref'));
+        $app_from = trim($form_state->getValue('app_from'));
+        $app_to = trim($form_state->getValue('app_to'));
         $query = [];
         if (!empty($customer_id)) {
-            $query = ['customer_id' => $customer_id];
+            $query['customer_id'] =  $customer_id;
+        }
+        if (!empty($passport_no)) {
+            $query['passport_no'] =  $passport_no;
+        }
+        if (!empty($app_ref)) {
+            $query['app_ref'] =  $app_ref;
+        }
+        if (!empty($app_from)) {
+            $query['app_from'] =  $app_from;
+        }
+        if (!empty($app_to)) {
+            $query['app_to'] =  $app_to;
         }
         $form_state->setRedirect(
                 'evisa.visa', [], ['query' => $query]

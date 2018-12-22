@@ -122,6 +122,13 @@ class MultistepOneForm extends MultistepFormBase {
         $visaFee = $visaPriceInfo['price'];
         $urgentVisaFee = $visaPriceInfo['urgent_price'];
         $visaPrice = $visaPriceInfo['price']*$roe;
+        if ((!empty($urgent_visa)) && (empty($visaPriceInfo['urgent_price']))) {
+            if ($nationality == 1) {
+                $visaPriceInfo['urgent_price'] = \Drupal::config('evisa.adminsettings')->get('def_urgent_indian_price');
+            } else {
+                $visaPriceInfo['urgent_price'] = \Drupal::config('evisa.adminsettings')->get('def_urgent_non_indian_price');
+            }   
+        }
         $urgentPrice = $visaPriceInfo['urgent_price']*$roe;
         if($roe <=0) {
             drupal_set_message(t('Rate of Exchange is not define.'), 'error');

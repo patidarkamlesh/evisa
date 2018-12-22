@@ -299,12 +299,10 @@ function getPriceAssigned($id) {
  * Implements hook_mail
  */
 function evisa_mail($key, &$message, $params) {
-/*module_load_include('mail.inc', 'evisa');    
-send_email($key, $message, $params);    */
     switch ($key) {
         case 'price_assign_update':
             $message['from'] = \Drupal::config('system.site')->get('mail');
-            $message['subject'] = t('Kamles Test Subject');
+            $message['subject'] = t('Price Update for customer @customer', array('@customer' => $params['customer_name']));
             $message['body'][] = t('Dear Admin, <br /> Visa Price of @customer for @country @purpose @visatype has been updated from @oldprice to @price', array('@customer' => $params['customer_name'], '@country' => $params['country_name'], '@purpose' => $params['purpose_type'], '@visatype' => $params['visa_type'], '@oldprice' => $params['old_price'], '@price' => $params['price']));
             break;
         case 'approved_visa':
@@ -374,6 +372,9 @@ function evisa_theme($existing, $type, $theme, $path) {
     'view_visa' => [
       'variables' => ['visa_detail' => NULL, 'photo_url' => NULL, 'pass_first' => NULL, 'pass_last' => NULL, 'sup_doc_1' => NULL, 'sup_doc_2' => NULL, 'ticket' => NULL],
     ],
+    'view_visa_operation' => [
+      'render element' => 'form',
+    ],
     'download_visa' => [
       'variables' => ['price_detail' => NULL],
     ],
@@ -390,6 +391,9 @@ function evisa_theme($existing, $type, $theme, $path) {
       'render element' => 'form',
     ],
     'multistep_form_three' => [
+      'render element' => 'form',
+    ],
+    'multistep_form_four' => [
       'render element' => 'form',
     ],
     'master_page' => [

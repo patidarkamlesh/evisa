@@ -99,4 +99,8 @@
   title: 'Add Edit Rate of Exchange'
   description: 'User can Add/Edit rate of exchange'
   restrict access: TRUE
+'post visa':
+  title: 'Post Visa'
+  description: 'Post Visa'  
+  
   

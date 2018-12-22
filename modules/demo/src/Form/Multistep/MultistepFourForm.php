@@ -11,13 +11,13 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class MultistepThreeForm extends MultistepFormBase {
+class MultistepFourForm extends MultistepFormBase {
 
   /**
    * {@inheritdoc}.
    */
   public function getFormId() {
-    return 'multistep_form_three';
+    return 'multistep_form_four';
   }
 
   /**
@@ -38,6 +38,40 @@ class MultistepThreeForm extends MultistepFormBase {
         $purpose_name = $this->store->get('purpose_name');
         $type_visa_name = $this->store->get('type_visa_name');
         $nation_name = $this->store->get('nation_name');
+        $final_price = $this->store->get('final_price');
+        $title = $this->store->get('title');
+        $name = $this->store->get('name');
+        $passport_no = $this->store->get('passport_no');
+        $father_name = $this->store->get('father_name');
+        $mother_name = $this->store->get('mother_name');
+        $photo = $this->store->get('photo');
+        $passport_first = $this->store->get('passport_first');
+        $passport_last = $this->store->get('passport_last');
+        $support_doc_1 = $this->store->get('support_doc_1');
+        $support_doc_2 = $this->store->get('support_doc_2');
+        $ticket = $this->store->get('ticket');
+        $contact = $this->store->get('contact');
+        $dob = $this->store->get('dob');
+        $place_birth = $this->store->get('place_birth');
+        $country_birth = $this->store->get('country_birth');
+        $gender = $this->store->get('gender');
+        $mar_status = $this->store->get('mar_status');
+        $religion = $this->store->get('religion');
+        $spouse = $this->store->get('spouse');
+        $profession = $this->store->get('profession');
+        $passport_issued = $this->store->get('passport_issued');
+        $passport_issued_date = $this->store->get('passport_issued_date');
+        $passport_expired_date = $this->store->get('passport_expired_date');
+        $arrival_from = $this->store->get('arrival_from');
+        $arrival_date = $this->store->get('arrival_date');
+        $departure_to = $this->store->get('departure_to');
+        $departure_date = $this->store->get('departure_date');
+        $address_line_1 = $this->store->get('address_line_1');
+        $address_line_2 = $this->store->get('address_line_2');
+        $city = $this->store->get('city');
+        $state = $this->store->get('state');
+        $country_add = $this->store->get('country_add');
+        $zip = $this->store->get('zip');        
         
         if(empty($country_id) || empty($purpose_travel_id) || empty($visa_type_id) || empty($nationality_id) || empty($visaPrice)) {
             drupal_set_message('Not set form Value 1', 'error');
@@ -94,77 +128,70 @@ class MultistepThreeForm extends MultistepFormBase {
             '#collapsed' => TRUE,
             '#title' => $this->t('Passanger Detail')
         ];
-        $title = [1=>'Mr.', 2=>'Mrs.', 3=>'Master', 4=>'Miss'];
-        $form['passanger']['title'] = [
-            '#type' => 'select',
-            '#title' => $this->t('Title'),
-            '#options' => $title,
-            '#required' => TRUE
-        ];
+        $titleset = [1=>'Mr.', 2=>'Mrs.', 3=>'Master', 4=>'Miss'];
         $form['passanger']['name'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('Passanger Name'),
-            '#required' => TRUE
+            '#markup' => $titleset[$title].' '.$name,
         ];
         $form['passanger']['father_name'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('Father Name'),
-            '#required' => TRUE
+            '#markup' => $father_name,
         ];
         $form['passanger']['mother_name'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('Mother Name'),
-            '#required' => TRUE
+            '#markup' => $mother_name,
         ];
         
         $form['passanger']['contact'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('Contact No'),
+            '#markup' => $contact,
         ];
         $form['passanger']['dob'] = [
-            '#type' => 'date',
+            '#type' => 'item',
             '#title' => $this->t('Date of Birth'),
-            '#required' => TRUE
+            '#markup' => $dob,
         ];
         $form['passanger']['place_birth'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('Place of Birth'),
-            '#required' => TRUE
+            '#markup' => $place_birth,
         ];
         $form['passanger']['country_birth'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('Country of Birth'),
-            '#required' => TRUE
+            '#markup' => $country_birth,
         ];
-        $gender = [1=>'Male', 2=>'Female']; 
+        $genderList = [1=>'Male', 2=>'Female']; 
         $form['passanger']['gender'] = [
-            '#type' => 'radios',
+            '#type' => 'item',
             '#title' => $this->t('Gender'),
-            '#options' => $gender,
-            '#required' => TRUE,
+            '#markup' => $genderList[$gender],
         ];
-        $mar_status = [1=>'Single', 2=>'Married']; 
+        $marStatusList = [1=>'Single', 2=>'Married']; 
         $form['passanger']['mar_status'] = [
-            '#type' => 'select',
+            '#type' => 'item',
             '#title' => $this->t('Marital Status'),
-            '#options' => $mar_status,
-            '#required' => TRUE
+            '#markup' => $marStatusList[$mar_status],
         ];
         $form['passanger']['religion'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('Religion'),
-            '#required' => TRUE
+            '#markup' => $religion,
         ];
         $form['passanger']['spouse'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('Spouse Name'),
+            '#markup' => $spouse,
         ];
         $form['passanger']['profession'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('Profession'),
-            '#required' => TRUE
+            '#markup' => $profession,
         ];
-
         $form['passport'] = [
             '#type' => 'fieldset',
             '#collapsible' => TRUE,
@@ -172,81 +199,26 @@ class MultistepThreeForm extends MultistepFormBase {
             '#title' => $this->t('Passport Detail')
         ];
         $form['passport']['passport_no'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('Passport No'),
-            '#required' => TRUE
+            '#markup' => $passport_no,
         ];
         $form['passport']['passport_issued'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('Issued At'),
-            '#required' => TRUE
+            '#markup' => $passport_issued,
         ];
         $form['passport']['passport_issued_date'] = [
-            '#type' => 'date',
+            '#type' => 'item',
             '#title' => $this->t('Date of Issue'),
-            '#required' => TRUE
+            '#markup' => $passport_issued_date,
         ];
         $form['passport']['passport_expired_date'] = [
-            '#type' => 'date',
+            '#type' => 'item',
             '#title' => $this->t('Date of Expiry'),
-            '#required' => TRUE
+            '#markup' => $passport_expired_date,
         ];
-        $form['passport']['photo'] = [
-            '#type' => 'managed_file',
-            '#title' => $this->t('Colour Passport Size photograph'),
-            '#upload_location' => 'public://visadoc/' . $customerId . '/photo',
-            '#upload_validators' => [
-                'file_validate_extensions' => array('pdf'),
-                //'file_validate_size' => array(),
-            ],
-            //'#size' => 13,
-            '#multiple' => FALSE,
-            '#required' => TRUE
-        ];
-        $form['passport']['passport_first'] = [
-            '#type' => 'managed_file',
-            '#title' => $this->t('Passport First page Coloured Scan Copy'),
-            '#upload_location' => 'public://visadoc/' . $customerId . '/passport_first',
-            //'#upload_validators' => array('file_validate_extensions' => array('pdf doc docx')),
-            //'#size' => 13,
-            '#multiple' => FALSE,
-            '#required' => TRUE
-        ];
-        $form['passport']['passport_last'] = [
-            '#type' => 'managed_file',
-            '#title' => $this->t('Passport Last page Coloured Scan Copy'),
-            '#upload_location' => 'public://visadoc/' . $customerId . '/passport_last',
-            //'#upload_validators' => array('file_validate_extensions' => array('pdf doc docx')),
-            //'#size' => 13,
-            '#multiple' => FALSE,
-            '#required' => TRUE
-        ];
-        $form['passport']['support_doc_1'] = [
-            '#type' => 'managed_file',
-            '#title' => $this->t('Supporting Document'),
-            '#description' => $this->t('Father Visa/PPT Copy, Mother Visa/PPT Copy, Husband Visa/PPT Copy, Marriage Certificate, Observation Page, NOC'),
-            '#upload_location' => 'public://visadoc/' . $customerId . '/support_doc_1',
-            //'#upload_validators' => array('file_validate_extensions' => array('pdf doc docx')),
-            //'#size' => 13,
-            '#multiple' => FALSE,
-        ];
-        $form['passport']['support_doc_2'] = [
-            '#type' => 'managed_file',
-            '#title' => $this->t('Supporting Document'),
-            '#description' => $this->t('Father Visa/PPT Copy, Mother Visa/PPT Copy, Husband Visa/PPT Copy, Marriage Certificate, Observation Page, NOC'),
-            '#upload_location' => 'public://visadoc/' . $customerId . '/support_doc_2',
-            //'#upload_validators' => array('file_validate_extensions' => array('pdf doc docx')),
-            //'#size' => 13,
-            '#multiple' => FALSE,
-        ];
-        $form['passport']['ticket'] = [
-            '#type' => 'managed_file',
-            '#title' => $this->t('Confirm ticket copy for 96 Hrs. Visa'),
-            '#upload_location' => 'public://visadoc/' . $customerId . '/ticket',
-            //'#upload_validators' => array('file_validate_extensions' => array('pdf doc docx')),
-            //'#size' => 13,
-            '#multiple' => FALSE,
-        ];
+        
         $form['flight'] = [
             '#type' => 'fieldset',
             '#collapsible' => TRUE,
@@ -254,20 +226,24 @@ class MultistepThreeForm extends MultistepFormBase {
             '#title' => $this->t('Flight Detail')
         ];
         $form['flight']['arrival_from'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('Arrival From'),
+            '#markup' => $arrival_from,
         ];
         $form['flight']['arrival_date'] = [
-            '#type' => 'date',
+            '#type' => 'item',
             '#title' => $this->t('Arrival Date'),
+            '#markup' => $arrival_date,
         ];
         $form['flight']['departure_to'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('Departure To'),
+            '#markup' => $departure_to,
         ];
         $form['flight']['departure_date'] = [
-            '#type' => 'date',
+            '#type' => 'item',
             '#title' => $this->t('Departure Date'),
+            '#markup' => $departure_date,
         ];
         $form['address'] = [
             '#type' => 'fieldset',
@@ -276,28 +252,34 @@ class MultistepThreeForm extends MultistepFormBase {
             '#title' => $this->t('Address Detail')
         ];
         $form['address']['address_line_1'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('Address Line 1'),
+            '#markup' => $address_line_1,
         ];
         $form['address']['address_line_2'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('Address Line 2'),
+            '#markup' => $address_line_2,
         ];
         $form['address']['city'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('City'),
+            '#markup' => $city,
         ];
         $form['address']['state'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('State'),
+            '#markup' => $state,
         ];
         $form['address']['country_add'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('Country'),
+            '#markup' => $country_add,
         ];
         $form['address']['zip'] = [
-            '#type' => 'textfield',
+            '#type' => 'item',
             '#title' => $this->t('ZIP'),
+            '#markup' => $zip,
         ];
         
         $form['actions']['previous'] = [
@@ -309,7 +291,7 @@ class MultistepThreeForm extends MultistepFormBase {
             '#weight' => 0,
             '#url' => Url::fromRoute('demo.multistep_one'),
         ];
-        $form['#theme'] = 'multistep_form_three'; 
+        $form['#theme'] = 'multistep_form_four'; 
         return $form;
     }
 
@@ -317,7 +299,7 @@ class MultistepThreeForm extends MultistepFormBase {
      * {@inheritdoc}
      */
     public function submitForm(array &$form, FormStateInterface $form_state) {
-        $this->store->set('final_price', $form_state->getValue('final_price'));
+      /*  $this->store->set('final_price', $form_state->getValue('final_price'));
         $this->store->set('title', $form_state->getValue('title'));
         $this->store->set('name', $form_state->getValue('name'));
         $this->store->set('passport_no', $form_state->getValue('passport_no'));
@@ -350,9 +332,20 @@ class MultistepThreeForm extends MultistepFormBase {
         $this->store->set('city', $form_state->getValue('city'));
         $this->store->set('state', $form_state->getValue('state'));
         $this->store->set('country_add', $form_state->getValue('country_add'));
-        $this->store->set('zip', $form_state->getValue('zip'));
+        $this->store->set('zip', $form_state->getValue('zip')); */
 
-        $form_state->setRedirect('demo.multistep_four');
+        $customerCumAccount = getCumAmount($this->store->get('customer_id'));
+        $visaPrice = $this->store->get('final_price');
+        if ($visaPrice <= $customerCumAccount) {
+            // Save the data
+            parent::saveData();
+            $form_state->setRedirect('demo.multistep_one');
+        } else {
+            drupal_set_message(t('Insufficiant balance to post visa. To recharge your account, please contact Finance.'), 'error');
+            $form_state->setRedirect('demo.multistep_one');
+        }
+
+        $form_state->setRedirect('demo.multistep_one');
     }
 
 }

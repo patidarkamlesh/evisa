@@ -343,7 +343,7 @@ class EvisaController extends ControllerBase {
     }
 
     /**
-     * Account Page for all
+     * View Visa Page for Customers
      */
     public function viewVisa() {
         $visa_id = \Drupal::request()->get('vid');
@@ -355,7 +355,6 @@ class EvisaController extends ControllerBase {
         $supDoc1Url = getUpFileUrl($visaDetail['pas_sup_doc_1']);
         $supDoc2Url = getUpFileUrl($visaDetail['pas_sup_doc_2']);
         $ticketUrl = getUpFileUrl($visaDetail['pas_ticket']);
-
         return [
             '#theme' => 'view_visa',
             '#visa_detail' => $visaDetail,

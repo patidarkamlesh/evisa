@@ -39,7 +39,8 @@
             <br />
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-sm-4"><b>Passanger Name:</b> {{ visa_detail.name }}</div>
+                    {% set titleset = {1: 'Mr.', 2: 'Mrs.', 2: 'Master', 2: 'Miss'} %}
+                    <div class="col-sm-4"><b>Passanger Name:</b> {{ titleset[visa_detail.title] ~ ' ' ~ visa_detail.name }}</div>
                     <div class="col-sm-4"><b>Passanger Father Name:</b> {{ visa_detail.father_name }}</div>
                     <div class="col-sm-4"><b>Passanger Mother Name:</b> {{ visa_detail.mother_name }}</div>
                 </div>
@@ -54,7 +55,7 @@
                     <div class="col-sm-4"><b>Passanger Contact No :</b> {{ visa_detail.contact }}</div>
                     {% set genderset = {1: 'Male', 2: 'Female'} %}
                     <div class="col-sm-4"><b>Passanger Gender:</b> {{ genderset[visa_detail.gender] }}</div>
-                    {% set mar_status_set = {1:'Single', 2:'Married', 3:'Widowed', 4:'Divorced'} %}
+                    {% set mar_status_set = {1:'Single', 2:'Married'} %}
                     <div class="col-sm-4"><b>Passanger Marital Status:</b> {{ mar_status_set[visa_detail.mar_status] }}</div>
                 </div>
                 <br />
