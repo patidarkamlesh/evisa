@@ -298,4 +298,13 @@ evisa.roe.form:
     _form: '\Drupal\evisa\Form\RoeForm'
     _title: 'Rate of exchange Form'
   requirements:
-    _permission: 'add edit roe'      
+    _permission: 'add edit roe'   
+    
+evisa.download_invoice:
+   path: 'evisa/download/invoice/{vrid}'
+   defaults:
+     _controller: '\Drupal\evisa\Controller\EvisaController::downloadInvoice'
+     _title: 'Download Invoice'
+   requirements:
+     _permission: 'view visa'
+     id: '^[0-9]+'

@@ -395,6 +395,9 @@ function evisa_theme($existing, $type, $theme, $path) {
     'master_page' => [
       'variables' => ['menuItems' => NULL],
     ],
+    'invoice_pdf' => [
+      'variables' => ['visaDetails' => NULL, 'priceInWord' => NULL, 'custInfo' => NULL],
+    ],      
   ];
 }
 /**

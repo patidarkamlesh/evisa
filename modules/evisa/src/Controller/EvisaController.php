@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Drupal\Component\Utility\Tags;
 use Drupal\Component\Utility\Unicode;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Drupal\node\Entity\Node;
 
 class EvisaController extends ControllerBase {
 
@@ -698,5 +699,68 @@ class EvisaController extends ControllerBase {
         ];
         return $roedata;
     }
+    /**
+     * Download Invoice in PDF format
+     */
+    public function downloadInvoice($vrid) {
+        if (empty($vrid)) {
+            return false;
+        }
+        //Get Invoice data
+        $visaDetails =  visaDetail($vrid);
+        //print_r($visaDetails); exit;
+        $pdf = $this->generateInvoicePdf($visaDetails);
+        $fileName = $visaDetails['passport_no'].'.pdf';
 
+        // Tell the browser that this is not an HTML file to show, but a pdf file to
+        // download.
+        header('Content-Type: application/pdf');
+        header('Content-Length: ' . strlen($pdf));
+        header('Content-Disposition: attachment; filename="'.$fileName.'"');
+        print $pdf;
+        return [];
+    }
+    /**
+     * Create Invoice PDF
+     */
+    protected function generateInvoicePdf($visaDetails) {
+    // Get the content we want to convert into pdf.
+    $f = new \NumberFormatter("en_IN", \NumberFormatter::SPELLOUT); 
+    $priceInWord = $f->format($visaDetails['visa_price']);
+    $custInfo = Node::load($visaDetails['customer_id']);
+    $html_template = [
+      '#theme' => 'invoice_pdf',
+      '#visaDetails' => $visaDetails,
+      '#priceInWord' => $priceInWord,
+      '#custInfo' => $custInfo  
+    ];
+    $html = \Drupal::service('renderer')->render($html_template);
+
+    // Never make an instance of TCPDF or TCPDFDrupal classes manually.
+    // Use tcpdf_get_instance() instead.
+    $tcpdf = tcpdf_get_instance();
+    /* DrupalInitialize() is an extra method added to TCPDFDrupal that initializes
+    *  some TCPDF variables (like font types), and makes possible to change the
+    *  default header or footer without creating a new class.
+    */
+    $tcpdf->DrupalInitialize(array(
+      'footer' => array(
+        //'html' => 'This is a test!! <em>Bottom of the page</em>',
+      ),
+      'header' => array(
+        /*'callback' => array(
+          'function' => 'tcpdf_example_default_header',
+          // You can pass extra data to your callback.
+          'context' => array(
+            'welcome_message' => 'Hello, tcpdf example!',
+          ),
+        ),*/
+      ),
+    ));
+    // Insert the content. Note that DrupalInitialize automatically adds the first
+    // page to the pdf document.
+    $tcpdf->writeHTML($html);
+
+    return $tcpdf->Output('', 'S');        
+    }
 }

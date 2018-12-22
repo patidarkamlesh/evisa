@@ -117,13 +117,14 @@ class MisReport extends FormBase {
         $rows = [];
         
         foreach ($misReports as $misReport) {
+            $invoicePDF = Url::fromRoute('evisa.download_invoice', array('vrid' => $misReport->vr_id));
             $rows[] = [
                 'customer_name' => $misReport->title,
                 'bill_date' => date('d-M-Y', strtotime($misReport->txn_date)),  
                 'bill_no' => ($misReport->txn_type == 'D') ? 'VS /'.$misReport->id : '',
                 'app_ref' => $misReport->app_ref,
                 'name' => $misReport->name,
-                'passport' => $misReport->passport_no,
+                'passport' => (!empty($misReport->vr_id)) ? Link::fromTextAndUrl($misReport->passport_no, $invoicePDF) :$misReport->passport_no,
                 'txn_remark' => $misReport->txn_reason,
                 'country_name' => $misReport->destination_name,
                 'purpose' => $misReport->purpose_name,
