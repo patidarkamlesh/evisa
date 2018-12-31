@@ -315,5 +315,5 @@ evisa.download_invoice:
      _controller: '\Drupal\evisa\Controller\EvisaController::downloadInvoice'
      _title: 'Download Invoice'
    requirements:
-     _permission: 'view visa'
+     _permission: 'view mis'
      id: '^[0-9]+'

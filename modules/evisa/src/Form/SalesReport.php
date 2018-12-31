@@ -71,10 +71,12 @@ class SalesReport extends FormBase {
         ];
         
         $num_per_page = \Drupal::config('evisa.adminsettings')->get('limit');
+        $num_per_page = 1;
         //Get Sales Report Data
         $query = \Drupal::database()->select('visa', 'v');
         $query->join('node_field_data', 'nf', 'nf.nid = v.customer_id');
         $query->addField('nf','title', 'customer_name');
+        $query->addField('v','customer_id', 'agent_id');
         $query->addExpression('count(v.id)', 'total_visa');
         $query->addExpression('sum(v.visa_price)', 'total_visa_price');
         $query->addExpression('max(v.created_date)', 'last_transaction');
@@ -99,7 +101,9 @@ class SalesReport extends FormBase {
         $query->range($offset, $num_per_page);
         
         $salesReports = $query->execute()->fetchAll();
-        //print_r($salesReports); exit;
+        print_r($salesReports); 
+        getCumAmount(2);
+        exit;
         //create table header
         $header_table = [
             'customer_name' => t('Key Agent Name'),
@@ -113,7 +117,7 @@ class SalesReport extends FormBase {
                 'customer_name' => $salesReport->customer_name,
                 'last_txn_date' => date('d-m-Y', strtotime($salesReport->last_transaction)),
                 'visa_count' => $salesReport->total_visa,
-                'total_business' => $salesReport->total_visa_price,
+                'total_business' => number_format($salesReport->total_visa_price, 2, '.', ','),
             ];
         }
         //display Visa Type table

@@ -94,7 +94,7 @@ class MisReport extends FormBase {
 
         $offset = $num_per_page * $page;
         $query->range($offset, $num_per_page);
-        $query->orderBy('ac.id', 'ASC');   
+        $query->orderBy('ac.id', 'DESC');   
         
         $misReports = $query->execute()->fetchAll();
         //print_r($misReports); exit;

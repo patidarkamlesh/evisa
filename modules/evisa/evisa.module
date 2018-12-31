@@ -26,7 +26,7 @@ function _evisa_user_login_form_submit($form, FormStateInterface $form_state) {
     } else if(in_array('sales_user', $roles)) {
       $form_state->setRedirect('evisa.sales.report');  
     } else if(in_array('finance_user', $roles)) {
-      $form_state->setRedirect('evisa.visa');  
+      $form_state->setRedirect('evisa.mis');  
     } else if(in_array('operation_user', $roles)) {
       $form_state->setRedirect('evisa.visa');  
     } else {
@@ -327,9 +327,11 @@ function getCumAmount($customer_id) {
   $amount = \Drupal::database()->select('account_txn', 'at')
           ->fields('at', ['cum_amount'])
           ->condition('at.customer_id', $customer_id)
-          ->orderBy('id','DESC')
+          ->orderBy('id','DESC');
+  print_r($amount->__toString()); exit;
+  /*
           ->execute()->fetchField();
-  return $amount;
+  return $amount; */
 }
 /**
  * Get price for online Visa
