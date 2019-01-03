@@ -29,6 +29,13 @@ class VisaReport extends FormBase {
         $app_from = \Drupal::request()->get('app_from');
         $app_to = \Drupal::request()->get('app_to');
         $blockStatus = FALSE;
+        $current_path = \Drupal::service('path.current')->getPath();
+        $express = 0;
+        if(strpos($current_path, 'express')) {
+           $express = 1;    
+        } else {
+           $express = 0; 
+        }
         $roles = \Drupal::currentUser()->getRoles();
         if(in_array('agent', $roles)) {
         // Add Visa Link
@@ -86,19 +93,27 @@ class VisaReport extends FormBase {
             '#type' => 'submit',
             '#value' => t('Search'),
         ];
+        if($express == 1) {
+            $resetroute = 'evisa.express.visa';
+        } else {
+            $resetroute = 'evisa.visa';
+        }
         $form['filter']['reset'] = [
             '#type' => 'link',
             '#title' => $this->t('Reset'),
             '#attributes' => [
                 'class' => ['btn btn-primary']
             ],
-            '#url' => Url::fromRoute('evisa.visa'),
+            '#url' => Url::fromRoute($resetroute),
         ];
         }
         $num_per_page = \Drupal::config('evisa.adminsettings')->get('limit');
         $query = \Drupal::database()->select('visa_report', 'vr');
         $query->join('visa', 'v', 'v.id = vr.visa_id');
         $query->fields('vr', ['id','visa_id','customer_name','customer_id','destination_name','purpose_name','visa_type_name','nationality','visa_price','urgent','name','passport_no', 'father_name', 'mother_name', 'created', 'status_id', 'approved_visa']);
+        if($express == 1) {
+            $query->condition('vr.urgent', 1);
+        }
         if (!empty($custdata)) {
           //$query->condition('vr.customer_name', '%' . db_like($custdata) . '%', 'LIKE');
             $query->condition('vr.customer_id', $custdata);
@@ -235,8 +250,14 @@ class VisaReport extends FormBase {
         if (!empty($app_to)) {
             $query['app_to'] =  $app_to;
         }
+        $current_path = \Drupal::service('path.current')->getPath();
+        if(strpos($current_path, 'express')) {
+            $reroute = 'evisa.express.visa';
+        } else {
+            $reroute = 'evisa.visa';
+        }
         $form_state->setRedirect(
-                'evisa.visa', [], ['query' => $query]
+                $reroute, [], ['query' => $query]
         );
         //Commented due to pagination & filter to work 
         //$form_state->setRebuild(TRUE);

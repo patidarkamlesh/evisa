@@ -348,13 +348,15 @@ class EvisaController extends ControllerBase {
     public function viewVisa() {
         $visa_id = \Drupal::request()->get('vid');
         $visaDetail = visaDetail($visa_id);
-
+        
         $photoUrl = getUpFileUrl($visaDetail['pas_photo_id']);
         $passFirstUrl = getUpFileUrl($visaDetail['pas_passport_first_id']);
         $passLastUrl = getUpFileUrl($visaDetail['pas_passport_last_id']);
         $supDoc1Url = getUpFileUrl($visaDetail['pas_sup_doc_1']);
         $supDoc2Url = getUpFileUrl($visaDetail['pas_sup_doc_2']);
         $ticketUrl = getUpFileUrl($visaDetail['pas_ticket']);
+        $referUrl = \Drupal::request()->server->get('HTTP_REFERER'); 
+        
         return [
             '#theme' => 'view_visa',
             '#visa_detail' => $visaDetail,
@@ -364,6 +366,7 @@ class EvisaController extends ControllerBase {
             '#sup_doc_1' => $supDoc1Url,
             '#sup_doc_2' => $supDoc2Url,
             '#ticket' => $ticketUrl,
+            '#express' => (strpos($referUrl, 'express') ? 1 : 0),
         ];
     }
 
@@ -533,10 +536,15 @@ class EvisaController extends ControllerBase {
                 unset($output['page']);
             }
         }
+        if(empty($output['fd']) && empty($output['td'])) {
+            $output['fd'] = date('mm/dd/yyyy', strtotime('-1 month'));
+            $output['td'] = date('mm/dd/yyyy');
+        }
         //Get Sales Report Data
         $query = \Drupal::database()->select('visa', 'v');
         $query->join('node_field_data', 'nf', 'nf.nid = v.customer_id');
         $query->addField('nf', 'title', 'customer_name');
+        $query->addField('v','customer_id', 'agent_id');
         $query->addExpression('count(v.id)', 'total_visa');
         $query->addExpression('sum(v.visa_price)', 'total_visa_price');
         $query->addExpression('max(v.created_date)', 'last_transaction');
@@ -555,11 +563,19 @@ class EvisaController extends ControllerBase {
         $query->groupBy('v.customer_id');
         $query->groupBy('nf.title');
         $salesReports = $query->execute()->fetchAll();
+        $agentIds = [];
+        foreach($salesReports as $salesReport) {
+            $agentIds[] = $salesReport->agent_id;
+        }
+        if(count($agentIds)) {
+          $cumAmountMulti = getCumAmountMultiple($agentIds);
+        }
         $salesHeaders = [
             t('Key Agent Name'),
             t('Last Transaction Date'),
             t('Visa Count'),
             t('Total Business'),
+            t('Current Balance'),
         ];
         $reportData = "";
         $reportData .= "<table style='border:2px solid black;'>";
@@ -574,6 +590,7 @@ class EvisaController extends ControllerBase {
             $reportData .= "<td style='border: 1px solid black;'>" . date('d-M-Y', strtotime($salesReport->last_transaction)) . "</td>";
             $reportData .= "<td style='border: 1px solid black;'>" . $salesReport->total_visa . "</td>";
             $reportData .= "<td style='border: 1px solid black;'>" . $salesReport->total_visa_price . "</td>";
+            $reportData .= "<td style='border: 1px solid black;'>" . $cumAmountMulti[$salesReport->agent_id] . "</td>";
             $reportData .= "</tr>";
         }
         $reportData .= "</table>";

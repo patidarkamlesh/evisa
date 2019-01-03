@@ -101,6 +101,9 @@
   restrict access: TRUE
 'post visa':
   title: 'Post Visa'
-  description: 'Post Visa'  
+  description: 'Post Visa'
+'view express visa':
+  title: 'View Express Visa'
+  description: 'View Express Visa'  
   
   

@@ -177,5 +177,9 @@
 
         </div>  
     </div>
-</div>            
-<p><a href="{{ url('evisa.visa') }}" class="btn btn-primary" role="button">{{ 'Back to Visa Listing'|t }}</a></p>
+</div>
+{% if form['#express']  %}
+    <p><a href="{{ url('evisa.express.visa') }}" class="btn btn-primary" role="button">{{ 'Back to Visa Listing'|t }}</a></p>
+{% else %}
+    <p><a href="{{ url('evisa.visa') }}" class="btn btn-primary" role="button">{{ 'Back to Visa Listing'|t }}</a></p>
+{% endif %} 

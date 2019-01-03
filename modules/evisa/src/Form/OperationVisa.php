@@ -34,7 +34,8 @@ class OperationVisa extends FormBase {
         $passLastUrl = getUpFileUrl($visaDetail['pas_passport_last_id']);
         $supDoc1Url = getUpFileUrl($visaDetail['pas_sup_doc_1']);
         $supDoc2Url = getUpFileUrl($visaDetail['pas_sup_doc_2']);
-        $ticketUrl = getUpFileUrl($visaDetail['pas_ticket']); 
+        $ticketUrl = getUpFileUrl($visaDetail['pas_ticket']);
+        $referUrl = \Drupal::request()->server->get('HTTP_REFERER');
 
         $form['app_ref'] = [
             '#type' => 'item',
@@ -44,6 +45,7 @@ class OperationVisa extends FormBase {
             '#type' => 'item',
             '#markup' => $visaDetail['customer_name'],
         ];
+        $form['#express'] = strpos($referUrl, 'express') ? 1 : 0;
         
         $form['country_name'] = [
             '#type' => 'textfield',

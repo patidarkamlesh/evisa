@@ -34,6 +34,10 @@ class SalesReport extends FormBase {
         } else {
             $salesCustomer = array();
         }
+        if(empty($fromDate) && empty($toDate)) {
+            $fromDate = date('mm/dd/yyyy', strtotime('-1 month'));
+            $toDate = date('mm/dd/yyyy');
+        }
         $form['filter'] = [
             '#type' => 'fieldset',
             '#collapsible' => TRUE,
@@ -71,7 +75,6 @@ class SalesReport extends FormBase {
         ];
         
         $num_per_page = \Drupal::config('evisa.adminsettings')->get('limit');
-        $num_per_page = 1;
         //Get Sales Report Data
         $query = \Drupal::database()->select('visa', 'v');
         $query->join('node_field_data', 'nf', 'nf.nid = v.customer_id');
@@ -101,23 +104,29 @@ class SalesReport extends FormBase {
         $query->range($offset, $num_per_page);
         
         $salesReports = $query->execute()->fetchAll();
-        print_r($salesReports); 
-        getCumAmount(2);
-        exit;
+        $agentIds = [];
+        foreach($salesReports as $salesReport) {
+            $agentIds[] = $salesReport->agent_id;
+        }
+        if(count($agentIds)) {
+            $cumAmountMulti = getCumAmountMultiple($agentIds);
+        }
         //create table header
         $header_table = [
             'customer_name' => t('Key Agent Name'),
             'last_txn_date' => t('Last Transaction Date'),
             'visa_count' => t('Visa Count'),
             'total_business' => t('Total Business'),
+            'current_balance' => t('Current balance'),
         ];
         $rows = [];
         foreach ($salesReports as $salesReport) {
             $rows[] = [
-                'customer_name' => $salesReport->customer_name,
+                'customer_name' => Link::createFromRoute($salesReport->customer_name, 'entity.node.canonical', ['node' => $salesReport->agent_id]),
                 'last_txn_date' => date('d-m-Y', strtotime($salesReport->last_transaction)),
                 'visa_count' => $salesReport->total_visa,
                 'total_business' => number_format($salesReport->total_visa_price, 2, '.', ','),
+                'current_balance' => $cumAmountMulti[$salesReport->agent_id],
             ];
         }
         //display Visa Type table

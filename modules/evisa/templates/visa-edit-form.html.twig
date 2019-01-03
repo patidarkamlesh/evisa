@@ -1,4 +1,3 @@
-{# empty Twig template #}
 {{ form.form_build_id }}
 {{ form.form_token }}
 {{ form.form_id }}
@@ -61,11 +60,15 @@
           {{ form.actions }}
         </div>
     </div>
-    <div class="col-xs-6 text-right">   
-        <div class="next">
-          <a href="{{ url('evisa.visa') }}" class="btn btn-primary" role="button">{{ 'Back'|t }}</a>
-        </div>
-    </div>
+          <div class="col-xs-6 text-right">   
+              <div class="next">
+                  {% if form['#express']  %}
+                      <a href="{{ url('evisa.express.visa') }}" class="btn btn-primary" role="button">{{ 'Back'|t }}</a>
+                      {% else %}
+                      <a href="{{ url('evisa.visa') }}" class="btn btn-primary" role="button">{{ 'Back'|t }}</a>
+                      {% endif %}             
+              </div>
+          </div>
 </div>                
                 
 {{ form |without('app_ref', 'customer_name', 'name', 'passport', 'country','purpose_travel', 'visa_type', 'nationality', 'price', 'urgent', 'status_id', 'reference_no', 'approved_visa', 'reject_reason', 'actions') }}

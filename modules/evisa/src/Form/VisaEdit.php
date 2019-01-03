@@ -23,11 +23,14 @@ class VisaEdit extends FormBase {
     public function buildForm(array $form, FormStateInterface $form_state, $vid = NULL) {
         $visaData = visaDetail($vid);
         $customerId = getCustomerId($visaData['agent_id']);
+        $referUrl = \Drupal::request()->server->get('HTTP_REFERER');
+        
         if (!empty($visaData['id'])) {
             $form['report_id'] = [
                 '#type' => 'hidden',
                 '#value' => $visaData['id'],
             ];
+            $form['#express'] = strpos($referUrl, 'express') ? 1 : 0;
             $form['visa_id'] = [
                 '#type' => 'hidden',
                 '#value' => $visaData['visa_id'],

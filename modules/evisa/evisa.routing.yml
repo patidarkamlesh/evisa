@@ -317,3 +317,11 @@ evisa.download_invoice:
    requirements:
      _permission: 'view mis'
      id: '^[0-9]+'
+
+evisa.express.visa:
+  path: 'evisa/express/visa'
+  defaults:
+    _form: '\Drupal\evisa\Form\VisaReport'
+    _title: 'Express Visa'
+  requirements:
+    _permission: 'view express visa'

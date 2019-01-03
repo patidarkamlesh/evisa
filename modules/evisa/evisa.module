@@ -28,7 +28,7 @@ function _evisa_user_login_form_submit($form, FormStateInterface $form_state) {
     } else if(in_array('finance_user', $roles)) {
       $form_state->setRedirect('evisa.mis');  
     } else if(in_array('operation_user', $roles)) {
-      $form_state->setRedirect('evisa.visa');  
+      $form_state->setRedirect('evisa.express.visa');  
     } else {
       $form_state->setRedirect('evisa.visa');  
     }
@@ -327,11 +327,18 @@ function getCumAmount($customer_id) {
   $amount = \Drupal::database()->select('account_txn', 'at')
           ->fields('at', ['cum_amount'])
           ->condition('at.customer_id', $customer_id)
-          ->orderBy('id','DESC');
-  print_r($amount->__toString()); exit;
-  /*
+          ->orderBy('id','DESC') 
           ->execute()->fetchField();
-  return $amount; */
+  return $amount; 
+}
+/**
+ * Get Cummulative Amount for Multiple customer
+ * @param customer id array
+ * @return array of Customer ID with Cum Amount
+ */
+function getCumAmountMultiple($agentIds) {
+    $result = db_query('SELECT customer_id, cum_amount from account_txn where id IN (SELECT max(id) FROM account_txn WHERE customer_id IN (:agentids[]) GROUP BY customer_id)', [':agentids[]' => $agentIds]);
+    return $result->fetchAllKeyed();
 }
 /**
  * Get price for online Visa
@@ -372,7 +379,7 @@ function visaDetail($visa_id) {
 function evisa_theme($existing, $type, $theme, $path) {
   return [
     'view_visa' => [
-      'variables' => ['visa_detail' => NULL, 'photo_url' => NULL, 'pass_first' => NULL, 'pass_last' => NULL, 'sup_doc_1' => NULL, 'sup_doc_2' => NULL, 'ticket' => NULL],
+      'variables' => ['visa_detail' => NULL, 'photo_url' => NULL, 'pass_first' => NULL, 'pass_last' => NULL, 'sup_doc_1' => NULL, 'sup_doc_2' => NULL, 'ticket' => NULL, 'express' => NULL],
     ],
     'view_visa_operation' => [
       'render element' => 'form',
