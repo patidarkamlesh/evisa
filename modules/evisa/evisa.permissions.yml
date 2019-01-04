@@ -105,5 +105,12 @@
 'view express visa':
   title: 'View Express Visa'
   description: 'View Express Visa'  
-  
-  
+'view normal visa':
+  title: 'View Normal Visa'
+  description: 'View Normal Visa'
+'view vendor':
+  title: 'View Vendor Master'
+  description: 'View Vendor Master'  
+'add edit vendor':
+  title: 'Add Edit Vendor Master'
+  description: 'Add Edit Vendor Master'  

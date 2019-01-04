@@ -1,5 +1,10 @@
 <div style="float:right;margin-top:15px;font-weight:bold;">
-    Welcome <a href="{{ user_name.profile }}">{{ user_name.name }} </a>
+    Welcome
+    {% if user_name.name is 'Visitor' %}
+        {{ user_name.name }}
+    {% else %}    
+    <a href="{{ user_name.profile }}">{{ user_name.name }} </a>
+    {% endif %}
     {% if price_info is not empty %}
     <span style="background-color:#059BDC;color:#FFFFFF;padding:17px 5px;">{{ price_info }}</span> 
     {% endif %}

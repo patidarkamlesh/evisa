@@ -23,14 +23,21 @@ class VisaEdit extends FormBase {
     public function buildForm(array $form, FormStateInterface $form_state, $vid = NULL) {
         $visaData = visaDetail($vid);
         $customerId = getCustomerId($visaData['agent_id']);
+        $vendors = getVendor();
         $referUrl = \Drupal::request()->server->get('HTTP_REFERER');
-        
+        if(strpos($referUrl, 'express')) {
+            $express = 1;
+        } elseif(strpos($referUrl, 'normal')) {
+            $express = 2;
+        } else {
+            $express = 0;
+        }
         if (!empty($visaData['id'])) {
             $form['report_id'] = [
                 '#type' => 'hidden',
                 '#value' => $visaData['id'],
             ];
-            $form['#express'] = strpos($referUrl, 'express') ? 1 : 0;
+            $form['#express'] = $express;
             $form['visa_id'] = [
                 '#type' => 'hidden',
                 '#value' => $visaData['visa_id'],
@@ -101,7 +108,7 @@ class VisaEdit extends FormBase {
                 '#title' => $this->t('Passport No'),
                 '#markup' => $visaData['passport_no'],
             ];
-            $status = [1 => 'Open', 2=>'In Progress', 3=>'Approved', 4=> 'Rejected', 5=> 'Cancelled'];            
+            $status = [ 2=>'In Progress', 3=>'Approved', 4=> 'Rejected'];            
             $form['status_id'] = [
                 '#type' => 'select',
                 '#title' => 'Status',
@@ -126,6 +133,27 @@ class VisaEdit extends FormBase {
                     'class' => ['form-control']  
                 ],
             ];
+        foreach($vendors as $vendor) {
+            $vendorList[$vendor->vdid] = $vendor->vendor_name;
+        }
+        $form['vendor_id'] = [
+            '#type' => 'select',
+            '#title' => 'Vendor',
+            '#default_value' => $visaData['vendor_id'],
+            '#options' => $vendorList,
+            '#empty_option' => t('Select'),
+            '#states' => [
+                'visible' => [
+                    ':input[name="status_id"]' => ['value' => 2]
+                ],
+                'required' => [
+                    ':input[name="status_id"]' => ['value' => 2]
+                ]
+            ],
+            '#attributes' => [
+                'class' => ['form-control']
+            ],
+        ];        
             $form['approved_visa'] = [
                 '#type' => 'managed_file',
                 '#title' => 'Approved Visa',
@@ -277,26 +305,6 @@ class VisaEdit extends FormBase {
             } catch (Exception $e) {
                 watchdog_exception('visa', $e);
             }
-        }
-        if ($status_id == 5) {
-            //Update Account information to credit for cancelled Visa
-        
-        $remark = "Visa Cancelled";
-        $cumAmount = getCumAmount($customer_id);
-        $cumAmount += $visa_price_paid;
-        // Insert Credit
-        $result = \Drupal::database()->insert('account_txn')
-                ->fields([
-                    'customer_id' => $customer_id,
-                    'credit' => $visa_price_paid,
-                    'txn_reason' => $remark,
-                    'uid' => \Drupal::currentUser()->id(),
-                    'txn_date' => date('Y-m-d H:i:s'),
-                    'txn_type' => 'C',
-                    'cum_amount' => $cumAmount,
-                    'visa_id' => $visa_id
-                ])
-                ->execute();
         }
         drupal_set_message(t('Visa has been updated successfully.'));
         //Redirect to Visa Page

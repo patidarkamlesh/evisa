@@ -368,7 +368,7 @@ function visaDetail($visa_id) {
         $query->join('visa', 'v', 'v.id = vr.visa_id');
         //$query->fields('vr', ['id','visa_id','customer_name','destination_name','purpose_name','visa_type_name','nationality','visa_price','urgent','name','passport_no', 'father_name', 'mother_name', 'created', 'status_id', 'agent_id', 'app_ref', 'contact']);
         $query->fields('vr');
-        $query->fields('v', ['pas_photo_id','pas_passport_first_id','pas_passport_last_id','pas_sup_doc_1','pas_sup_doc_2','pas_ticket', 'reference_no', 'reject_reason', 'approved_visa']);
+        $query->fields('v', ['pas_photo_id','pas_passport_first_id','pas_passport_last_id','pas_sup_doc_1','pas_sup_doc_2','pas_ticket', 'reference_no', 'reject_reason', 'approved_visa', 'vendor_id']);
         $query->condition('vr.id', $visa_id);
         $visdet = $query->execute()->fetchAssoc();
         return $visdet;
@@ -631,3 +631,18 @@ function getRoeFromCountry($cid) {
          ->execute()->fetchField();
   return $result;       
 }
+function getVendor() {
+    
+  $query = \Drupal::database()->select('vendor', 'vd');
+  $query->fields('vd');
+  $vendors = $query->execute()->fetchAll();
+  return $vendors;
+}
+function getVendorFromId($id) {
+  $result = \Drupal::database()->select('vendor', 'vd')
+         ->fields('vd') 
+         ->condition('vd.vdid', $id)
+         ->execute()->fetchAssoc();
+  return $result;       
+}
+

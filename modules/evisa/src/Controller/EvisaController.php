@@ -779,4 +779,37 @@ class EvisaController extends ControllerBase {
 
     return $tcpdf->Output('', 'S');        
     }
+    /**
+     * Vendor Table
+     */
+    public function vendor() {
+        $vendors = getVendor();
+        // Add Rate of Exchange
+        $vendordata['add_vendor'] = [
+            '#markup' => "<a class='btn btn-primary' href='" . $GLOBALS['base_url'] . "/eadmin/vendor/form'>Add Vendor</a>",
+        ];
+        //create table header
+        $header_table = [
+            'vendor_name' => t('Vendor Name'),
+            'opt' => t('Action'),
+        ];
+        $rows = [];
+        foreach ($vendors as $vendor) {
+            $edit = Url::fromUserInput('/eadmin/vendor/form?vdid=' . $vendor->vdid);
+            $rows[] = [
+                'vendor_name' => $vendor->vendor_name,
+                'opt' => Link::fromTextAndUrl('Update', $edit)
+            ];
+        }
+        //display Vendor table
+        $vendordata['table'] = [
+            '#type' => 'table',
+            '#header' => $header_table,
+            '#rows' => $rows,
+            '#empty' => t('No records found'),
+        ];
+        return $vendordata;
+    }
+    
+    
 }

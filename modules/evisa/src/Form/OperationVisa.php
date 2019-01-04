@@ -11,31 +11,75 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\user\Entity\User;
 
 class OperationVisa extends FormBase {
 
-  /**
-   * {@inheritdoc}.
-   */
-  public function getFormId() {
-    return 'operation_view_visa';
-  }
+    /**
+     * {@inheritdoc}.
+     */
+    public function getFormId() {
+        return 'operation_view_visa';
+    }
 
-  /**
+    /**
      * {@inheritdoc}.
      */
     public function buildForm(array $form, FormStateInterface $form_state) {
 
         $visa_id = \Drupal::request()->get('vid');
         $visaDetail = visaDetail($visa_id);
-        //print_r($visaDetail); exit;
+        $vendors = getVendor();
+        $referUrl = \Drupal::request()->server->get('HTTP_REFERER');
+        if ($visaDetail['attend_by'] > 0 && $visaDetail['attend_by'] != \Drupal::currentUser()->id()) {
+            $opAccount = User::load($visaDetail['attend_by']);
+            $opName = $opAccount->get('name')->value;
+            drupal_set_message(t('Visa is attending by @opuser.', ['@opuser' => $opName]), 'status', TRUE);
+            $response = new RedirectResponse($referUrl);
+            return $response;
+        } else {
+            if ($visaDetail['attend_by'] == 0) {
+                $attenUpdate = \Drupal::database()->update('visa_report')
+                        ->fields([
+                            'attend_by' => \Drupal::currentUser()->id(),
+                        ])
+                        ->condition('id', $visa_id)
+                        ->execute();
+            }
+        }
         $photoUrl = getUpFileUrl($visaDetail['pas_photo_id']);
         $passFirstUrl = getUpFileUrl($visaDetail['pas_passport_first_id']);
         $passLastUrl = getUpFileUrl($visaDetail['pas_passport_last_id']);
         $supDoc1Url = getUpFileUrl($visaDetail['pas_sup_doc_1']);
         $supDoc2Url = getUpFileUrl($visaDetail['pas_sup_doc_2']);
         $ticketUrl = getUpFileUrl($visaDetail['pas_ticket']);
-        $referUrl = \Drupal::request()->server->get('HTTP_REFERER');
+        if (strpos($referUrl, 'express')) {
+            $express = 1;
+        } elseif (strpos($referUrl, 'normal')) {
+            $express = 2;
+        } else {
+            $express = 0;
+        }
+        $form['report_id'] = [
+            '#type' => 'hidden',
+            '#value' => $visaDetail['id'],
+        ];
+        $form['visa_id'] = [
+            '#type' => 'hidden',
+            '#value' => $visaDetail['visa_id'],
+        ];
+        $form['agent_id'] = [
+            '#type' => 'hidden',
+            '#value' => $visaDetail['agent_id'],
+        ];
+        $form['customer_id'] = [
+            '#type' => 'hidden',
+            '#value' => $visaDetail['customer_id'],
+        ];
+        $form['price_paid'] = [
+            '#type' => 'hidden',
+            '#value' => $visaDetail['visa_price'],
+        ];
 
         $form['app_ref'] = [
             '#type' => 'item',
@@ -45,8 +89,8 @@ class OperationVisa extends FormBase {
             '#type' => 'item',
             '#markup' => $visaDetail['customer_name'],
         ];
-        $form['#express'] = strpos($referUrl, 'express') ? 1 : 0;
-        
+        $form['#express'] = $express;
+
         $form['country_name'] = [
             '#type' => 'textfield',
             '#title' => $this->t('Destination'),
@@ -91,11 +135,11 @@ class OperationVisa extends FormBase {
             '#collapsed' => TRUE,
             '#title' => $this->t('Passanger Detail')
         ];
-        $titleset = [1=>'Mr.', 2=>'Mrs.', 3=>'Master', 4=>'Miss'];
+        $titleset = [1 => 'Mr.', 2 => 'Mrs.', 3 => 'Master', 4 => 'Miss'];
         $form['passanger']['name'] = [
             '#type' => 'textfield',
             '#title' => $this->t('Passanger Name'),
-            '#default_value' => $titleset[$visaDetail['title']].' '.$visaDetail['name'],
+            '#default_value' => $titleset[$visaDetail['title']] . ' ' . $visaDetail['name'],
             '#attributes' => array('readonly' => 'readonly'),
         ];
         $form['passanger']['father_name'] = [
@@ -134,14 +178,14 @@ class OperationVisa extends FormBase {
             '#default_value' => $visaDetail['country_birth'],
             '#attributes' => array('readonly' => 'readonly'),
         ];
-        $genderList = [1=>'Male', 2=>'Female']; 
+        $genderList = [1 => 'Male', 2 => 'Female'];
         $form['passanger']['gender'] = [
             '#type' => 'textfield',
             '#title' => $this->t('Gender'),
             '#default_value' => $genderList[$visaDetail['gender']],
             '#attributes' => array('readonly' => 'readonly'),
         ];
-        $marStatusList = [1=>'Single', 2=>'Married']; 
+        $marStatusList = [1 => 'Single', 2 => 'Married'];
         $form['passanger']['mar_status'] = [
             '#type' => 'textfield',
             '#title' => $this->t('Marital Status'),
@@ -292,8 +336,63 @@ class OperationVisa extends FormBase {
             '#default_value' => $visaDetail['zip'],
             '#attributes' => array('readonly' => 'readonly'),
         ];
-        
-        $form['#theme'] = 'view_visa_operation'; 
+        $status = [1 => 'Open', 2 => 'In Progress', 5 => 'Cancelled'];
+        $form['status_id'] = [
+            '#type' => 'select',
+            '#title' => 'Status',
+            '#required' => TRUE,
+            '#options' => $status,
+            '#empty_option' => t('Select'),
+            '#default_value' => $visaDetail['status_id'],
+        ];
+        $form['reference_no'] = [
+            '#type' => 'textfield',
+            '#title' => 'Reference No',
+            '#default_value' => $visaDetail['reference_no'],
+            '#states' => [
+                'visible' => [
+                    ':input[name="status_id"]' => ['value' => 2]
+                ],
+                'required' => [
+                    ':input[name="status_id"]' => ['value' => 2]
+                ]
+            ],
+            '#attributes' => [
+                'class' => ['form-control']
+            ],
+        ];
+        foreach($vendors as $vendor) {
+            $vendorList[$vendor->vdid] = $vendor->vendor_name;
+        }
+        $form['vendor_id'] = [
+            '#type' => 'select',
+            '#title' => 'Vendor',
+            '#default_value' => $visaDetail['vendor_id'],
+            '#options' => $vendorList,
+            '#empty_option' => t('Select'),
+            '#states' => [
+                'visible' => [
+                    ':input[name="status_id"]' => ['value' => 2]
+                ],
+                'required' => [
+                    ':input[name="status_id"]' => ['value' => 2]
+                ]
+            ],
+            '#attributes' => [
+                'class' => ['form-control']
+            ],
+        ];        
+        $form['actions'] = [
+            '#type' => 'actions',
+        ];
+        // Add a submit button that handles the submission of the form.
+        $form['actions']['submit'] = [
+            '#type' => 'submit',
+            '#value' => $this->t('Submit'),
+            '#description' => $this->t('Submit'),
+        ];
+
+        $form['#theme'] = 'view_visa_operation';
         return $form;
     }
 
@@ -301,7 +400,58 @@ class OperationVisa extends FormBase {
      * {@inheritdoc}
      */
     public function submitForm(array &$form, FormStateInterface $form_state) {
-        
+
+        $status_id = $form_state->getValue('status_id');
+        $reference_no = $form_state->getValue('reference_no');
+        $report_id = $form_state->getValue('report_id');
+        $visa_id = $form_state->getValue('visa_id');
+        $visa_price_paid = $form_state->getValue('price_paid');
+        $customer_id = $form_state->getValue('customer_id');
+        $vendor_id = $form_state->getValue('vendor_id');
+        $agent_id = $form_state->getValue('agent_id');
+        $agentAccount = User::load($agent_id);
+        $agentEmail = $agentAccount->get('mail')->value;
+        //Update Visa Information
+        $updateVisa = \Drupal::database()->update('visa')
+                ->fields([
+                    'status_id' => $status_id,
+                    'reference_no' => ($status_id == 2 || (!empty($reference_no))) ? $reference_no : '',
+                    'vendor_id' => ($status_id == 2 || (!empty($vendor_id))) ? $vendor_id : 0,
+                    'updated_user_id' => \Drupal::currentUser()->id(),
+                    'updated' => date('Y-m-d H:i:s'),
+                ])
+                ->condition('id', $visa_id)
+                ->execute();
+        //Update Visa report
+        $updateVisaReport = \Drupal::database()->update('visa_report')
+                ->fields([
+                    'status_id' => $status_id,
+                    'process_by' => \Drupal::currentUser()->id(),
+                ])
+                ->condition('id', $report_id)
+                ->execute();
+        if ($status_id == 5) {
+            //Update Account information to credit for cancelled Visa
+            $remark = "Visa Cancelled";
+            $cumAmount = getCumAmount($customer_id);
+            $cumAmount += $visa_price_paid;
+            // Insert Credit
+            $result = \Drupal::database()->insert('account_txn')
+                    ->fields([
+                        'customer_id' => $customer_id,
+                        'credit' => $visa_price_paid,
+                        'txn_reason' => $remark,
+                        'uid' => \Drupal::currentUser()->id(),
+                        'txn_date' => date('Y-m-d H:i:s'),
+                        'txn_type' => 'C',
+                        'cum_amount' => $cumAmount,
+                        'visa_id' => $visa_id
+                    ])
+                    ->execute();
+        }
+        drupal_set_message(t('Visa has been updated successfully.'));
+        //Redirect to Visa Page
+        $form_state->setRedirect('evisa.visa');
     }
 
 }

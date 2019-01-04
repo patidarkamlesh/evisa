@@ -325,3 +325,28 @@ evisa.express.visa:
     _title: 'Express Visa'
   requirements:
     _permission: 'view express visa'
+
+evisa.normal.visa:
+  path: 'evisa/normal/visa'
+  defaults:
+    _form: '\Drupal\evisa\Form\VisaReport'
+    _title: 'Normal Visa'
+  requirements:
+    _permission: 'view normal visa'
+
+evisa.vendor:
+  path: 'eadmin/vendor'
+  defaults:
+    _controller: '\Drupal\evisa\Controller\EvisaController::vendor'
+    _title: 'Vendor'
+  requirements:
+    _permission: 'view vendor'
+
+evisa.vendor.form:
+  path: 'eadmin/vendor/form'
+  defaults:
+    _form: '\Drupal\evisa\Form\VendorForm'
+    _title: 'Vendor Form'
+  requirements:
+    _permission: 'add edit vendor'   
+    

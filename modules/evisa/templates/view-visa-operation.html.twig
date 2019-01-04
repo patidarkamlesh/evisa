@@ -1,3 +1,6 @@
+{{ form.form_build_id }}
+{{ form.form_token }}
+{{ form.form_id }}
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-4" style="font-weight:bold;">Application Reference: {{ form.app_ref["#markup"] }}</div>
@@ -178,8 +181,40 @@
         </div>  
     </div>
 </div>
-{% if form['#express']  %}
-    <p><a href="{{ url('evisa.express.visa') }}" class="btn btn-primary" role="button">{{ 'Back to Visa Listing'|t }}</a></p>
-{% else %}
-    <p><a href="{{ url('evisa.visa') }}" class="btn btn-primary" role="button">{{ 'Back to Visa Listing'|t }}</a></p>
-{% endif %} 
+<div class="panel panel-default">
+    <div class="panel-heading"><b>For Operation User</b></div>
+    <div class="panel-body">
+        <div class="container-fluid">        
+            <div class="row">
+                <div class="col-xs-4">
+                    {{ form.status_id }}
+                </div>
+                <div class="col-xs-4">
+                    {{ form.reference_no }}
+                </div>
+                <div class="col-xs-4">
+                    {{ form.vendor_id }}
+                </div>
+            </div>
+        </div>
+                
+    </div>
+</div>
+<div class="panel-footer row">
+    <div class="col-xs-6 text-left">
+        <div class="previous">
+          {{ form.actions }}
+        </div>
+    </div>
+          <div class="col-xs-6 text-right">   
+              <div class="next">
+                  {% if form['#express'] == 1 %}
+                      <a href="{{ url('evisa.express.visa') }}" class="btn btn-primary" role="button">{{ 'Back to Visa Listing'|t }}</a>
+                  {% elseif form['#express'] == 2 %}
+                      <a href="{{ url('evisa.normal.visa') }}" class="btn btn-primary" role="button">{{ 'Back to Visa Listing'|t }}</a>
+                  {% else %}
+                      <a href="{{ url('evisa.visa') }}" class="btn btn-primary" role="button">{{ 'Back to Visa Listing'|t }}</a>
+                  {% endif %}             
+              </div>
+          </div>
+</div>
