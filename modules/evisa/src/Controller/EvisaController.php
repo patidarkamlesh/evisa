@@ -72,6 +72,11 @@ class EvisaController extends ControllerBase {
             $menuItem['title'] = 'Rate of Exchange';
             array_push($menuItems,$menuItem);
         }
+        if(\Drupal::currentUser()->hasPermission('view vendor')) {
+            $menuItem['url'] = 'eadmin/vendor';
+            $menuItem['title'] = 'Vendor';
+            array_push($menuItems,$menuItem);
+        }
         return [
           '#theme' => 'master_page',
           '#menuItems' => $menuItems  
@@ -91,7 +96,7 @@ class EvisaController extends ControllerBase {
         ];
         $rows = [];
         foreach ($countries as $country) {
-            $edit = Url::fromUserInput('/evisa/country/form?country=' . $country->cid);
+            $edit = Url::fromUserInput('/eadmin/country/form?country=' . $country->cid);
             $rows[] = [
                 'country_name' => $country->country_name,
                 'opt' => Link::fromTextAndUrl('Edit', $edit)
@@ -99,8 +104,7 @@ class EvisaController extends ControllerBase {
         }
         // Add Country Link
         $countrydata['add_country'] = [
-            //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/country/form">Add Country</a></p>',
-            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='" . $GLOBALS['base_url'] . "/evisa/country/form'>Add Country</a></p>",
+            '#markup' => "<a class='btn btn-primary' href='" . $GLOBALS['base_url'] . "/eadmin/country/form'>Add Country</a>",
         ];
         //display country table
         $countrydata['table'] = [
@@ -125,7 +129,7 @@ class EvisaController extends ControllerBase {
         ];
         $rows = [];
         foreach ($nationalities as $nationality) {
-            $edit = Url::fromUserInput('/evisa/national/form?national=' . $nationality->naid);
+            $edit = Url::fromUserInput('/eadmin/national/form?national=' . $nationality->naid);
             $rows[] = [
                 'nationality_name' => $nationality->nationality_name,
                 'opt' => Link::fromTextAndUrl('Edit', $edit)
@@ -133,8 +137,7 @@ class EvisaController extends ControllerBase {
         }
         // Add Nationality Link
         $nationaldata['add_nationality'] = [
-            //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/national/form">Add Nationality</a></p>',
-            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='" . $GLOBALS['base_url'] . "/evisa/national/form'>Add Nationality</a></p>",
+            '#markup' => "<a class='btn btn-primary' href='" . $GLOBALS['base_url'] . "/eadmin/national/form'>Add Nationality</a>",
         ];
         //display Nationality table
         $nationaldata['table'] = [
@@ -159,7 +162,7 @@ class EvisaController extends ControllerBase {
         ];
         $rows = [];
         foreach ($purposes as $purpose) {
-            $edit = Url::fromUserInput('/evisa/purpose/form?purpose=' . $purpose->pid);
+            $edit = Url::fromUserInput('/eadmin/purpose/form?purpose=' . $purpose->pid);
             $rows[] = [
                 'purpose_travel' => $purpose->purpose_travel,
                 'opt' => Link::fromTextAndUrl('Edit', $edit)
@@ -167,8 +170,7 @@ class EvisaController extends ControllerBase {
         }
         // Add Purpose of Travel Link
         $purposedata['add_purpose'] = [
-            //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/purpose/form">Add Purpose of Travel</a></p>',
-            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='" . $GLOBALS['base_url'] . "/evisa/purpose/form'>Add Purpose of Travel</a></p>",
+            '#markup' => "<a class='btn btn-primary' href='" . $GLOBALS['base_url'] . "/eadmin/purpose/form'>Add Purpose of Travel</a>",
         ];
         //display Purpose of Travel table
         $purposedata['table'] = [
@@ -193,7 +195,7 @@ class EvisaController extends ControllerBase {
         ];
         $rows = [];
         foreach ($visatypes as $visatype) {
-            $edit = Url::fromUserInput('/evisa/visatype/form?type=' . $visatype->vtid);
+            $edit = Url::fromUserInput('/eadmin/visatype/form?type=' . $visatype->vtid);
             $rows[] = [
                 'visa_type' => $visatype->visa_type,
                 'opt' => Link::fromTextAndUrl('Edit', $edit)
@@ -201,7 +203,7 @@ class EvisaController extends ControllerBase {
         }
         // Add Visa Type Link
         $visatypedata['add_visatype'] = [
-            '#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/visatype/form">Add Type of Visa</a></p>',
+            '#markup' => "<a class='btn btn-primary' href='" . $GLOBALS['base_url'] . "/eadmin/visatype/form'>Add Type of Visa</a>",
         ];
         //display Visa Type table
         $visatypedata['table'] = [
@@ -233,8 +235,7 @@ class EvisaController extends ControllerBase {
         }
         // Add Visa Type Link
         $countrypurposedata['add_countrypurpose'] = [
-            //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/countrypurpose/form">Add Association of Country & Purpose of Travel</a></p>',
-            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='" . $GLOBALS['base_url'] . "/evisa/countrypurpose/form'>Add Association of Country & Purpose of Travel</a></p>",
+            '#markup' => "<a class='btn btn-primary' href='" . $GLOBALS['base_url'] . "/eadmin/countrypurpose/form'>Add Association of Country & Purpose of Travel</a>",
         ];
         //display Visa Type table
         $countrypurposedata['table'] = [
@@ -268,8 +269,7 @@ class EvisaController extends ControllerBase {
         }
         // Add Visa Type Link
         $countrypurposeVisadata['add_countrypurpose'] = [
-            //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/countrypurposevisa/form">Add Association</a></p>',
-            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='" . $GLOBALS['base_url'] . "/evisa/countrypurposevisa/form'>Add Association</a></p>",
+            '#markup' => "<a class='btn btn-primary' href='" . $GLOBALS['base_url'] . "/eadmin/countrypurposevisa/form'>Add Association</a></p>",
         ];
         //display Visa Type table
         $countrypurposeVisadata['table'] = [
@@ -298,7 +298,7 @@ class EvisaController extends ControllerBase {
         ];
         $rows = [];
         foreach ($priceAssignments as $priceAssignment) {
-            $edit = Url::fromUserInput('/evisa/priceassignment/edit/' . $priceAssignment->id);
+            $edit = Url::fromUserInput('/eadmin/priceassignment/edit/' . $priceAssignment->id);
             $rows[] = [
                 'customer_name' => $priceAssignment->customer_name,
                 'country_name' => $priceAssignment->country_name,
@@ -310,8 +310,7 @@ class EvisaController extends ControllerBase {
         }
         // Add Price Assignment Link
         $priceAssigndata['add_priceassign'] = [
-            //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/priceassignment/form">Add Price Assignment</a></p>',
-            '#markup' => "<p><a class='use-ajax' data-dialog-type='modal' href='" . $GLOBALS['base_url'] . "/evisa/priceassignment/form'>Add Price Assignment</a></p>",
+            '#markup' => "<a class='btn btn-primary' href='" . $GLOBALS['base_url'] . "/eadmin/priceassignment/form'>Add Price Assignment</a>",
         ];
         //display Visa Type table
         $priceAssigndata['table'] = [
@@ -412,7 +411,7 @@ class EvisaController extends ControllerBase {
         ];
         $rows = [];
         foreach ($blockCustomers as $blockCustomer) {
-            $edit = Url::fromUserInput('/evisa/blockCust/unblock/' . $blockCustomer->id, ['attributes' => ['class' => 'button']]);
+            $edit = Url::fromUserInput('/eadmin/blockCust/unblock/' . $blockCustomer->id, ['attributes' => ['class' => 'button']]);
             $rows[] = [
                 'customer_name' => $blockCustomer->customer_name,
                 'block_date' => date('d-m-Y', strtotime($blockCustomer->block_date)),
@@ -422,7 +421,7 @@ class EvisaController extends ControllerBase {
         // Add Block Customer Link
         $blockcustdata['block_customer'] = [
             //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/blockCust/form">Block Customer</a></p>',
-            '#markup' => "<a class='btn btn-primary' href='" . $GLOBALS['base_url'] . "/evisa/blockCust/form'>Block Customer</a>",
+            '#markup' => "<a class='btn btn-primary' href='" . $GLOBALS['base_url'] . "/eadmin/blockCust/form'>Block Customer</a>",
         ];
         //display Visa Type table
         $blockcustdata['table'] = [
@@ -688,7 +687,7 @@ class EvisaController extends ControllerBase {
         $roes = getRoe();
         // Add Rate of Exchange
         $roedata['add_roe'] = [
-            '#markup' => "<a class='btn btn-primary' href='" . $GLOBALS['base_url'] . "/evisa/roe/form'>Add Rate of Exchange</a>",
+            '#markup' => "<a class='btn btn-primary' href='" . $GLOBALS['base_url'] . "/eadmin/roe/form'>Add Rate of Exchange</a>",
         ];
         //create table header
         $header_table = [
@@ -699,7 +698,7 @@ class EvisaController extends ControllerBase {
         ];
         $rows = [];
         foreach ($roes as $roe) {
-            $edit = Url::fromUserInput('/evisa/roe/form?rid=' . $roe->rid);
+            $edit = Url::fromUserInput('/eadmin/roe/form?rid=' . $roe->rid);
             $rows[] = [
                 'country_name' => $roe->country_name,
                 'roe' => $roe->roe,

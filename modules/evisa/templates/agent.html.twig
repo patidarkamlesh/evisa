@@ -1,6 +1,7 @@
 <div style="float:right;margin-top:15px;font-weight:bold;">
     Welcome
-    {% if user_name.name is 'Visitor' %}
+    {% set username = 'Visitor' %}
+    {%  if username == user_name.name %}
         {{ user_name.name }}
     {% else %}    
     <a href="{{ user_name.profile }}">{{ user_name.name }} </a>

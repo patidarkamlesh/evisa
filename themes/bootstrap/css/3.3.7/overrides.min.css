@@ -9,3 +9,33 @@
 .addvisa {
     margin-bottom:10px;
 }
+
+#edit-name, #edit-pass {
+   width: 60%; 
+}
+
+.form-item-customer-id {
+    width: 45%;
+    float:left;
+    margin-right:50px;
+}
+
+.form-item-passport-no {
+    width: 45%; 
+    float:left;
+}
+
+.form-item-app-from {
+    width: 45%;
+    float:left;
+    margin-right:50px;
+}
+
+.form-item-app-to {
+    width: 45%;
+    float:left;
+}
+
+.form-item-app-ref {
+    width: 45%;
+}

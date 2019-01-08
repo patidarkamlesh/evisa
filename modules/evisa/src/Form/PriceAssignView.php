@@ -25,8 +25,7 @@ class PriceAssignView extends FormBase {
         $custdata = \Drupal::request()->get('customer_name');
         // Add Price Assignment Link
         $form['add_priceassign'] = [
-            //'#markup' => '<p><a class="use-ajax" data-dialog-type="modal" href="/drupal8.4/evisa/priceassignment/form">Add Price Assignment</a></p>',
-            '#markup' => "<a class='btn btn-primary' href='".$GLOBALS['base_url']."/evisa/priceassignment/form'>Add Price Assignment</a>",
+            '#markup' => "<a class='btn btn-primary' href='".$GLOBALS['base_url']."/eadmin/priceassignment/form'>Add Price Assignment</a>",
         ];
 
         $form['filter'] = [
@@ -49,7 +48,7 @@ class PriceAssignView extends FormBase {
             '#type' => 'link',
             '#title' => $this->t('Reset'),
             '#attributes' => array(
-                'class' => array('button'),
+                'class' => array('btn btn-primary'),
             ),
             '#url' => Url::fromRoute('evisa.priceassignment'),
         ];
@@ -91,7 +90,7 @@ class PriceAssignView extends FormBase {
         ];
         $rows = [];
         foreach ($priceAssignments as $priceAssignment) {
-            $edit = Url::fromUserInput('/evisa/priceassignment/edit/' . $priceAssignment->id);
+            $edit = Url::fromUserInput('/eadmin/priceassignment/edit/' . $priceAssignment->id);
             $rows[] = [
                 'customer_name' => $priceAssignment->customer_name,
                 'country_name' => $priceAssignment->country_name,

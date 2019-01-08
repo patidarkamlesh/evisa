@@ -5,17 +5,17 @@
     </div>
     <div id="edit-filter--content" class="panel-body panel-collapse collapse fade">
         <div class="form-inline form-item js-form-item form-type-entity-autocomplete js-form-type-entity-autocomplete form-item-customer-id js-form-item-customer-id form-group form-autocomplete">
-            <div class="input-group">
+            <div class="input-group" style="width:175%">
                 {{ form.filter.customer_id}}    
             </div>
         </div>
-        <div style = "margin-top:10px; float:left;" class="form-inline form-item js-form-item form-type-date js-form-type-date form-item-from-date js-form-item-from-date form-group">
+        <div style = "margin-top:20px; float:left;" class="form-inline form-item js-form-item form-type-date js-form-type-date form-item-from-date js-form-item-from-date form-group">
             {{form.filter.from_date}}
         </div>
-        <div style="float:left; margin-left:40px; margin-top:10px;" class="form-inline form-item js-form-item form-type-date js-form-type-date form-item-to-date js-form-item-to-date form-group">
+        <div style="float:left; margin-left:40px; margin-top:20px;" class="form-inline form-item js-form-item form-type-date js-form-type-date form-item-to-date js-form-item-to-date form-group">
             {{form.filter.to_date}}
         </div>
-        <div style="float:left;margin-left:40px; margin-top:10px;">
+        <div style="float:left; margin-top:10px;">
         <button data-drupal-selector="edit-submit" class="button js-form-submit form-submit btn-primary btn icon-before" type="submit" id="edit-submit" name="op" value="Search"><span class="icon glyphicon glyphicon-search" aria-hidden="true"></span>
             Search</button>
 

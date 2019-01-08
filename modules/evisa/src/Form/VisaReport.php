@@ -79,11 +79,6 @@ class VisaReport extends FormBase {
                 '#type' => 'textfield',
                 '#default_value' => (!empty($passport_no)) ? $passport_no : '',
             ];
-            $form['filter']['app_ref'] = [
-                '#title' => $this->t('Application Reference'),
-                '#type' => 'textfield',
-                '#default_value' => (!empty($app_ref)) ? $app_ref : '',
-            ];
             $form['filter']['app_from'] = [
                 '#title' => $this->t('Application From'),
                 '#type' => 'date',
@@ -94,6 +89,11 @@ class VisaReport extends FormBase {
                 '#type' => 'date',
                 '#default_value' => (!empty($app_to)) ? $app_to : '',
             ];
+            $form['filter']['app_ref'] = [
+                '#title' => $this->t('Application Reference'),
+                '#type' => 'textfield',
+                '#default_value' => (!empty($app_ref)) ? $app_ref : '',
+            ];            
             $form['filter']['submit'] = [
                 '#type' => 'submit',
                 '#value' => t('Search'),
@@ -158,6 +158,7 @@ class VisaReport extends FormBase {
         //create table header
         $header_table = [
             'edit' => t('Edit'),
+            'created_date' => t('Created Date'),
             'customer_name' => t('Customer Name'),
             'country_name' => t('Destination'),
             'purpose' => t('Purpose of Travel'),
@@ -184,7 +185,7 @@ class VisaReport extends FormBase {
         }
         foreach ($visaReports as $visaReport) {
             $view = Url::fromUserInput($viewLink . $visaReport->id);
-            if (in_array('operation_user', $roles) && $express > 0) {
+            if ((in_array('operation_user', $roles) || in_array('admin', $roles)) && $express > 0) {
                 if ($visaReport->attend_by > 0) {
                     if ($visaReport->attend_by == \Drupal::currentUser()->id()) {
                         $viewLabel = 'Attending by you';
@@ -202,6 +203,7 @@ class VisaReport extends FormBase {
             $download = Url::fromUserInput('/evisa/visa/download/' . $visaReport->approved_visa, ['attributes' => ['target' => '_blank', 'class' => 'button']]);
             if (!(\Drupal::currentUser()->hasPermission('edit visa')) || ($express > 0)) {
                 $rows[] = [
+                    'created_date' => $visaReport->created,
                     'customer_name' => $visaReport->customer_name,
                     'country_name' => $visaReport->destination_name,
                     'purpose' => $visaReport->purpose_name,
@@ -216,6 +218,7 @@ class VisaReport extends FormBase {
             } else {
                 $rows[] = [
                     'edit' => ($visaReport->status_id == 1 || $visaReport->status_id == 2) ? Link::fromTextAndUrl('Edit', $edit) : '--',
+                    'created_date' => $visaReport->created,
                     'customer_name' => $visaReport->customer_name,
                     'country_name' => $visaReport->destination_name,
                     'purpose' => $visaReport->purpose_name,
